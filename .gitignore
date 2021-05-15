@@ -1,0 +1,5 @@
+private/*
+project/tmp/*
+project/modules/*
+project/env/test/run/*
+!**/.keep
