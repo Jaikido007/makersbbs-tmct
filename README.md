@@ -57,8 +57,6 @@ If you'd like to learn more about how to tell if things are going well, consider
    4. Add team members and project coaches.
    5. Update your Github `README.md` to link to the Trello board.
 
-:::HERE SOMETHING ABOUT THE CARD BOARD:::
-
 4. **Create a team Slack channel.**  
    Put links to your card board & Github repo in the title, and invite your coaches for this module.
 
@@ -67,9 +65,11 @@ If you'd like to learn more about how to tell if things are going well, consider
 
 ### Planning
 
-You'll want to do this at the start of every day.
+You'll want to do this once at the start of your project, and then at the start of every day.
 
-As a team:
+Load up the Project Board, which you can find in your repo in the 'Projects' tab.
+
+Then, as a team:
 
 1. **Review the Project board.**  
    Get a general update on what's changed since the last planning session. What have you done? What work is still in progress? Is anything blocked?
@@ -77,10 +77,13 @@ As a team:
 2. **Decide what to do next.**  
    How can you arrange the work so that everyone has something to do? Can you avoid working on the same areas of the codebase? If not, how will you coordinate?
 
-3. **Allocate the tickets to pairs.**  
+3. **Break down the big epic features into smaller tickets.**  
+   You ideally want to break down work into pieces of user-facing functionality that won't take you longer than a half a day to implement. This will ensure you are merging new code regularly.
+
+4. **Allocate the tickets to pairs.**  
    Again, try to ensure you're maximising the contribution of everyone in the team.
 
-4. **Get going!**  
+5. **Get going!**  
    Take a break beforehand if you feel best.
 
 ### Coding
