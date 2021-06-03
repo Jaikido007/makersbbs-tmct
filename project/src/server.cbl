@@ -16,18 +16,22 @@
            01 USER-NAME PIC X(10).
            01 MENU-CHOICE PIC X.
            01 MESSAGE-1 PIC X(60).
-      *     01 MESSAGE-2 PIC X(60).
-      *     01 MESSAGE-3 PIC X(60).
-      *     01 MESSAGE-4 PIC X(60).
-      *     01 MESSAGE-5 PIC X(60).
-      *     01 MESSAGE-6 PIC X(60).
-      *     01 MESSAGE-7 PIC X(60).
-      *     01 MESSAGE-8 PIC X(60).
-           01 MESSAGE-9 PIC X(60).
-           01 MESSAGE-10 PIC X(60).
+        *>    01 MESSAGE-2 PIC X(60).
+        *>    01 MESSAGE-3 PIC X(60).
+        *>    01 MESSAGE-4 PIC X(60).
+        *>    01 MESSAGE-5 PIC X(60).
+        *>    01 MESSAGE-6 PIC X(60).
+        *>    01 MESSAGE-7 PIC X(60).
+        *>    01 MESSAGE-8 PIC X(60).
+        *>    01 MESSAGE-9 PIC X(60).
+        *>    01 MESSAGE-10 PIC X(60).
            01 MESSAGE-CHOICE PIC X.
-           01 WS-FILE-IS-ENDED PIC 9.
-
+           01 WS-COUNTER PIC 99.
+           01 WS-MESSAGES.
+               05 WS-MESSAGE OCCURS 10 TIMES.
+               ASCENDING KEY IS WS-TITLE
+               INDEXED BY MSG-IDX.
+                   10 WS-TITLE PIC X(60).
            
 
            SCREEN SECTION.
@@ -90,6 +94,12 @@
 
        PROCEDURE DIVISION.
        
+           
+
+
+
+
+
 
        0110-DISPLAY-LOGIN.
            INITIALIZE USER-NAME.
@@ -113,24 +123,15 @@
        
 
        0130-DISPLAY-MESSAGEBOARD.
+           INITIALIZE MESSAGE-1.
            OPEN INPUT F-MESSAGE-FILE.
-           MOVE 0 TO WS-FILE-IS-ENDED.
-           PERFORM UNTIL WS-FILE-IS-ENDED = 1
+           MOVE 00 TO WS-COUNTER.
+           PERFORM UNTIL WS-COUNTER = 05
                READ F-MESSAGE-FILE
                NOT AT END
-               MOVE MESSAGE-TITLE TO MESSAGE-1
-      *         MOVE MESSAGE-TITLE TO MESSAGE-2
-      *         MOVE MESSAGE-TITLE TO MESSAGE-3
-      *         MOVE MESSAGE-TITLE TO MESSAGE-4
-      *         MOVE MESSAGE-TITLE TO MESSAGE-5
-      *         MOVE MESSAGE-TITLE TO MESSAGE-6
-      *         MOVE MESSAGE-TITLE TO MESSAGE-7
-      *         MOVE MESSAGE-TITLE TO MESSAGE-8
-      *         MOVE MESSAGE-TITLE TO MESSAGE-9
-      *         MOVE MESSAGE-TITLE TO MESSAGE-10
-               AT END
-                   MOVE 1 TO WS-FILE-IS-ENDED
+               MOVE MESSAGE-TITLE TO MESSAGE-1  
                END-READ
+               ADD 01 TO WS-COUNTER  
            END-PERFORM.
            CLOSE F-MESSAGE-FILE.
            INITIALIZE MESSAGE-CHOICE.
