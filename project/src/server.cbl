@@ -60,6 +60,7 @@
              05 LINE 4 COLUMN 19 PIC X(10) USING USER-NAME.
              05 LINE 8 COLUMN 10 VALUE "(n) Nothing".
              05 LINE 8 COLUMN 80 VALUE "(m) Message board".
+             05 LINE 8 COLUMN 100 VALUE "(g) Guessing Game".
              05 LINE 8 COLUMN 30 VALUE "(l) Logout".
              05 LINE 8 COLUMN 60 VALUE "(q) Quit".
              05 LINE 20 COLUMN 10 VALUE "Pick: ".
@@ -103,18 +104,19 @@
                 USING MESSAGE-CHOICE.
 
            01 WORD-GUESSING-SCREEN
-               BAKCGROUND-COLOR IS 8.
+               BACKGROUND-COLOR IS 8.
              05 BLANK SCREEN.
              05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-             05 LINE 4 COLUMN 10 VALUE "Guess this word: "
+             05 LINE 4 COLUMN 10 VALUE "Guess this word: ".
              05 LINE 6 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 8 COLUMN 10 VALUE "Guesses left: "
-             05 LINE 8 COLUMN 14 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 8 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 8 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
              05 LINE 10 COLUMN 10 VALUE "( ) Enter a letter to guess".
              05 LINE 11 COLUMN 10 VALUE "(!) Quit game".
              05 LINE 13 COLUMN 10 VALUE "Pick: ".
-             05 GUESSING-CHOICE-FIELD LINE 13 COLUMN 16 PIC X
+             05 WS-GUESSING-CHOICE-FIELD LINE 13 COLUMN 16 PIC X
                USING WS-GUESSING-CHOICE.
+
 
        PROCEDURE DIVISION.
       
@@ -140,6 +142,8 @@
            PERFORM 0120-DISPLAY-MENU
            ELSE IF MENU-CHOICE = 'm' THEN
              PERFORM 0130-DISPLAY-MESSAGEBOARD
+           ELSE IF MENU-CHOICE = 'g' THEN
+             PERFORM 0140-DISPLAY-GUESSING-GAME
            END-IF. 
        
 
@@ -163,5 +167,13 @@
            DISPLAY MESSAGEBOARD-SCREEN.
            ACCEPT MESSAGE-CHOICE-FIELD.
            IF MESSAGE-CHOICE = "q" THEN 
+               PERFORM 0120-DISPLAY-MENU
+           END-IF.
+
+       0140-DISPLAY-GUESSING-GAME.
+           INITIALIZE WS-GUESSING-CHOICE.
+           DISPLAY WORD-GUESSING-SCREEN.
+           ACCEPT WS-GUESSING-CHOICE-FIELD.
+           IF WS-GUESSING-CHOICE = '!' THEN 
                PERFORM 0120-DISPLAY-MENU
            END-IF.
