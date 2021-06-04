@@ -5,32 +5,35 @@
            FILE-CONTROL.
            SELECT F-MESSAGE-FILE ASSIGN TO "messages.dat"
              ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT F-REVERSED-FILE ASSIGN TO "messages-reversed.dat"
+             ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT WORK ASSIGN TO 'work.dat'
+             ORGANIZATION IS INDEXED
+               RECORD KEY IS SD-MESSAGE-TITLE.
        DATA DIVISION.
            FILE SECTION.
              FD F-MESSAGE-FILE.
              01 MESSAGES.
                05 MESSAGE-TITLE PIC X(60).
                05 MESSAGE-BODY PIC X(500).
+             FD F-REVERSED-FILE.
+             01 REV-MESSAGES.
+               05 REV-MESSAGE-TITLE PIC X(60).
+               05 REV-MESSAGE-BODY PIC X(500).
+             SD WORK.
+             01 SD-MESSAGES.
+               05 SD-MESSAGE-TITLE PIC X(60).
+               05 SD-MESSAGE-BODY PIC X(500).
 
            WORKING-STORAGE SECTION.
            01 USER-NAME PIC X(10).
            01 MENU-CHOICE PIC X.
-        *>    01 MESSAGE-1 PIC X(60).
-        *>    01 MESSAGE-2 PIC X(60).
-        *>    01 MESSAGE-3 PIC X(60).
-        *>    01 MESSAGE-4 PIC X(60).
-        *>    01 MESSAGE-5 PIC X(60).
-        *>    01 MESSAGE-6 PIC X(60).
-        *>    01 MESSAGE-7 PIC X(60).
-        *>    01 MESSAGE-8 PIC X(60).
-        *>    01 MESSAGE-9 PIC X(60).
-        *>    01 MESSAGE-10 PIC X(60).
            01 MESSAGE-CHOICE PIC X.
            01 WS-COUNTER PIC 99.
            01 WS-FILE-IS-ENDED PIC 9.
            01 WS-MESSAGES.
                05 WS-MESSAGE OCCURS 10 TIMES
-               ASCENDING KEY IS WS-TITLE
+               DESCENDING KEY IS WS-TITLE
                INDEXED BY MSG-IDX.
                    10 WS-TITLE PIC X(60).
            
@@ -70,11 +73,11 @@
              05 LINE 8 COLUMN 14 PIC X(60) USING WS-MESSAGE(3).
              05 LINE 9 COLUMN 10 VALUE "4.".
              05 LINE 9 COLUMN 14 PIC X(60) USING WS-MESSAGE(4).
-             05 LINE 10 COLUMN 10 VALUE "5.".
-             05 LINE 10 COLUMN 14 PIC X(60) USING WS-MESSAGE(5).
-             05 LINE 11 COLUMN 10 VALUE "6.".
-             05 LINE 11 COLUMN 14 PIC X(60) USING WS-MESSAGE(6).
-             05 LINE 12 COLUMN 10 VALUE "7.".
+             05 LINE 9 COLUMN 10 VALUE "5.".
+             05 LINE 9 COLUMN 14 PIC X(60) USING WS-MESSAGE(5).
+             05 LINE 9 COLUMN 10 VALUE "6.".
+             05 LINE 9 COLUMN 14 PIC X(60) USING WS-MESSAGE(6).
+             05 LINE 9 COLUMN 10 VALUE "7.".
              05 LINE 12 COLUMN 14 PIC X(60) USING WS-MESSAGE(7).
              05 LINE 13 COLUMN 10 VALUE "8.".
              05 LINE 13 COLUMN 14 PIC X(60) USING WS-MESSAGE(8).
@@ -121,21 +124,9 @@
        
 
        0130-DISPLAY-MESSAGEBOARD.
-        *>    INITIALIZE MESSAGE-1.
-        *>    OPEN INPUT F-MESSAGE-FILE.
-        *>    MOVE 00 TO WS-COUNTER.
-        *>    PERFORM UNTIL WS-COUNTER = 05
-        *>        READ F-MESSAGE-FILE
-        *>        NOT AT END
-        *>        MOVE MESSAGE-TITLE TO MESSAGE-1  
-        *>        END-READ
-        *>        ADD 01 TO WS-COUNTER  
-        *>    END-PERFORM.
-        *>    CLOSE F-MESSAGE-FILE.
-             
            SET MSG-IDX TO 0.
-           MOVE 0 TO WS-FILE-IS-ENDED.
            OPEN INPUT F-MESSAGE-FILE.
+           MOVE 0 TO WS-FILE-IS-ENDED.
            PERFORM UNTIL WS-FILE-IS-ENDED = 1
                READ F-MESSAGE-FILE
                    NOT AT END
@@ -146,9 +137,8 @@
                END-READ 
            END-PERFORM.
            CLOSE F-MESSAGE-FILE.
-           
-           
-
+           SORT WORK ON DESCENDING KEY MSG-IDX
+               USING F-MESSAGE-FILE GIVING F-REVERSED-FILE.  
            INITIALIZE MESSAGE-CHOICE.
            DISPLAY MESSAGEBOARD-SCREEN.
            ACCEPT MESSAGE-CHOICE-FIELD.
