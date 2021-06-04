@@ -4,14 +4,17 @@
            INPUT-OUTPUT SECTION.
            FILE-CONTROL.
            SELECT F-MESSAGE-FILE ASSIGN TO "messages.dat"
-             ORGANIZATION IS LINE SEQUENTIAL.
+             ORGANIZATION IS INDEXED
+             RECORD KEY IS MESSAGE-TITLE.
            SELECT F-REVERSED-FILE ASSIGN TO "messages-reversed.dat"
              ORGANIZATION IS LINE SEQUENTIAL.
-           SELECT WORK ASSIGN TO 'work.dat'
-             ORGANIZATION IS INDEXED
-               RECORD KEY IS SD-MESSAGE-TITLE.
+           SELECT WORK ASSIGN TO 'work.dat'.
+           SELECT F-WORD-FILE ASSIGN TO 'guessing-words.dat'.
+             
        DATA DIVISION.
            FILE SECTION.
+             FD F-WORD-FILE.
+               01 WORD PIC X(20).
              FD F-MESSAGE-FILE.
              01 MESSAGES.
                05 MESSAGE-TITLE PIC X(60).
@@ -36,6 +39,9 @@
                DESCENDING KEY IS WS-TITLE
                INDEXED BY MSG-IDX.
                    10 WS-TITLE PIC X(60).
+           01 WS-WORD PIC X(20).
+           01 WS-GUESSES-LEFT PIC 99.
+           01 WS-GUESSING-CHOICE PIC X.
            
 
            SCREEN SECTION.
@@ -96,6 +102,20 @@
              05 MESSAGE-CHOICE-FIELD LINE 21 COLUMN 16 PIC X
                 USING MESSAGE-CHOICE.
 
+           01 WORD-GUESSING-SCREEN
+               BAKCGROUND-COLOR IS 8.
+             05 BLANK SCREEN.
+             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+             05 LINE 4 COLUMN 10 VALUE "Guess this word: "
+             05 LINE 6 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 8 COLUMN 10 VALUE "Guesses left: "
+             05 LINE 8 COLUMN 14 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 10 COLUMN 10 VALUE "( ) Enter a letter to guess".
+             05 LINE 11 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 13 COLUMN 10 VALUE "Pick: ".
+             05 GUESSING-CHOICE-FIELD LINE 13 COLUMN 16 PIC X
+               USING WS-GUESSING-CHOICE.
+
        PROCEDURE DIVISION.
       
 
@@ -137,7 +157,7 @@
                END-READ 
            END-PERFORM.
            CLOSE F-MESSAGE-FILE.
-           SORT WORK ON DESCENDING KEY MSG-IDX
+           SORT WORK ON DESCENDING KEY SD-MESSAGE-TITLE
                USING F-MESSAGE-FILE GIVING F-REVERSED-FILE.  
            INITIALIZE MESSAGE-CHOICE.
            DISPLAY MESSAGEBOARD-SCREEN.
