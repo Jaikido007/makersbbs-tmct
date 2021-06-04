@@ -5,16 +5,20 @@
            FILE-CONTROL.
            SELECT F-MESSAGE-FILE ASSIGN TO "messages.dat"
              ORGANIZATION IS LINE SEQUENTIAL.
+  
        DATA DIVISION.
            FILE SECTION.
              FD F-MESSAGE-FILE.
              01 MESSAGES.
                05 MESSAGE-TITLE PIC X(60).
                05 MESSAGE-BODY PIC X(500).
+               05 MESSAGE-DATE PIC X(8).
 
            WORKING-STORAGE SECTION.
            01 USER-NAME PIC X(10).
            01 MENU-CHOICE PIC X.
+           01 POST-TITLE PIC X(60).
+           01 POST-BODY PIC X(500).
         *>    01 MESSAGE-1 PIC X(60).
         *>    01 MESSAGE-2 PIC X(60).
         *>    01 MESSAGE-3 PIC X(60).
@@ -25,11 +29,13 @@
         *>    01 MESSAGE-8 PIC X(60).
         *>    01 MESSAGE-9 PIC X(60).
         *>    01 MESSAGE-10 PIC X(60).
+  
            01 MESSAGE-CHOICE PIC X.
+           01 POST-CHOICE PIC X.
            01 WS-COUNTER PIC 99.
            01 WS-FILE-IS-ENDED PIC 9.
            01 WS-MESSAGES.
-               05 WS-MESSAGE OCCURS 10 TIMES
+               05 WS-MESSAGE OCCURS 50 TIMES
                ASCENDING KEY IS WS-TITLE
                INDEXED BY MSG-IDX.
                    10 WS-TITLE PIC X(60).
@@ -92,12 +98,29 @@
              05 LINE 21 COLUMN 10 VALUE "Pick: ".
              05 MESSAGE-CHOICE-FIELD LINE 21 COLUMN 16 PIC X
                 USING MESSAGE-CHOICE.
+           
+
+           01 POST-MESSAGE-SCREEN
+           BACKGROUND-COLOR IS 8.
+           05 BLANK SCREEN. 
+           05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+           05 LINE 4 COLUMN 10 VALUE "Post a message".
+           05 LINE 6 COLUMN 10 VALUE "Title".
+           05 POST-TITLE-FIELD LINE 7 COLUMN 10 PIC X(60)
+           USING POST-TITLE.
+           05 LINE 9 COLUMN 10 VALUE "Body".
+           05 POST-BODY-FIELD LINE 10 COLUMN 10 PIC X(500)
+           USING POST-BODY.
+           05 LINE 18 COLUMN 10 VALUE "(p) Post".
+           05 LINE 18 COLUMN 30 VALUE "(d) Discard".
+           05 LINE 20 COLUMN 10 VALUE "Pick: ".
+           05 POST-CHOICE-FIELD LINE 20 COLUMN 16 PIC X
+                USING POST-CHOICE.
+
+
+
 
        PROCEDURE DIVISION.
-      
-
-
-
 
        0110-DISPLAY-LOGIN.
            INITIALIZE USER-NAME.
@@ -154,4 +177,26 @@
            ACCEPT MESSAGE-CHOICE-FIELD.
            IF MESSAGE-CHOICE = "q" THEN 
                PERFORM 0120-DISPLAY-MENU
+           ELSE IF MESSAGE-CHOICE = "m" THEN 
+               PERFORM 0150-POST-MESSAGE
            END-IF.
+
+       0150-POST-MESSAGE.
+           INITIALIZE POST-CHOICE.
+           INITIALIZE POST-TITLE.
+           INITIALIZE POST-BODY.
+           DISPLAY POST-MESSAGE-SCREEN.
+           ACCEPT POST-TITLE-FIELD.
+           ACCEPT POST-BODY-FIELD.
+           ACCEPT POST-CHOICE-FIELD.
+           IF POST-CHOICE = "d" THEN 
+               PERFORM 0130-DISPLAY-MESSAGEBOARD
+           ELSE IF POST-CHOICE = "p" THEN 
+               OPEN EXTEND F-MESSAGE-FILE
+               MOVE POST-TITLE TO MESSAGE-TITLE
+               MOVE POST-BODY TO MESSAGE-BODY
+               MOVE FUNCTION CURRENT-DATE(1:8) TO MESSAGE-DATE
+               WRITE MESSAGES
+               END-WRITE 
+           END-IF.
+           CLOSE F-MESSAGE-FILE.
