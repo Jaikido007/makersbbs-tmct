@@ -138,7 +138,11 @@
            IF MESSAGE-CHOICE = "q" THEN 
                PERFORM 0120-DISPLAY-MENU
            ELSE IF MESSAGE-CHOICE = "n" THEN
-               COMPUTE OFFSET = OFFSET - 10
+               IF OFFSET > 20
+                   COMPUTE OFFSET = OFFSET - 10
+               ELSE
+                   MOVE 10 TO OFFSET
+               END-IF
                PERFORM 0130-DISPLAY-MESSAGEBOARD
            ELSE IF MESSAGE-CHOICE = "p" THEN
                COMPUTE OFFSET = OFFSET + 10
