@@ -1,6 +1,9 @@
        IDENTIFICATION DIVISION.
        PROGRAM-ID. server.
        ENVIRONMENT DIVISION.
+           CONFIGURATION SECTION.
+           REPOSITORY.
+               FUNCTION GENERATE-MESSAGE-NUM.
            INPUT-OUTPUT SECTION.
            FILE-CONTROL.
            SELECT F-MESSAGE-FILE ASSIGN TO "messages.dat"
@@ -19,28 +22,23 @@
            01 MENU-CHOICE PIC X.
            01 POST-TITLE PIC X(60).
            01 POST-BODY PIC X(500).
-        *>    01 MESSAGE-1 PIC X(60).
-        *>    01 MESSAGE-2 PIC X(60).
-        *>    01 MESSAGE-3 PIC X(60).
-        *>    01 MESSAGE-4 PIC X(60).
-        *>    01 MESSAGE-5 PIC X(60).
-        *>    01 MESSAGE-6 PIC X(60).
-        *>    01 MESSAGE-7 PIC X(60).
-        *>    01 MESSAGE-8 PIC X(60).
-        *>    01 MESSAGE-9 PIC X(60).
-        *>    01 MESSAGE-10 PIC X(60).
-  
+           01 COUNTER UNSIGNED-INT.
+           01 OFFSET UNSIGNED-INT.
            01 MESSAGE-CHOICE PIC X.
            01 POST-CHOICE PIC X.
            01 WS-COUNTER PIC 99.
            01 WS-FILE-IS-ENDED PIC 9.
-           01 WS-MESSAGES.
-               05 WS-MESSAGE OCCURS 50 TIMES
+           01 WS-MSGS.
+               05 WS-MSG OCCURS 100 TIMES
                ASCENDING KEY IS WS-TITLE
                INDEXED BY MSG-IDX.
                    10 WS-TITLE PIC X(60).
+           01 MESS-TITLE PIC X(60).
            
-
+           LINKAGE SECTION.
+           01 LS-COUNTER UNSIGNED-INT.
+           01 LS-NUM UNSIGNED-INT.
+           01 LS-MESSAGE PIC X(60).
            SCREEN SECTION.
            01 LOGIN-SCREEN.
              05 BLANK SCREEN.
@@ -69,25 +67,25 @@
              05 LINE 2 COLUMN 10 VALUE "Makers BBS".
              05 LINE 4 COLUMN 10 VALUE "Here are the last 10 messages:".
              05 LINE 6 COLUMN 10 VALUE "1.".
-             05 LINE 6 COLUMN 14 PIC X(60) USING WS-MESSAGE(1).
+             05 LINE 6 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET).
              05 LINE 7 COLUMN 10 VALUE "2.".
-             05 LINE 7 COLUMN 14 PIC X(60) USING WS-MESSAGE(2).
+             05 LINE 7 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 1).
              05 LINE 8 COLUMN 10 VALUE "3.".
-             05 LINE 8 COLUMN 14 PIC X(60) USING WS-MESSAGE(3).
+             05 LINE 8 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 2).
              05 LINE 9 COLUMN 10 VALUE "4.".
-             05 LINE 9 COLUMN 14 PIC X(60) USING WS-MESSAGE(4).
+             05 LINE 9 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 3).
              05 LINE 10 COLUMN 10 VALUE "5.".
-             05 LINE 10 COLUMN 14 PIC X(60) USING WS-MESSAGE(5).
+             05 LINE 10 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 4).
              05 LINE 11 COLUMN 10 VALUE "6.".
-             05 LINE 11 COLUMN 14 PIC X(60) USING WS-MESSAGE(6).
+             05 LINE 11 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 5).
              05 LINE 12 COLUMN 10 VALUE "7.".
-             05 LINE 12 COLUMN 14 PIC X(60) USING WS-MESSAGE(7).
+             05 LINE 12 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 6).
              05 LINE 13 COLUMN 10 VALUE "8.".
-             05 LINE 13 COLUMN 14 PIC X(60) USING WS-MESSAGE(8).
+             05 LINE 13 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 7).
              05 LINE 14 COLUMN 10 VALUE "9.".
-             05 LINE 14 COLUMN 14 PIC X(60) USING WS-MESSAGE(9).
+             05 LINE 14 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 8).
              05 LINE 15 COLUMN 10 VALUE "10.".
-             05 LINE 15 COLUMN 14 PIC X(60) USING WS-MESSAGE(10).
+             05 LINE 15 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 9).
              05 LINE 17 COLUMN 10 VALUE "( ) Read the full message by ".
       *         "number".
             05 LINE 18 COLUMN 10 VALUE "(m) Post a message of your ".
@@ -118,9 +116,23 @@
                 USING POST-CHOICE.
 
 
-
-
        PROCEDURE DIVISION.
+
+       0100-GENERATE-TABLE.
+           SET COUNTER TO 0.
+           MOVE 0 TO WS-FILE-IS-ENDED.
+           OPEN INPUT F-MESSAGE-FILE.
+           PERFORM UNTIL WS-FILE-IS-ENDED = 1
+               READ F-MESSAGE-FILE
+                   NOT AT END
+                       ADD 1 TO COUNTER
+                       MOVE MESSAGE-TITLE TO WS-MSG(COUNTER)
+                   AT END 
+                       MOVE 1 TO WS-FILE-IS-ENDED
+                       MOVE COUNTER TO OFFSET
+               END-READ 
+           END-PERFORM.
+           CLOSE F-MESSAGE-FILE.
 
        0110-DISPLAY-LOGIN.
            INITIALIZE USER-NAME.
@@ -144,34 +156,6 @@
        
 
        0130-DISPLAY-MESSAGEBOARD.
-        *>    INITIALIZE MESSAGE-1.
-        *>    OPEN INPUT F-MESSAGE-FILE.
-        *>    MOVE 00 TO WS-COUNTER.
-        *>    PERFORM UNTIL WS-COUNTER = 05
-        *>        READ F-MESSAGE-FILE
-        *>        NOT AT END
-        *>        MOVE MESSAGE-TITLE TO MESSAGE-1  
-        *>        END-READ
-        *>        ADD 01 TO WS-COUNTER  
-        *>    END-PERFORM.
-        *>    CLOSE F-MESSAGE-FILE.
-             
-           SET MSG-IDX TO 0.
-           MOVE 0 TO WS-FILE-IS-ENDED.
-           OPEN INPUT F-MESSAGE-FILE.
-           PERFORM UNTIL WS-FILE-IS-ENDED = 1
-               READ F-MESSAGE-FILE
-                   NOT AT END
-                       ADD 1 TO MSG-IDX
-                       MOVE MESSAGE-TITLE TO WS-MESSAGE(MSG-IDX)
-                   AT END 
-                       MOVE 1 TO WS-FILE-IS-ENDED 
-               END-READ 
-           END-PERFORM.
-           CLOSE F-MESSAGE-FILE.
-           
-           
-
            INITIALIZE MESSAGE-CHOICE.
            DISPLAY MESSAGEBOARD-SCREEN.
            ACCEPT MESSAGE-CHOICE-FIELD.
@@ -179,6 +163,16 @@
                PERFORM 0120-DISPLAY-MENU
            ELSE IF MESSAGE-CHOICE = "m" THEN 
                PERFORM 0150-POST-MESSAGE
+           ELSE IF MESSAGE-CHOICE = "n" THEN
+               IF OFFSET > 20
+                   COMPUTE OFFSET = OFFSET - 10
+               ELSE
+                   MOVE 10 TO OFFSET
+               END-IF
+               PERFORM 0130-DISPLAY-MESSAGEBOARD
+           ELSE IF MESSAGE-CHOICE = "p" THEN
+               COMPUTE OFFSET = OFFSET + 10
+               PERFORM 0130-DISPLAY-MESSAGEBOARD
            END-IF.
 
        0150-POST-MESSAGE.
