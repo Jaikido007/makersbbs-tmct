@@ -31,6 +31,7 @@
                ASCENDING KEY IS WS-TITLE
                INDEXED BY MSG-IDX.
                    10 WS-TITLE PIC X(60).
+           01 WS-MSG-BODY PIC X(500).
   
            SCREEN SECTION.
            01 LOGIN-SCREEN.
@@ -113,11 +114,11 @@
            05 BLANK SCREEN.
            05 LINE 2 COLUMN 10 VALUE "Makers BBS".
            05 LINE 4 COLUMN 10 VALUE "Title:".
-      *     05 LINE 4 COLUMN 18 PIC X(60) USING LS-MESS-IDENTIFIER.
-      *     05 LINE 6 COLUMN 10 PIC X(500) USING LS-MESS-BODY.
-           05 LINE 12 COLUMN 10 VALUE "(n) Next message".
-           05 LINE 12 COLUMN 20 VALUE "(p) Previous message".
-           05 LINE 12 COLUMN 34 VALUE "(q) Go back".   
+           05 LINE 4 COLUMN 18 PIC X(60) USING WS-MSG(OFFSET).
+           05 LINE 6 COLUMN 10 PIC X(500) USING WS-MSG-BODY.
+           05 LINE 18 COLUMN 10 VALUE "(n) Next message".
+           05 LINE 18 COLUMN 30 VALUE "(p) Previous message".
+           05 LINE 18 COLUMN 60 VALUE "(q) Go back".   
            05 LINE 20 COLUMN 10 VALUE "Pick: ".
            05 READ-CHOICE-FIELD LINE 20 COLUMN 16 PIC X
                 USING READ-CHOICE.
@@ -133,6 +134,7 @@
                    NOT AT END
                        ADD 1 TO COUNTER
                        MOVE MESSAGE-TITLE TO WS-MSG(COUNTER)
+                       MOVE MESSAGE-BODY TO WS-MSG-BODY
                    AT END 
                        MOVE 1 TO WS-FILE-IS-ENDED
                        MOVE COUNTER TO OFFSET
@@ -158,6 +160,8 @@
            PERFORM 0120-DISPLAY-MENU
            ELSE IF MENU-CHOICE = 'm' THEN
              PERFORM 0130-DISPLAY-MESSAGEBOARD
+           ELSE 
+               PERFORM 0120-DISPLAY-MENU
            END-IF. 
        
 
@@ -169,6 +173,8 @@
                PERFORM 0120-DISPLAY-MENU
            ELSE IF MESSAGE-CHOICE = "m" THEN 
                PERFORM 0150-POST-MESSAGE
+           ELSE IF MESSAGE-CHOICE = "1" THEN 
+               PERFORM 0140-READ-MESSAGE
            ELSE IF MESSAGE-CHOICE = "n" THEN
                IF OFFSET > 20
                    COMPUTE OFFSET = OFFSET - 10
@@ -179,14 +185,9 @@
            ELSE IF MESSAGE-CHOICE = "p" THEN
                COMPUTE OFFSET = OFFSET + 10
                PERFORM 0130-DISPLAY-MESSAGEBOARD
-           ELSE IF MESSAGE-CHOICE = "o" THEN
-               PERFORM 0140-READ-MESSAGE
+           ELSE 
+               PERFORM 0130-DISPLAY-MESSAGEBOARD
            END-IF.
-
-       0140-READ-MESSAGE.
-           INITIALIZE READ-CHOICE.
-           DISPLAY READ-MESSAGE-SCREEN.
-
 
        0150-POST-MESSAGE.
            INITIALIZE POST-CHOICE.
@@ -207,3 +208,20 @@
                END-WRITE 
            END-IF.
            CLOSE F-MESSAGE-FILE.
+
+
+       0140-READ-MESSAGE.
+           INITIALIZE READ-CHOICE.
+           DISPLAY READ-MESSAGE-SCREEN.
+           ACCEPT READ-CHOICE.
+           SEARCH ALL WS-MSG
+              WHEN WS-MSG(OFFSET) = WS-TITLE(MSG-IDX)
+                       MOVE MESSAGE-BODY TO WS-MSG-BODY  
+           END-SEARCH
+         
+          
+           CLOSE F-MESSAGE-FILE.
+           IF READ-CHOICE = "q" THEN
+               PERFORM 0130-DISPLAY-MESSAGEBOARD
+           END-IF.
+
