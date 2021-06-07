@@ -19,6 +19,9 @@
            01 MENU-CHOICE PIC X.
            01 POST-TITLE PIC X(60).
            01 POST-BODY PIC X(500).
+           01 PAGE-NUM PIC 99.
+           01 TITLE-NUM PIC 99.
+           01 DISPLAY-MESSAGE PIC X(40).
            01 COUNTER UNSIGNED-INT.
            01 OFFSET UNSIGNED-INT.
            01 MESSAGE-CHOICE PIC X.
@@ -57,7 +60,9 @@
              BACKGROUND-COLOR IS 8.
              05 BLANK SCREEN.
              05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-             05 LINE 4 COLUMN 10 VALUE "Here are the last 10 messages:".
+             05 LINE 2 COLUMN 30 VALUE "Page: ".
+             05 LINE 2 COLUMN 37 PIC 99 USING PAGE-NUM.               
+             05 LINE 4 COLUMN 10 PIC X(40) USING DISPLAY-MESSAGE.
              05 LINE 6 COLUMN 10 VALUE "1.".
              05 LINE 6 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET).
              05 LINE 7 COLUMN 10 VALUE "2.".
@@ -144,6 +149,10 @@
                    AT END 
                        MOVE 1 TO WS-FILE-IS-ENDED
                        MOVE COUNTER TO OFFSET
+                       MOVE 1 TO PAGE-NUM
+                       MOVE 1 TO TITLE-NUM
+                       MOVE "Here are the last 10 messages:" TO 
+                       DISPLAY-MESSAGE
                END-READ 
            END-PERFORM.
            CLOSE F-MESSAGE-FILE.
@@ -160,13 +169,24 @@
            ELSE IF MESSAGE-CHOICE = "n" THEN
                IF OFFSET > 20
                    COMPUTE OFFSET = OFFSET - 10
-               ELSE
-                   MOVE 10 TO OFFSET
+                   COMPUTE PAGE-NUM = PAGE-NUM + 1
+                   MOVE "Here are the next 10 messages:" TO 
+                       DISPLAY-MESSAGE
                END-IF
                PERFORM 0130-DISPLAY-MESSAGEBOARD
            ELSE IF MESSAGE-CHOICE = "p" THEN
-               COMPUTE OFFSET = OFFSET + 10
-               PERFORM 0130-DISPLAY-MESSAGEBOARD
+               IF PAGE-NUM = "01"
+                   PERFORM 0130-DISPLAY-MESSAGEBOARD
+               ELSE IF PAGE-NUM = "02"
+                   COMPUTE OFFSET = OFFSET + 10
+                   COMPUTE PAGE-NUM = PAGE-NUM - 1
+                   MOVE "Here are the last 10 messages:" TO 
+                       DISPLAY-MESSAGE
+                   PERFORM 0130-DISPLAY-MESSAGEBOARD
+               ELSE 
+                   COMPUTE OFFSET = OFFSET + 10
+                   COMPUTE PAGE-NUM = PAGE-NUM - 1
+                   PERFORM 0130-DISPLAY-MESSAGEBOARD
            END-IF.
 
        0150-POST-MESSAGE.
