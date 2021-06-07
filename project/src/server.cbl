@@ -21,17 +21,20 @@
            01 POST-BODY PIC X(500).
            01 COUNTER UNSIGNED-INT.
            01 OFFSET UNSIGNED-INT.
-           01 MESSAGE-CHOICE PIC X.
+           01 MESSAGE-CHOICE PIC XX.
            01 POST-CHOICE PIC X.
            01 READ-CHOICE PIC X.
            01 WS-COUNTER PIC 99.
            01 WS-FILE-IS-ENDED PIC 9.
+           01 BODY PIC X(500).
+           01 TITLE PIC X(60).
            01 WS-MSGS.
                05 WS-MSG OCCURS 100 TIMES
                ASCENDING KEY IS WS-TITLE
                INDEXED BY MSG-IDX.
                    10 WS-TITLE PIC X(60).
-           01 WS-MSG-BODY PIC X(500).
+                   10 WS-BODY PIC X(500).
+      *     01 WS-MSG-BODY PIC X(500).
   
            SCREEN SECTION.
            01 LOGIN-SCREEN.
@@ -114,8 +117,8 @@
            05 BLANK SCREEN.
            05 LINE 2 COLUMN 10 VALUE "Makers BBS".
            05 LINE 4 COLUMN 10 VALUE "Title:".
-           05 LINE 4 COLUMN 18 PIC X(60) USING WS-MSG(OFFSET).
-           05 LINE 6 COLUMN 10 PIC X(500) USING WS-MSG-BODY.
+           05 LINE 4 COLUMN 18 PIC X(60) USING TITLE.
+           05 LINE 6 COLUMN 10 PIC X(500) USING BODY.
            05 LINE 18 COLUMN 10 VALUE "(n) Next message".
            05 LINE 18 COLUMN 30 VALUE "(p) Previous message".
            05 LINE 18 COLUMN 60 VALUE "(q) Go back".   
@@ -133,8 +136,8 @@
                READ F-MESSAGE-FILE
                    NOT AT END
                        ADD 1 TO COUNTER
-                       MOVE MESSAGE-TITLE TO WS-MSG(COUNTER)
-                       MOVE MESSAGE-BODY TO WS-MSG-BODY
+                       MOVE MESSAGE-TITLE TO WS-TITLE(COUNTER)
+                       MOVE MESSAGE-BODY TO WS-BODY(COUNTER)
                    AT END 
                        MOVE 1 TO WS-FILE-IS-ENDED
                        MOVE COUNTER TO OFFSET
@@ -173,7 +176,8 @@
                PERFORM 0120-DISPLAY-MENU
            ELSE IF MESSAGE-CHOICE = "m" THEN 
                PERFORM 0150-POST-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "1" THEN 
+           ELSE IF MESSAGE-CHOICE = "1" OR "2" OR "3" OR "4" OR "5" 
+             OR "6" OR "7" OR "8" OR "9" OR "10" THEN 
                PERFORM 0140-READ-MESSAGE
            ELSE IF MESSAGE-CHOICE = "n" THEN
                IF OFFSET > 20
@@ -212,15 +216,39 @@
 
        0140-READ-MESSAGE.
            INITIALIZE READ-CHOICE.
+           IF MESSAGE-CHOICE = "1"
+                       MOVE WS-TITLE(OFFSET) TO TITLE
+                       MOVE WS-BODY(OFFSET) TO BODY
+           ELSE IF MESSAGE-CHOICE = "2"
+                       MOVE WS-TITLE(OFFSET - 1) TO TITLE
+                       MOVE WS-BODY(OFFSET - 1) TO BODY
+           ELSE IF MESSAGE-CHOICE = "3"
+                       MOVE WS-TITLE(OFFSET - 2) TO TITLE
+                       MOVE WS-BODY(OFFSET - 2) TO BODY 
+           ELSE IF MESSAGE-CHOICE = "4"
+                       MOVE WS-TITLE(OFFSET - 3) TO TITLE
+                       MOVE WS-BODY(OFFSET - 3) TO BODY 
+           ELSE IF MESSAGE-CHOICE = "5"
+                       MOVE WS-TITLE(OFFSET - 4) TO TITLE
+                       MOVE WS-BODY(OFFSET - 4) TO BODY
+           ELSE IF MESSAGE-CHOICE = "6"
+                       MOVE WS-TITLE(OFFSET - 5) TO TITLE
+                       MOVE WS-BODY(OFFSET - 5) TO BODY 
+           ELSE IF MESSAGE-CHOICE = "7"
+                       MOVE WS-TITLE(OFFSET - 6) TO TITLE
+                       MOVE WS-BODY(OFFSET - 6) TO BODY
+           ELSE IF MESSAGE-CHOICE = "8"
+                       MOVE WS-TITLE(OFFSET - 7) TO TITLE
+                       MOVE WS-BODY(OFFSET - 7) TO BODY
+           ELSE IF MESSAGE-CHOICE = "9"
+                       MOVE WS-TITLE(OFFSET - 8) TO TITLE
+                       MOVE WS-BODY(OFFSET - 8) TO BODY
+           ELSE IF MESSAGE-CHOICE = "10"
+                       MOVE WS-TITLE(OFFSET - 9) TO TITLE
+                       MOVE WS-BODY(OFFSET - 9) TO BODY                       
+           END-IF.
            DISPLAY READ-MESSAGE-SCREEN.
            ACCEPT READ-CHOICE.
-           SEARCH ALL WS-MSG
-              WHEN WS-MSG(OFFSET) = WS-TITLE(MSG-IDX)
-                       MOVE MESSAGE-BODY TO WS-MSG-BODY  
-           END-SEARCH
-         
-          
-           CLOSE F-MESSAGE-FILE.
            IF READ-CHOICE = "q" THEN
                PERFORM 0130-DISPLAY-MESSAGEBOARD
            END-IF.
