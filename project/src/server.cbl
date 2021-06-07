@@ -110,7 +110,29 @@
 
        PROCEDURE DIVISION.
 
-       0100-GENERATE-TABLE.
+      
+       0100-DISPLAY-LOGIN.
+           INITIALIZE USER-NAME.
+           DISPLAY LOGIN-SCREEN.
+           ACCEPT USER-NAME-FIELD.
+           PERFORM 0110-DISPLAY-MENU.
+
+
+       0110-DISPLAY-MENU.
+           INITIALIZE MENU-CHOICE.
+           DISPLAY MENU-SCREEN.
+           ACCEPT MENU-CHOICE-FIELD.
+           IF MENU-CHOICE = "q" THEN
+           STOP RUN
+           ELSE IF MENU-CHOICE = "l" THEN
+           PERFORM 0100-DISPLAY-LOGIN
+           ELSE IF MENU-CHOICE = "n" THEN
+           PERFORM 0110-DISPLAY-MENU
+           ELSE IF MENU-CHOICE = 'm' THEN
+             PERFORM 0120-GENERATE-TABLE
+           END-IF. 
+       
+       0120-GENERATE-TABLE.
            SET COUNTER TO 0.
            MOVE 0 TO WS-FILE-IS-ENDED.
            OPEN INPUT F-MESSAGE-FILE.
@@ -125,34 +147,14 @@
                END-READ 
            END-PERFORM.
            CLOSE F-MESSAGE-FILE.
-
-       0110-DISPLAY-LOGIN.
-           INITIALIZE USER-NAME.
-           DISPLAY LOGIN-SCREEN.
-           ACCEPT USER-NAME-FIELD.
-           PERFORM 0120-DISPLAY-MENU.
-
-       0120-DISPLAY-MENU.
-           INITIALIZE MENU-CHOICE.
-           DISPLAY MENU-SCREEN.
-           ACCEPT MENU-CHOICE-FIELD.
-           IF MENU-CHOICE = "q" THEN
-           STOP RUN
-           ELSE IF MENU-CHOICE = "l" THEN
-           PERFORM 0110-DISPLAY-LOGIN
-           ELSE IF MENU-CHOICE = "n" THEN
-           PERFORM 0120-DISPLAY-MENU
-           ELSE IF MENU-CHOICE = 'm' THEN
-             PERFORM 0130-DISPLAY-MESSAGEBOARD
-           END-IF. 
-       
+           PERFORM 0130-DISPLAY-MESSAGEBOARD.
 
        0130-DISPLAY-MESSAGEBOARD.
            INITIALIZE MESSAGE-CHOICE.
            DISPLAY MESSAGEBOARD-SCREEN.
            ACCEPT MESSAGE-CHOICE-FIELD.
            IF MESSAGE-CHOICE = "q" THEN 
-               PERFORM 0120-DISPLAY-MENU
+               PERFORM 0110-DISPLAY-MENU
            ELSE IF MESSAGE-CHOICE = "m" THEN 
                PERFORM 0150-POST-MESSAGE
            ELSE IF MESSAGE-CHOICE = "n" THEN
@@ -183,6 +185,8 @@
                MOVE POST-BODY TO MESSAGE-BODY
                MOVE FUNCTION CURRENT-DATE(1:8) TO MESSAGE-DATE
                WRITE MESSAGES
-               END-WRITE 
+               END-WRITE               
            END-IF.
            CLOSE F-MESSAGE-FILE.
+           PERFORM 0120-GENERATE-TABLE. 
+           
