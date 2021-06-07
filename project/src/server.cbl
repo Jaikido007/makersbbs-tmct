@@ -1,9 +1,6 @@
        IDENTIFICATION DIVISION.
        PROGRAM-ID. server.
        ENVIRONMENT DIVISION.
-           CONFIGURATION SECTION.
-           REPOSITORY.
-               FUNCTION GENERATE-MESSAGE-NUM.
            INPUT-OUTPUT SECTION.
            FILE-CONTROL.
            SELECT F-MESSAGE-FILE ASSIGN TO "messages.dat"
@@ -33,12 +30,7 @@
                ASCENDING KEY IS WS-TITLE
                INDEXED BY MSG-IDX.
                    10 WS-TITLE PIC X(60).
-           01 MESS-TITLE PIC X(60).
-           
-           LINKAGE SECTION.
-           01 LS-COUNTER UNSIGNED-INT.
-           01 LS-NUM UNSIGNED-INT.
-           01 LS-MESSAGE PIC X(60).
+  
            SCREEN SECTION.
            01 LOGIN-SCREEN.
              05 BLANK SCREEN.
