@@ -23,6 +23,7 @@
            01 OFFSET UNSIGNED-INT.
            01 MESSAGE-CHOICE PIC X.
            01 POST-CHOICE PIC X.
+           01 READ-CHOICE PIC X.
            01 WS-COUNTER PIC 99.
            01 WS-FILE-IS-ENDED PIC 9.
            01 WS-MSGS.
@@ -107,6 +108,19 @@
            05 POST-CHOICE-FIELD LINE 20 COLUMN 16 PIC X
                 USING POST-CHOICE.
 
+           01 READ-MESSAGE-SCREEN
+           BACKGROUND-COLOR IS 8.
+           05 BLANK SCREEN.
+           05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+           05 LINE 4 COLUMN 10 VALUE "Title:".
+      *     05 LINE 4 COLUMN 18 PIC X(60) USING LS-MESS-IDENTIFIER.
+      *     05 LINE 6 COLUMN 10 PIC X(500) USING LS-MESS-BODY.
+           05 LINE 12 COLUMN 10 VALUE "(n) Next message".
+           05 LINE 12 COLUMN 20 VALUE "(p) Previous message".
+           05 LINE 12 COLUMN 34 VALUE "(q) Go back".   
+           05 LINE 20 COLUMN 10 VALUE "Pick: ".
+           05 READ-CHOICE-FIELD LINE 20 COLUMN 16 PIC X
+                USING READ-CHOICE.
 
        PROCEDURE DIVISION.
 
@@ -165,7 +179,14 @@
            ELSE IF MESSAGE-CHOICE = "p" THEN
                COMPUTE OFFSET = OFFSET + 10
                PERFORM 0130-DISPLAY-MESSAGEBOARD
+           ELSE IF MESSAGE-CHOICE = "o" THEN
+               PERFORM 0140-READ-MESSAGE
            END-IF.
+
+       0140-READ-MESSAGE.
+           INITIALIZE READ-CHOICE.
+           DISPLAY READ-MESSAGE-SCREEN.
+
 
        0150-POST-MESSAGE.
            INITIALIZE POST-CHOICE.
