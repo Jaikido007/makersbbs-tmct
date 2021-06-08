@@ -19,6 +19,9 @@
            01 MENU-CHOICE PIC X.
            01 POST-TITLE PIC X(60).
            01 POST-BODY PIC X(500).
+           01 PAGE-NUM PIC 99.
+           01 TITLE-NUM PIC 99.
+           01 DISPLAY-MESSAGE PIC X(40).
            01 COUNTER UNSIGNED-INT.
            01 OFFSET UNSIGNED-INT.
            01 MESSAGE-CHOICE PIC XX.
@@ -128,7 +131,30 @@
 
        PROCEDURE DIVISION.
 
-       0100-GENERATE-TABLE.
+       0100-DISPLAY-LOGIN.
+           INITIALIZE USER-NAME.
+           DISPLAY LOGIN-SCREEN.
+           ACCEPT USER-NAME-FIELD.
+           PERFORM 0110-DISPLAY-MENU.
+
+
+       0110-DISPLAY-MENU.
+           INITIALIZE MENU-CHOICE.
+           DISPLAY MENU-SCREEN.
+           ACCEPT MENU-CHOICE-FIELD.
+           IF MENU-CHOICE = "q" THEN
+           STOP RUN
+           ELSE IF MENU-CHOICE = "l" THEN
+           PERFORM 0100-DISPLAY-LOGIN
+           ELSE IF MENU-CHOICE = "n" THEN
+           PERFORM 0110-DISPLAY-MENU
+           ELSE IF MENU-CHOICE = 'm' THEN
+             PERFORM 0120-GENERATE-TABLE
+           ELSE 
+               PERFORM 0120-DISPLAY-MENU
+           END-IF. 
+       
+       0120-GENERATE-TABLE.
            SET COUNTER TO 0.
            MOVE 0 TO WS-FILE-IS-ENDED.
            OPEN INPUT F-MESSAGE-FILE.
@@ -141,51 +167,47 @@
                    AT END 
                        MOVE 1 TO WS-FILE-IS-ENDED
                        MOVE COUNTER TO OFFSET
+                       MOVE 1 TO PAGE-NUM
+                       MOVE 1 TO TITLE-NUM
+                       MOVE "Here are the last 10 messages:" TO 
+                       DISPLAY-MESSAGE
                END-READ 
            END-PERFORM.
            CLOSE F-MESSAGE-FILE.
-
-       0110-DISPLAY-LOGIN.
-           INITIALIZE USER-NAME.
-           DISPLAY LOGIN-SCREEN.
-           ACCEPT USER-NAME-FIELD.
-           PERFORM 0120-DISPLAY-MENU.
-
-       0120-DISPLAY-MENU.
-           INITIALIZE MENU-CHOICE.
-           DISPLAY MENU-SCREEN.
-           ACCEPT MENU-CHOICE-FIELD.
-           IF MENU-CHOICE = "q" THEN
-           STOP RUN
-           ELSE IF MENU-CHOICE = "l" THEN
-           PERFORM 0110-DISPLAY-LOGIN
-           ELSE IF MENU-CHOICE = "n" THEN
-           PERFORM 0120-DISPLAY-MENU
-           ELSE IF MENU-CHOICE = 'm' THEN
-             PERFORM 0130-DISPLAY-MESSAGEBOARD
-           ELSE 
-               PERFORM 0120-DISPLAY-MENU
-           END-IF. 
-       
+           PERFORM 0130-DISPLAY-MESSAGEBOARD.
 
        0130-DISPLAY-MESSAGEBOARD.
            INITIALIZE MESSAGE-CHOICE.
            DISPLAY MESSAGEBOARD-SCREEN.
            ACCEPT MESSAGE-CHOICE-FIELD.
            IF MESSAGE-CHOICE = "q" THEN 
-               PERFORM 0120-DISPLAY-MENU
+               PERFORM 0110-DISPLAY-MENU
            ELSE IF MESSAGE-CHOICE = "m" THEN 
                PERFORM 0150-POST-MESSAGE
            ELSE IF MESSAGE-CHOICE = "n" THEN
                IF OFFSET > 20
                    COMPUTE OFFSET = OFFSET - 10
-               ELSE
+                   COMPUTE PAGE-NUM = PAGE-NUM + 1
+                   MOVE "Here are the next 10 messages:" TO 
+                       DISPLAY-MESSAGE
+               ELSE 
                    MOVE 10 TO OFFSET
                END-IF
                PERFORM 0130-DISPLAY-MESSAGEBOARD
            ELSE IF MESSAGE-CHOICE = "p" THEN
-               COMPUTE OFFSET = OFFSET + 10
-               PERFORM 0130-DISPLAY-MESSAGEBOARD
+               IF PAGE-NUM = "01"
+                   PERFORM 0130-DISPLAY-MESSAGEBOARD
+               ELSE IF PAGE-NUM = "02"
+                   COMPUTE OFFSET = OFFSET + 10
+                   COMPUTE PAGE-NUM = PAGE-NUM - 1
+                   MOVE "Here are the last 10 messages:" TO 
+                       DISPLAY-MESSAGE
+                   PERFORM 0130-DISPLAY-MESSAGEBOARD
+               ELSE 
+                   COMPUTE OFFSET = OFFSET + 10
+                   COMPUTE PAGE-NUM = PAGE-NUM - 1
+                   PERFORM 0130-DISPLAY-MESSAGEBOARD
+               END-IF
            ELSE IF MESSAGE-CHOICE = "1" 
                SET MESSAGE-NUM TO 1 
                PERFORM 0140-READ-MESSAGE
@@ -236,10 +258,10 @@
                MOVE POST-BODY TO MESSAGE-BODY
                MOVE FUNCTION CURRENT-DATE(1:8) TO MESSAGE-DATE
                WRITE MESSAGES
-               END-WRITE 
+               END-WRITE               
            END-IF.
            CLOSE F-MESSAGE-FILE.
-
+           PERFORM 0120-GENERATE-TABLE. 
 
        0140-READ-MESSAGE.
            INITIALIZE READ-CHOICE.
