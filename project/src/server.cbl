@@ -3,7 +3,7 @@
        ENVIRONMENT DIVISION.
            CONFIGURATION SECTION.
            REPOSITORY.
-           FUNCTION REPLACE_ALL.
+           
            INPUT-OUTPUT SECTION.
            FILE-CONTROL.
            SELECT F-MESSAGE-FILE ASSIGN TO "messages.dat"
@@ -218,32 +218,32 @@
            MOVE FUNCTION CURRENT-DATE(14:3) TO RANDOMNUMBER.
            MOVE WS-GUESSING-WORDS-WORD(RANDOMNUMBER) TO WS-WORD.
            MOVE WS-WORD TO WS-ANSWERWORD.
-           INSPECT WS-WORD REPLACING ALL 'a' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'b' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'c' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'd' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'e' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'f' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'g' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'h' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'i' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'j' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'k' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'l' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'm' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'n' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'o' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'p' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'q' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'r' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 's' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 't' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'u' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'v' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'w' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'x' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'y' BY 'x'.
-           INSPECT WS-WORD REPLACING ALL 'z' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'a' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'b' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'c' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'd' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'e' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'f' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'g' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'h' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'i' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'j' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'k' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'l' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'm' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'n' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'o' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'p' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'q' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'r' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 's' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 't' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'u' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'v' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'w' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'x' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'y' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'z' BY '*'.
            
       *    Reassign the ws-word here with *'s
            
