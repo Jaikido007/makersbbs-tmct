@@ -52,6 +52,8 @@
            01 MESSAGE-DATE UNSIGNED-INT.
 
       *    Variables related to guessing game
+           01 WS-UNREVEALED-COUNTER PIC 99.
+           01 WS-STAR-COUNTER PIC 99.
            01 WS-COUNTERGAME PIC 99.
            01 WS-ANSWERWORD PIC X(20).
            01 RANDOMNUMBER PIC 99.
@@ -395,10 +397,11 @@
                WRITE MESSAGES
                END-WRITE               
            END-IF.
-          CLOSE F-MESSAGE-FILE.
-          PERFORM 0120-GENERATE-TABLE.
+           CLOSE F-MESSAGE-FILE.
+           PERFORM 0120-GENERATE-TABLE.
 
        0160-DISPLAY-GUESSING-GAME.
+           MOVE 10 TO WS-GUESSES-LEFT.
            SET WORD-IDX TO 0.
            OPEN INPUT F-WORD-FILE.
            MOVE 0 TO WS-FILE-IS-ENDED.
@@ -442,7 +445,6 @@
            INSPECT WS-WORD REPLACING ALL 'y' BY '*'.
            INSPECT WS-WORD REPLACING ALL 'z' BY '*'.
            DISPLAY WORD-GUESSING-SCREEN.
-           INITIALIZE WS-GUESSING-CHOICE.
            PERFORM 0170-IN-GAME-SCREEN.
           
        0170-IN-GAME-SCREEN.
@@ -464,11 +466,38 @@
                  END-IF
                  ADD 1 TO WS-COUNTERGAME     
            END-PERFORM.
+           SUBTRACT 1 FROM WS-GUESSES-LEFT.
+           MOVE 1 TO WS-STAR-COUNTER.
+           MOVE 0 TO WS-UNREVEALED-COUNTER.
+           PERFORM UNTIL WS-STAR-COUNTER = 20
+             IF '*' EQUALS WS-WORD(WS-STAR-COUNTER:1) 
+              THEN ADD 1 TO WS-UNREVEALED-COUNTER
+             END-IF
+             ADD 1 TO WS-STAR-COUNTER
+           END-PERFORM.
+             IF WS-UNREVEALED-COUNTER = 0
+              THEN 
+              PERFORM 0190-WINNING-SCREEN
+             ELSE IF WS-GUESSES-LEFT = 0
+              THEN 
+              PERFORM 0200-LOSING-SCREEN
+             ELSE
+              PERFORM 0170-IN-GAME-SCREEN
+             END-IF.
       *    Minus 1 to the guesses
       *    Loop here to see if there are any stars left
       *    Check to see if there are any guesses left
-           PERFORM 0170-IN-GAME-SCREEN.
            
+       0190-WINNING-SCREEN.
+           INITIALIZE WS-GUESSING-WINNING-CHOICE.
+           DISPLAY WORD-GUESSING-WINNING-SCREEN.
+           ACCEPT WS-GUESSING-WINNING-CHOICE.
+
+       0200-LOSING-SCREEN.
+           INITIALIZE WS-GUESSING-CHOICE-LOSE-CHOICE.
+           DISPLAY WORD-GUESSING-LOSE-SCREEN.
+           ACCEPT WS-GUESSING-CHOICE-LOSE-CHOICE.
+
 
        
 
