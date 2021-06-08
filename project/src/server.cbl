@@ -18,17 +18,45 @@
                05 MESSAGE-BODY PIC X(500).
 
            WORKING-STORAGE SECTION.
+      *     Variables related to login and menu screen
+           01 USER-NAME PIC X(10).
+           01 MENU-CHOICE PIC X.
+
+      *    Variables related to creating table and reading file
+           01 WS-FILE-IS-ENDED PIC 9.
+           01 WS-MSGS.
+               05 WS-MSG OCCURS 100 TIMES
+               ASCENDING KEY IS WS-TITLE
+               INDEXED BY MSG-IDX.
+                   10 WS-TITLE PIC X(60).
+                   10 WS-BODY PIC X(500).
+
+      *    Variables related to display message board screen
+           01 PAGE-NUM PIC 99.
+           01 TITLE-NUM PIC 99.
+           01 DISPLAY-MESSAGE PIC X(40).
+           01 COUNTER UNSIGNED-INT.
+           01 OFFSET UNSIGNED-INT.
+           01 MESSAGE-CHOICE PIC XX.
+
+      *    Variables related to read message screen
+           01 READ-CHOICE PIC X.
+           01 BODY PIC X(500).
+           01 TITLE PIC X(60).
+           01 MESSAGE-NUM UNSIGNED-INT.
+
+      *    Variables related to post message screen
+           01 POST-TITLE PIC X(60).
+           01 POST-BODY PIC X(500).
+           01 POST-CHOICE PIC X.
+           01 MESSAGE-DATE UNSIGNED-INT.
+
+      *    Variables related to guessing game
            01 WS-COUNTERGAME PIC 99.
            01 WS-ANSWERWORD PIC X(20).
-           01 WS-PROGRESS PIC X(20).
-           01 WS-PROGRESS-2 PIC X(20).
-           01 USER-NAME PIC X(10).
-           01 HIDDEN-WORD PIC X(20).
            01 RANDOMNUMBER PIC 99.
-           01 MENU-CHOICE PIC X.
            01 WS-WORD PIC X(20).
            01 WS-GUESSES-LEFT PIC 99.
-           01 WS-GUESSING-CHOICE PIC X.
            01 WS-GUESSING-CHOICE-LOSE-CHOICE PIC X.
            01 WS-GUESSING-WINNING-CHOICE PIC X.
            01 WS-GUESSING-CHOICE-WORDS.
@@ -36,29 +64,7 @@
                DESCENDING KEY IS WS-GUESSING-WORDS-WORD
                INDEXED BY WORD-IDX.
                    10 WS-GUESSING-WORDS-WORD PIC X(20).
-           01 GUESS-CHOICE PIC X(20).
-           01 POST-TITLE PIC X(60).
-           01 POST-BODY PIC X(500).
-           01 PAGE-NUM PIC 99.
-           01 TITLE-NUM PIC 99.
-           01 DISPLAY-MESSAGE PIC X(40).
-           01 COUNTER UNSIGNED-INT.
-           01 OFFSET UNSIGNED-INT.
-           01 MESSAGE-CHOICE PIC XX.
-           01 POST-CHOICE PIC X.
-           01 MESSAGE-DATE UNSIGNED-INT.
-           01 READ-CHOICE PIC X.
-           01 WS-COUNTER PIC 99.
-           01 WS-FILE-IS-ENDED PIC 9.
-           01 BODY PIC X(500).
-           01 TITLE PIC X(60).
-           01 MESSAGE-NUM UNSIGNED-INT.
-           01 WS-MSGS.
-               05 WS-MSG OCCURS 100 TIMES
-               ASCENDING KEY IS WS-TITLE
-               INDEXED BY MSG-IDX.
-                   10 WS-TITLE PIC X(60).
-                   10 WS-BODY PIC X(500).
+           01 WS-GUESS-CHOICE PIC X(20).
       
            SCREEN SECTION.
            01 LOGIN-SCREEN.
@@ -131,9 +137,7 @@
              05 LINE 10 COLUMN 10 VALUE "( ) Enter a letter to guess".
              05 LINE 11 COLUMN 10 VALUE "(!) Quit game".
              05 LINE 13 COLUMN 10 VALUE "Pick: ".
-             05 WS-GUESSING-CHOICE-FIELD LINE 13 COLUMN 16 PIC X
-               USING WS-GUESSING-CHOICE.
-           
+   
            01 WORD-GUESSING-LOSE-SCREEN
              BACKGROUND-COLOR IS 8.
              05 BLANK SCREEN.
@@ -173,8 +177,8 @@
             05 LINE 10 COLUMN 10 VALUE "( ) Enter a letter to guess".
             05 LINE 11 COLUMN 10 VALUE "(!) Quit game".
             05 LINE 13 COLUMN 10 VALUE "Pick: ".
-            05 GUESS-CHOICE-FIELD LINE 13 COLUMN 16 PIC X
-               USING GUESS-CHOICE.
+            05 WS-GUESS-CHOICE-FIELD LINE 13 COLUMN 16 PIC X
+               USING WS-GUESS-CHOICE.
 
            01 POST-MESSAGE-SCREEN
            BACKGROUND-COLOR IS 8.
@@ -215,7 +219,6 @@
            DISPLAY LOGIN-SCREEN.
            ACCEPT USER-NAME-FIELD.
            PERFORM 0110-DISPLAY-MENU.
-
 
        0110-DISPLAY-MENU.
            INITIALIZE MENU-CHOICE.
@@ -444,21 +447,21 @@
            PERFORM 0170-IN-GAME-SCREEN.
           
        0170-IN-GAME-SCREEN.
-           INITIALIZE GUESS-CHOICE.
+           INITIALIZE WS-GUESS-CHOICE.
            DISPLAY IN-GAME-SCREEN.
-           ACCEPT GUESS-CHOICE-FIELD.
-           IF GUESS-CHOICE = '!' THEN 
+           ACCEPT WS-GUESS-CHOICE-FIELD.
+           IF WS-GUESS-CHOICE = '!' THEN 
                PERFORM 0110-DISPLAY-MENU
            ELSE
                PERFORM 0180-CHECK-GUESS
            END-IF.
            
-
        0180-CHECK-GUESS.    
            MOVE 1 TO WS-COUNTERGAME.
            PERFORM UNTIL WS-COUNTERGAME = 20
-                 IF GUESS-CHOICE = WS-ANSWERWORD(WS-COUNTERGAME:1) THEN
-                      MOVE GUESS-CHOICE TO WS-WORD(WS-COUNTERGAME:1) 
+                 IF WS-GUESS-CHOICE = WS-ANSWERWORD(WS-COUNTERGAME:1) 
+                 THEN
+                      MOVE WS-GUESS-CHOICE TO WS-WORD(WS-COUNTERGAME:1) 
                  END-IF
                  ADD 1 TO WS-COUNTERGAME     
            END-PERFORM.
