@@ -46,6 +46,7 @@
            01 OFFSET UNSIGNED-INT.
            01 MESSAGE-CHOICE PIC XX.
            01 POST-CHOICE PIC X.
+           01 MESSAGE-DATE UNSIGNED-INT.
            01 READ-CHOICE PIC X.
            01 WS-COUNTER PIC 99.
            01 WS-FILE-IS-ENDED PIC 9.
@@ -117,7 +118,7 @@
             05 LINE 19 COLUMN 60 VALUE "(q) Go back".
             05 LINE 21 COLUMN 10 VALUE "Pick: ".
             05 MESSAGE-CHOICE-FIELD LINE 21 COLUMN 16 PIC X
-                USING MESSAGE-CHOICE
+                USING MESSAGE-CHOICE.
 
            01 WORD-GUESSING-SCREEN
                BACKGROUND-COLOR IS 8.
@@ -133,7 +134,7 @@
              05 WS-GUESSING-CHOICE-FIELD LINE 13 COLUMN 16 PIC X
                USING WS-GUESSING-CHOICE.
            
-           01 WORD-GUESSING-LOOSE-SCREEN
+           01 WORD-GUESSING-LOSE-SCREEN
              BACKGROUND-COLOR IS 8.
              05 BLANK SCREEN.
              05 LINE 2 COLUMN 10 VALUE "Makers BBS".
@@ -152,7 +153,7 @@
              BACKGROUND-COLOR IS 8.
              05 BLANK SCREEN.
              05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-             05 LINE COLUMN 10 VALUE "You guessed the word!".
+             05 LINE 4 COLUMN 10 VALUE "You guessed the word!".
              05 LINE 6 COLUMN 10 PIC X(20) USING WS-ANSWERWORD.
              05 LINE 8 COLUMN 10 PIC 99 USING WS-GUESSES-LEFT.
              05 LINE 10 COLUMN 10 VALUE "(p) Play Again".
@@ -229,7 +230,7 @@
            ELSE IF MENU-CHOICE = 'm' THEN
              PERFORM 0120-GENERATE-TABLE
            ELSE IF MENU-CHOICE = 'g' THEN
-             PERFORM 0140-DISPLAY-GUESSING-GAME
+             PERFORM 0160-DISPLAY-GUESSING-GAME
            ELSE 
                PERFORM 0110-DISPLAY-MENU
            END-IF. 
@@ -321,96 +322,6 @@
                PERFORM 0130-DISPLAY-MESSAGEBOARD
            END-IF.
 
-       0150-POST-MESSAGE.
-           INITIALIZE POST-CHOICE.
-           INITIALIZE POST-TITLE.
-           INITIALIZE POST-BODY.
-           DISPLAY POST-MESSAGE-SCREEN.
-           ACCEPT POST-TITLE-FIELD.
-           ACCEPT POST-BODY-FIELD.
-           ACCEPT POST-CHOICE-FIELD.
-           IF POST-CHOICE = "d" THEN 
-               PERFORM 0130-DISPLAY-MESSAGEBOARD
-           ELSE IF POST-CHOICE = "p" THEN 
-               OPEN EXTEND F-MESSAGE-FILE
-               MOVE POST-TITLE TO MESSAGE-TITLE
-               MOVE POST-BODY TO MESSAGE-BODY
-               MOVE FUNCTION CURRENT-DATE(1:8) TO MESSAGE-DATE
-               WRITE MESSAGES
-               END-WRITE               
-           END-IF.
-          CLOSE F-MESSAGE-FILE.
-          PERFORM 0120-GENERATE-TABLE.
-
-       0140-DISPLAY-GUESSING-GAME.
-           SET WORD-IDX TO 0.
-           OPEN INPUT F-WORD-FILE.
-           MOVE 0 TO WS-FILE-IS-ENDED.
-           PERFORM UNTIL WS-FILE-IS-ENDED = 1
-               READ F-WORD-FILE
-                   NOT AT END
-                       ADD 1 TO WORD-IDX
-                       MOVE WORD TO WS-GUESSING-WORDS-WORD(WORD-IDX)
-                   AT END
-                       MOVE 1 TO WS-FILE-IS-ENDED
-               END-READ
-           END-PERFORM.
-           CLOSE F-WORD-FILE.
-           MOVE FUNCTION CURRENT-DATE(14:3) TO RANDOMNUMBER.
-           MOVE WS-GUESSING-WORDS-WORD(RANDOMNUMBER) TO WS-WORD.
-           MOVE WS-WORD TO WS-ANSWERWORD.
-           INSPECT WS-WORD REPLACING ALL 'a' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'b' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'c' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'd' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'e' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'f' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'g' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'h' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'i' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'j' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'k' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'l' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'm' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'n' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'o' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'p' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'q' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'r' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 's' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 't' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'u' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'v' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'w' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'x' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'y' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'z' BY '*'.
-           DISPLAY WORD-GUESSING-SCREEN.
-           INITIALIZE WS-GUESSING-CHOICE.
-           PERFORM 0150-IN-GAME-SCREEN.
-          
-       0150-IN-GAME-SCREEN.
-           INITIALIZE GUESS-CHOICE.
-           DISPLAY IN-GAME-SCREEN.
-           ACCEPT GUESS-CHOICE-FIELD.
-           IF GUESS-CHOICE = '!' THEN 
-               PERFORM 0110-DISPLAY-MENU
-           ELSE
-               PERFORM 0160-CHECK-GUESS
-           END-IF.
-           
-
-       0160-CHECK-GUESS.    
-           MOVE 1 TO WS-COUNTERGAME.
-           PERFORM UNTIL WS-COUNTERGAME = 20
-                 IF GUESS-CHOICE = WS-ANSWERWORD(WS-COUNTERGAME:1) THEN
-                      MOVE GUESS-CHOICE TO WS-WORD(WS-COUNTERGAME:1) 
-                 END-IF
-                 ADD 1 TO WS-COUNTERGAME     
-           END-PERFORM.
-           PERFORM 0150-IN-GAME-SCREEN.
-           
-
        0140-READ-MESSAGE.
            INITIALIZE READ-CHOICE.
            IF MESSAGE-NUM = 1
@@ -464,4 +375,95 @@
                PERFORM 0140-READ-MESSAGE
            END-IF.
 
+       0150-POST-MESSAGE.
+           INITIALIZE POST-CHOICE.
+           INITIALIZE POST-TITLE.
+           INITIALIZE POST-BODY.
+           DISPLAY POST-MESSAGE-SCREEN.
+           ACCEPT POST-TITLE-FIELD.
+           ACCEPT POST-BODY-FIELD.
+           ACCEPT POST-CHOICE-FIELD.
+           IF POST-CHOICE = "d" THEN 
+               PERFORM 0130-DISPLAY-MESSAGEBOARD
+           ELSE IF POST-CHOICE = "p" THEN 
+               OPEN EXTEND F-MESSAGE-FILE
+               MOVE POST-TITLE TO MESSAGE-TITLE
+               MOVE POST-BODY TO MESSAGE-BODY
+               MOVE FUNCTION CURRENT-DATE(1:8) TO MESSAGE-DATE
+               WRITE MESSAGES
+               END-WRITE               
+           END-IF.
+          CLOSE F-MESSAGE-FILE.
+          PERFORM 0120-GENERATE-TABLE.
+
+       0160-DISPLAY-GUESSING-GAME.
+           SET WORD-IDX TO 0.
+           OPEN INPUT F-WORD-FILE.
+           MOVE 0 TO WS-FILE-IS-ENDED.
+           PERFORM UNTIL WS-FILE-IS-ENDED = 1
+               READ F-WORD-FILE
+                   NOT AT END
+                       ADD 1 TO WORD-IDX
+                       MOVE WORD TO WS-GUESSING-WORDS-WORD(WORD-IDX)
+                   AT END
+                       MOVE 1 TO WS-FILE-IS-ENDED
+               END-READ
+           END-PERFORM.
+           CLOSE F-WORD-FILE.
+           MOVE FUNCTION CURRENT-DATE(14:3) TO RANDOMNUMBER.
+           MOVE WS-GUESSING-WORDS-WORD(RANDOMNUMBER) TO WS-WORD.
+           MOVE WS-WORD TO WS-ANSWERWORD.
+           INSPECT WS-WORD REPLACING ALL 'a' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'b' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'c' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'd' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'e' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'f' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'g' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'h' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'i' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'j' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'k' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'l' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'm' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'n' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'o' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'p' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'q' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'r' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 's' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 't' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'u' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'v' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'w' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'x' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'y' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'z' BY '*'.
+           DISPLAY WORD-GUESSING-SCREEN.
+           INITIALIZE WS-GUESSING-CHOICE.
+           PERFORM 0170-IN-GAME-SCREEN.
+          
+       0170-IN-GAME-SCREEN.
+           INITIALIZE GUESS-CHOICE.
+           DISPLAY IN-GAME-SCREEN.
+           ACCEPT GUESS-CHOICE-FIELD.
+           IF GUESS-CHOICE = '!' THEN 
+               PERFORM 0110-DISPLAY-MENU
+           ELSE
+               PERFORM 0180-CHECK-GUESS
+           END-IF.
+           
+
+       0180-CHECK-GUESS.    
+           MOVE 1 TO WS-COUNTERGAME.
+           PERFORM UNTIL WS-COUNTERGAME = 20
+                 IF GUESS-CHOICE = WS-ANSWERWORD(WS-COUNTERGAME:1) THEN
+                      MOVE GUESS-CHOICE TO WS-WORD(WS-COUNTERGAME:1) 
+                 END-IF
+                 ADD 1 TO WS-COUNTERGAME     
+           END-PERFORM.
+           PERFORM 0170-IN-GAME-SCREEN.
+           
+
+       
 
