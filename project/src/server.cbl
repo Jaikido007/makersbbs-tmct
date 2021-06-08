@@ -5,18 +5,37 @@
            FILE-CONTROL.
            SELECT F-MESSAGE-FILE ASSIGN TO "messages.dat"
              ORGANIZATION IS LINE SEQUENTIAL.
-  
+           SELECT F-WORD-FILE ASSIGN TO 'guessing-words.dat'
+             ORGANIZATION IS LINE SEQUENTIAL.
+
        DATA DIVISION.
            FILE SECTION.
+             FD F-WORD-FILE.
+               01 WORD PIC X(20).
              FD F-MESSAGE-FILE.
              01 MESSAGES.
                05 MESSAGE-TITLE PIC X(60).
                05 MESSAGE-BODY PIC X(500).
-               05 MESSAGE-DATE PIC X(8).
 
            WORKING-STORAGE SECTION.
+           01 WS-COUNTERGAME PIC 99.
+           01 WS-ANSWERWORD PIC X(20).
+           01 WS-PROGRESS PIC X(20).
+           01 WS-PROGRESS-2 PIC X(20).
            01 USER-NAME PIC X(10).
+           01 HIDDEN-WORD PIC X(20).
+           01 RANDOMNUMBER PIC 99.
            01 MENU-CHOICE PIC X.
+           01 WS-WORD PIC X(20).
+           01 WS-GUESSES-LEFT PIC 99.
+           01 WS-GUESSING-CHOICE PIC X.
+           01 WS-GUESSING-CHOICE-LOSE-CHOICE PIC X.
+           01 WS-GUESSING-CHOICE-WORDS.
+               05 WS-GUESSING-CHOICE-WORD OCCURS 213 TIMES
+               DESCENDING KEY IS WS-GUESSING-WORDS-WORD
+               INDEXED BY WORD-IDX.
+                   10 WS-GUESSING-WORDS-WORD PIC X(20).
+           01 GUESS-CHOICE PIC X(20).
            01 POST-TITLE PIC X(60).
            01 POST-BODY PIC X(500).
            01 PAGE-NUM PIC 99.
@@ -38,8 +57,7 @@
                INDEXED BY MSG-IDX.
                    10 WS-TITLE PIC X(60).
                    10 WS-BODY PIC X(500).
-      *     01 WS-MSG-BODY PIC X(500).
-  
+      
            SCREEN SECTION.
            01 LOGIN-SCREEN.
              05 BLANK SCREEN.
@@ -56,6 +74,7 @@
              05 LINE 4 COLUMN 19 PIC X(10) USING USER-NAME.
              05 LINE 8 COLUMN 10 VALUE "(n) Nothing".
              05 LINE 8 COLUMN 80 VALUE "(m) Message board".
+             05 LINE 8 COLUMN 100 VALUE "(g) Guessing Game".
              05 LINE 8 COLUMN 30 VALUE "(l) Logout".
              05 LINE 8 COLUMN 60 VALUE "(q) Quit".
              05 LINE 20 COLUMN 10 VALUE "Pick: ".
@@ -97,8 +116,50 @@
             05 LINE 19 COLUMN 60 VALUE "(q) Go back".
             05 LINE 21 COLUMN 10 VALUE "Pick: ".
             05 MESSAGE-CHOICE-FIELD LINE 21 COLUMN 16 PIC X
-                USING MESSAGE-CHOICE.
+                USING MESSAGE-CHOICE
+
+           01 WORD-GUESSING-SCREEN
+               BACKGROUND-COLOR IS 8.
+             05 BLANK SCREEN.
+             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+             05 LINE 4 COLUMN 10 VALUE "Guess this word: ".
+             05 LINE 6 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 8 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 8 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 10 COLUMN 10 VALUE "( ) Enter a letter to guess".
+             05 LINE 11 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 13 COLUMN 10 VALUE "Pick: ".
+             05 WS-GUESSING-CHOICE-FIELD LINE 13 COLUMN 16 PIC X
+               USING WS-GUESSING-CHOICE.
            
+           01 WORD-GUESSING-LOOSE-SCREEN
+             BACKGROUND-COLOR IS 8.
+             05 BLANK SCREEN.
+             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+             05 LINE 4 COLUMN 10 VALUE "You lost!".
+             05 LINE 6 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 8 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 8 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 10 COLUMN 10 VALUE "(p) Play again".
+             05 LINE 11 COLUMN 10 VALUE "(h) See high scores".
+             05 LINE 12 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 13 COLUMN 10 VALUE "Pick: ".
+             05 WS-GUESSING-CHOICE-LOSE-FIELD LINE 13 COLUMN 16 PIC X
+               USING WS-GUESSING-CHOICE-LOSE-CHOICE.
+
+           01 IN-GAME-SCREEN
+           BACKGROUND-COLOR IS 8.
+            05 BLANK SCREEN.
+            05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+            05 LINE 4 COLUMN 10 VALUE "Guess this word: ".
+            05 LINE 6 COLUMN 10 PIC X(20) USING WS-WORD.
+            05 LINE 8 COLUMN 10 VALUE "Guesses left: ".
+            05 LINE 8 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
+            05 LINE 10 COLUMN 10 VALUE "( ) Enter a letter to guess".
+            05 LINE 11 COLUMN 10 VALUE "(!) Quit game".
+            05 LINE 13 COLUMN 10 VALUE "Pick: ".
+            05 GUESS-CHOICE-FIELD LINE 13 COLUMN 16 PIC X
+               USING GUESS-CHOICE.
 
            01 POST-MESSAGE-SCREEN
            BACKGROUND-COLOR IS 8.
@@ -132,7 +193,7 @@
                 USING READ-CHOICE.
 
        PROCEDURE DIVISION.
-
+      
        0100-DISPLAY-LOGIN.
            INITIALIZE USER-NAME.
            DISPLAY LOGIN-SCREEN.
@@ -152,6 +213,8 @@
            PERFORM 0110-DISPLAY-MENU
            ELSE IF MENU-CHOICE = 'm' THEN
              PERFORM 0120-GENERATE-TABLE
+           ELSE IF MENU-CHOICE = 'g' THEN
+             PERFORM 0140-DISPLAY-GUESSING-GAME
            ELSE 
                PERFORM 0110-DISPLAY-MENU
            END-IF. 
@@ -160,6 +223,7 @@
            SET COUNTER TO 0.
            MOVE 0 TO WS-FILE-IS-ENDED.
            OPEN INPUT F-MESSAGE-FILE.
+           MOVE 0 TO WS-FILE-IS-ENDED.
            PERFORM UNTIL WS-FILE-IS-ENDED = 1
                READ F-MESSAGE-FILE
                    NOT AT END
@@ -177,7 +241,7 @@
            END-PERFORM.
            CLOSE F-MESSAGE-FILE.
            PERFORM 0130-DISPLAY-MESSAGEBOARD.
-
+      
        0130-DISPLAY-MESSAGEBOARD.
            INITIALIZE MESSAGE-CHOICE.
            DISPLAY MESSAGEBOARD-SCREEN.
@@ -260,8 +324,77 @@
                WRITE MESSAGES
                END-WRITE               
            END-IF.
-           CLOSE F-MESSAGE-FILE.
-           PERFORM 0120-GENERATE-TABLE. 
+          CLOSE F-MESSAGE-FILE.
+          PERFORM 0120-GENERATE-TABLE.
+
+       0140-DISPLAY-GUESSING-GAME.
+           SET WORD-IDX TO 0.
+           OPEN INPUT F-WORD-FILE.
+           MOVE 0 TO WS-FILE-IS-ENDED.
+           PERFORM UNTIL WS-FILE-IS-ENDED = 1
+               READ F-WORD-FILE
+                   NOT AT END
+                       ADD 1 TO WORD-IDX
+                       MOVE WORD TO WS-GUESSING-WORDS-WORD(WORD-IDX)
+                   AT END
+                       MOVE 1 TO WS-FILE-IS-ENDED
+               END-READ
+           END-PERFORM.
+           CLOSE F-WORD-FILE.
+           MOVE FUNCTION CURRENT-DATE(14:3) TO RANDOMNUMBER.
+           MOVE WS-GUESSING-WORDS-WORD(RANDOMNUMBER) TO WS-WORD.
+           MOVE WS-WORD TO WS-ANSWERWORD.
+           INSPECT WS-WORD REPLACING ALL 'a' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'b' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'c' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'd' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'e' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'f' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'g' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'h' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'i' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'j' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'k' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'l' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'm' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'n' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'o' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'p' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'q' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'r' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 's' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 't' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'u' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'v' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'w' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'x' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'y' BY '*'.
+           INSPECT WS-WORD REPLACING ALL 'z' BY '*'.
+           DISPLAY WORD-GUESSING-SCREEN.
+           INITIALIZE WS-GUESSING-CHOICE.
+           PERFORM 0150-IN-GAME-SCREEN.
+          
+       0150-IN-GAME-SCREEN.
+           INITIALIZE GUESS-CHOICE.
+           DISPLAY IN-GAME-SCREEN.
+           ACCEPT GUESS-CHOICE-FIELD.
+           IF GUESS-CHOICE = '!' THEN 
+               PERFORM 0110-DISPLAY-MENU
+           ELSE
+               PERFORM 0160-CHECK-GUESS
+           END-IF.
+           
+
+       0160-CHECK-GUESS.    
+           MOVE 1 TO WS-COUNTERGAME.
+           PERFORM UNTIL WS-COUNTERGAME = 20
+                 IF GUESS-CHOICE = WS-ANSWERWORD(WS-COUNTERGAME:1) THEN
+                      MOVE GUESS-CHOICE TO WS-WORD(WS-COUNTERGAME:1) 
+                 END-IF
+                 ADD 1 TO WS-COUNTERGAME     
+           END-PERFORM.
+           PERFORM 0150-IN-GAME-SCREEN.
+           
 
        0140-READ-MESSAGE.
            INITIALIZE READ-CHOICE.
@@ -315,4 +448,5 @@
                END-IF
                PERFORM 0140-READ-MESSAGE
            END-IF.
+
 
