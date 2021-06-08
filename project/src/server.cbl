@@ -66,7 +66,9 @@
              BACKGROUND-COLOR IS 8.
             05 BLANK SCREEN.
             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-            05 LINE 4 COLUMN 10 VALUE "Here are the last 10 messages:".
+            05 LINE 2 COLUMN 30 VALUE "Page: ".
+            05 LINE 2 COLUMN 37 PIC 99 USING PAGE-NUM.
+            05 LINE 4 COLUMN 10 PIC X(40) USING DISPLAY-MESSAGE.
             05 LINE 6 COLUMN 10 VALUE "1.".
             05 LINE 6 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET).
             05 LINE 7 COLUMN 10 VALUE "2.".
@@ -151,7 +153,7 @@
            ELSE IF MENU-CHOICE = 'm' THEN
              PERFORM 0120-GENERATE-TABLE
            ELSE 
-               PERFORM 0120-DISPLAY-MENU
+               PERFORM 0110-DISPLAY-MENU
            END-IF. 
        
        0120-GENERATE-TABLE.
@@ -190,8 +192,6 @@
                    COMPUTE PAGE-NUM = PAGE-NUM + 1
                    MOVE "Here are the next 10 messages:" TO 
                        DISPLAY-MESSAGE
-               ELSE 
-                   MOVE 10 TO OFFSET
                END-IF
                PERFORM 0130-DISPLAY-MESSAGEBOARD
            ELSE IF MESSAGE-CHOICE = "p" THEN
