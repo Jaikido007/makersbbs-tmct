@@ -1,6 +1,9 @@
        IDENTIFICATION DIVISION.
        PROGRAM-ID. server.
        ENVIRONMENT DIVISION.
+           CONFIGURATION SECTION.
+           REPOSITORY.
+           FUNCTION REPLACE_ALL.
            INPUT-OUTPUT SECTION.
            FILE-CONTROL.
            SELECT F-MESSAGE-FILE ASSIGN TO "messages.dat"
@@ -11,7 +14,7 @@
            SELECT WORK ASSIGN TO 'work.dat'.
            SELECT F-WORD-FILE ASSIGN TO 'guessing-words.dat'
              ORGANIZATION IS LINE SEQUENTIAL.
-             
+           
        DATA DIVISION.
            FILE SECTION.
              FD F-WORD-FILE.
@@ -20,6 +23,7 @@
              01 MESSAGES.
                05 MESSAGE-TITLE PIC X(60).
                05 MESSAGE-BODY PIC X(500).
+             
              FD F-REVERSED-FILE.
              01 REV-MESSAGES.
                05 REV-MESSAGE-TITLE PIC X(60).
@@ -30,7 +34,11 @@
                05 SD-MESSAGE-BODY PIC X(500).
 
            WORKING-STORAGE SECTION.
+           01 WS-ANSWERWORD PIC X(20).
+           01 WS-PROGRESS PIC X(20).
+           01 WS-PROGRESS-2 PIC X(20).
            01 USER-NAME PIC X(10).
+           01 HIDDEN-WORD PIC X(20).
            01 RANDOMNUMBER PIC 99.
            01 MENU-CHOICE PIC X.
            01 MESSAGE-CHOICE PIC X.
@@ -50,6 +58,9 @@
                DESCENDING KEY IS WS-GUESSING-WORDS-WORD
                INDEXED BY WORD-IDX.
                    10 WS-GUESSING-WORDS-WORD PIC X(20).
+
+           LINKAGE SECTION.
+           01 LS-HIDDEN-WORD PIC X(20).
 
            SCREEN SECTION.
            01 LOGIN-SCREEN.
@@ -129,7 +140,7 @@
              05 BLANK SCREEN.
              05 LINE 2 COLUMN 10 VALUE "Makers BBS".
              05 LINE 4 COLUMN 10 VALUE "You lost!".
-             05 LINE 6 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 6 COLUMN 10 PIC X(20) USING WS-PROGRESS.
              05 LINE 8 COLUMN 10 VALUE "Guesses left: ".
              05 LINE 8 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
              05 LINE 10 COLUMN 10 VALUE "(p) Play again".
@@ -206,6 +217,38 @@
            CLOSE F-WORD-FILE.
            MOVE FUNCTION CURRENT-DATE(14:3) TO RANDOMNUMBER.
            MOVE WS-GUESSING-WORDS-WORD(RANDOMNUMBER) TO WS-WORD.
+           MOVE WS-WORD TO WS-ANSWERWORD.
+           INSPECT WS-WORD REPLACING ALL 'a' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'b' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'c' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'd' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'e' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'f' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'g' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'h' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'i' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'j' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'k' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'l' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'm' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'n' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'o' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'p' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'q' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'r' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 's' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 't' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'u' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'v' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'w' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'x' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'y' BY 'x'.
+           INSPECT WS-WORD REPLACING ALL 'z' BY 'x'.
+           
+      *    Reassign the ws-word here with *'s
+           
+           
+           
            DISPLAY WORD-GUESSING-SCREEN.
            INITIALIZE WS-GUESSING-CHOICE.
            
