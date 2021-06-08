@@ -34,6 +34,7 @@
                05 SD-MESSAGE-BODY PIC X(500).
 
            WORKING-STORAGE SECTION.
+           01 WS-COUNTERGAME PIC 99.
            01 WS-ANSWERWORD PIC X(20).
            01 WS-PROGRESS PIC X(20).
            01 WS-PROGRESS-2 PIC X(20).
@@ -140,7 +141,7 @@
              05 BLANK SCREEN.
              05 LINE 2 COLUMN 10 VALUE "Makers BBS".
              05 LINE 4 COLUMN 10 VALUE "You lost!".
-             05 LINE 6 COLUMN 10 PIC X(20) USING WS-PROGRESS.
+             05 LINE 6 COLUMN 10 PIC X(20) USING WS-WORD.
              05 LINE 8 COLUMN 10 VALUE "Guesses left: ".
              05 LINE 8 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
              05 LINE 10 COLUMN 10 VALUE "(p) Play again".
@@ -244,16 +245,30 @@
            INSPECT WS-WORD REPLACING ALL 'x' BY '*'.
            INSPECT WS-WORD REPLACING ALL 'y' BY '*'.
            INSPECT WS-WORD REPLACING ALL 'z' BY '*'.
-           
-      *    Reassign the ws-word here with *'s
-           
-           
-           
            DISPLAY WORD-GUESSING-SCREEN.
            INITIALIZE WS-GUESSING-CHOICE.
            
            ACCEPT WS-GUESSING-CHOICE-FIELD.
            IF WS-GUESSING-CHOICE = '!' THEN 
                PERFORM 0120-DISPLAY-MENU
+           ELSE
+               PERFORM 0160-CHECK-GUESS
            END-IF.
+
+
+       0160-CHECK-GUESS.    
+           MOVE 1 TO WS-COUNTERGAME.
+           PERFORM UNTIL WS-COUNTERGAME = 20
+           IF WS-ANSWERWORD(WS-COUNTERGAME:1) = WS-GUESSING-CHOICE THEN
+                REPLACE WS-WORD(WS-COUNTERGAME:1) 
+               BY WS-GUESSING-CHOICE.
+           ELSE
+               ACCEPT WS-GUESSING-CHOICE-FIELD
+      *     END-IF
+           ADD 1 TO WS-COUNTERGAME
+           END-PERFORM.
+           
+           
+           
+           
 
