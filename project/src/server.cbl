@@ -24,15 +24,21 @@
            01 DISPLAY-MESSAGE PIC X(40).
            01 COUNTER UNSIGNED-INT.
            01 OFFSET UNSIGNED-INT.
-           01 MESSAGE-CHOICE PIC X.
+           01 MESSAGE-CHOICE PIC XX.
            01 POST-CHOICE PIC X.
+           01 READ-CHOICE PIC X.
            01 WS-COUNTER PIC 99.
            01 WS-FILE-IS-ENDED PIC 9.
+           01 BODY PIC X(500).
+           01 TITLE PIC X(60).
+           01 MESSAGE-NUM UNSIGNED-INT.
            01 WS-MSGS.
                05 WS-MSG OCCURS 100 TIMES
                ASCENDING KEY IS WS-TITLE
                INDEXED BY MSG-IDX.
                    10 WS-TITLE PIC X(60).
+                   10 WS-BODY PIC X(500).
+      *     01 WS-MSG-BODY PIC X(500).
   
            SCREEN SECTION.
            01 LOGIN-SCREEN.
@@ -58,40 +64,37 @@
 
            01 MESSAGEBOARD-SCREEN
              BACKGROUND-COLOR IS 8.
-             05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-             05 LINE 2 COLUMN 30 VALUE "Page: ".
-             05 LINE 2 COLUMN 37 PIC 99 USING PAGE-NUM.               
-             05 LINE 4 COLUMN 10 PIC X(40) USING DISPLAY-MESSAGE.
-             05 LINE 6 COLUMN 10 VALUE "1.".
-             05 LINE 6 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET).
-             05 LINE 7 COLUMN 10 VALUE "2.".
-             05 LINE 7 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 1).
-             05 LINE 8 COLUMN 10 VALUE "3.".
-             05 LINE 8 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 2).
-             05 LINE 9 COLUMN 10 VALUE "4.".
-             05 LINE 9 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 3).
-             05 LINE 10 COLUMN 10 VALUE "5.".
-             05 LINE 10 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 4).
-             05 LINE 11 COLUMN 10 VALUE "6.".
-             05 LINE 11 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 5).
-             05 LINE 12 COLUMN 10 VALUE "7.".
-             05 LINE 12 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 6).
-             05 LINE 13 COLUMN 10 VALUE "8.".
-             05 LINE 13 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 7).
-             05 LINE 14 COLUMN 10 VALUE "9.".
-             05 LINE 14 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 8).
-             05 LINE 15 COLUMN 10 VALUE "10.".
-             05 LINE 15 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 9).
-             05 LINE 17 COLUMN 10 VALUE "( ) Read the full message by ".
-      *         "number".
-            05 LINE 18 COLUMN 10 VALUE "(m) Post a message of your ".
-      *        "own".
-             05 LINE 19 COLUMN 10 VALUE "(n) Next page".
-             05 LINE 19 COLUMN 30 VALUE "(p) Previous page".
-             05 LINE 19 COLUMN 60 VALUE "(q) Go back".
-             05 LINE 21 COLUMN 10 VALUE "Pick: ".
-             05 MESSAGE-CHOICE-FIELD LINE 21 COLUMN 16 PIC X
+            05 BLANK SCREEN.
+            05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+            05 LINE 4 COLUMN 10 VALUE "Here are the last 10 messages:".
+            05 LINE 6 COLUMN 10 VALUE "1.".
+            05 LINE 6 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET).
+            05 LINE 7 COLUMN 10 VALUE "2.".
+            05 LINE 7 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 1).
+            05 LINE 8 COLUMN 10 VALUE "3.".
+            05 LINE 8 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 2).
+            05 LINE 9 COLUMN 10 VALUE "4.".
+            05 LINE 9 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 3).
+            05 LINE 10 COLUMN 10 VALUE "5.".
+            05 LINE 10 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 4).
+            05 LINE 11 COLUMN 10 VALUE "6.".
+            05 LINE 11 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 5).
+            05 LINE 12 COLUMN 10 VALUE "7.".
+            05 LINE 12 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 6).
+            05 LINE 13 COLUMN 10 VALUE "8.".
+            05 LINE 13 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 7).
+            05 LINE 14 COLUMN 10 VALUE "9.".
+            05 LINE 14 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 8).
+            05 LINE 15 COLUMN 10 VALUE "10.".
+            05 LINE 15 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 9).
+            05 LINE 17 COLUMN 10 VALUE "( ) Read the full message by".
+            05 LINE 17 COLUMN 39 VALUE "number".
+            05 LINE 18 COLUMN 10 VALUE "(m) Post a message of your own".
+            05 LINE 19 COLUMN 10 VALUE "(n) Next page".
+            05 LINE 19 COLUMN 30 VALUE "(p) Previous page".
+            05 LINE 19 COLUMN 60 VALUE "(q) Go back".
+            05 LINE 21 COLUMN 10 VALUE "Pick: ".
+            05 MESSAGE-CHOICE-FIELD LINE 21 COLUMN 16 PIC X
                 USING MESSAGE-CHOICE.
            
 
@@ -112,10 +115,22 @@
            05 POST-CHOICE-FIELD LINE 20 COLUMN 16 PIC X
                 USING POST-CHOICE.
 
+           01 READ-MESSAGE-SCREEN
+           BACKGROUND-COLOR IS 8.
+           05 BLANK SCREEN.
+           05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+           05 LINE 4 COLUMN 10 VALUE "Title:".
+           05 LINE 4 COLUMN 18 PIC X(60) USING TITLE.
+           05 LINE 6 COLUMN 10 PIC X(500) USING BODY.
+           05 LINE 18 COLUMN 10 VALUE "(n) Next message".
+           05 LINE 18 COLUMN 30 VALUE "(p) Previous message".
+           05 LINE 18 COLUMN 60 VALUE "(q) Go back".   
+           05 LINE 20 COLUMN 10 VALUE "Pick: ".
+           05 READ-CHOICE-FIELD LINE 20 COLUMN 16 PIC X
+                USING READ-CHOICE.
 
        PROCEDURE DIVISION.
 
-      
        0100-DISPLAY-LOGIN.
            INITIALIZE USER-NAME.
            DISPLAY LOGIN-SCREEN.
@@ -135,6 +150,8 @@
            PERFORM 0110-DISPLAY-MENU
            ELSE IF MENU-CHOICE = 'm' THEN
              PERFORM 0120-GENERATE-TABLE
+           ELSE 
+               PERFORM 0120-DISPLAY-MENU
            END-IF. 
        
        0120-GENERATE-TABLE.
@@ -145,7 +162,8 @@
                READ F-MESSAGE-FILE
                    NOT AT END
                        ADD 1 TO COUNTER
-                       MOVE MESSAGE-TITLE TO WS-MSG(COUNTER)
+                       MOVE MESSAGE-TITLE TO WS-TITLE(COUNTER)
+                       MOVE MESSAGE-BODY TO WS-BODY(COUNTER)
                    AT END 
                        MOVE 1 TO WS-FILE-IS-ENDED
                        MOVE COUNTER TO OFFSET
@@ -189,6 +207,39 @@
                    COMPUTE OFFSET = OFFSET + 10
                    COMPUTE PAGE-NUM = PAGE-NUM - 1
                    PERFORM 0130-DISPLAY-MESSAGEBOARD
+               END-IF
+           ELSE IF MESSAGE-CHOICE = "1" 
+               SET MESSAGE-NUM TO 1 
+               PERFORM 0140-READ-MESSAGE
+           ELSE IF MESSAGE-CHOICE = "2" 
+               SET MESSAGE-NUM TO 2 
+               PERFORM 0140-READ-MESSAGE
+           ELSE IF MESSAGE-CHOICE = "3" 
+               SET MESSAGE-NUM TO 3 
+               PERFORM 0140-READ-MESSAGE
+           ELSE IF MESSAGE-CHOICE = "4" 
+               SET MESSAGE-NUM TO 4 
+               PERFORM 0140-READ-MESSAGE
+           ELSE IF MESSAGE-CHOICE = "5" 
+               SET MESSAGE-NUM TO 5 
+               PERFORM 0140-READ-MESSAGE
+           ELSE IF MESSAGE-CHOICE = "6" 
+               SET MESSAGE-NUM TO 6 
+               PERFORM 0140-READ-MESSAGE
+           ELSE IF MESSAGE-CHOICE = "7" 
+               SET MESSAGE-NUM TO 7 
+               PERFORM 0140-READ-MESSAGE
+           ELSE IF MESSAGE-CHOICE = "8" 
+               SET MESSAGE-NUM TO 8 
+               PERFORM 0140-READ-MESSAGE
+           ELSE IF MESSAGE-CHOICE = "9" 
+               SET MESSAGE-NUM TO 9
+               PERFORM 0140-READ-MESSAGE
+           ELSE IF MESSAGE-CHOICE = "10" 
+               SET MESSAGE-NUM TO 10 
+               PERFORM 0140-READ-MESSAGE
+           ELSE 
+               PERFORM 0130-DISPLAY-MESSAGEBOARD
            END-IF.
 
        0150-POST-MESSAGE.
@@ -211,4 +262,57 @@
            END-IF.
            CLOSE F-MESSAGE-FILE.
            PERFORM 0120-GENERATE-TABLE. 
-           
+
+       0140-READ-MESSAGE.
+           INITIALIZE READ-CHOICE.
+           IF MESSAGE-NUM = 1
+                       MOVE WS-TITLE(OFFSET) TO TITLE
+                       MOVE WS-BODY(OFFSET) TO BODY
+           ELSE IF MESSAGE-NUM = 2
+                       MOVE WS-TITLE(OFFSET - 1) TO TITLE
+                       MOVE WS-BODY(OFFSET - 1) TO BODY
+           ELSE IF MESSAGE-NUM = 3
+                       MOVE WS-TITLE(OFFSET - 2) TO TITLE
+                       MOVE WS-BODY(OFFSET - 2) TO BODY 
+           ELSE IF MESSAGE-NUM = 4
+                       MOVE WS-TITLE(OFFSET - 3) TO TITLE
+                       MOVE WS-BODY(OFFSET - 3) TO BODY 
+           ELSE IF MESSAGE-NUM = 5
+                       MOVE WS-TITLE(OFFSET - 4) TO TITLE
+                       MOVE WS-BODY(OFFSET - 4) TO BODY
+           ELSE IF MESSAGE-NUM = 6
+                       MOVE WS-TITLE(OFFSET - 5) TO TITLE
+                       MOVE WS-BODY(OFFSET - 5) TO BODY 
+           ELSE IF MESSAGE-NUM = 7
+                       MOVE WS-TITLE(OFFSET - 6) TO TITLE
+                       MOVE WS-BODY(OFFSET - 6) TO BODY
+           ELSE IF MESSAGE-NUM = 8
+                       MOVE WS-TITLE(OFFSET - 7) TO TITLE
+                       MOVE WS-BODY(OFFSET - 7) TO BODY
+           ELSE IF MESSAGE-NUM = 9
+                       MOVE WS-TITLE(OFFSET - 8) TO TITLE
+                       MOVE WS-BODY(OFFSET - 8) TO BODY
+           ELSE IF MESSAGE-NUM = 10
+                       MOVE WS-TITLE(OFFSET - 9) TO TITLE
+                       MOVE WS-BODY(OFFSET - 9) TO BODY                       
+           END-IF.
+           DISPLAY READ-MESSAGE-SCREEN.
+           ACCEPT READ-CHOICE.
+           IF READ-CHOICE = "q" THEN
+               PERFORM 0130-DISPLAY-MESSAGEBOARD
+           ELSE IF READ-CHOICE = 'n' THEN 
+               IF MESSAGE-NUM < 10
+                   COMPUTE MESSAGE-NUM = MESSAGE-NUM + 1
+                ELSE 
+                   MOVE 1 TO MESSAGE-NUM
+               END-IF
+               PERFORM 0140-READ-MESSAGE
+           ELSE IF READ-CHOICE = 'p' THEN 
+               IF MESSAGE-NUM > 1
+                   COMPUTE MESSAGE-NUM = MESSAGE-NUM - 1
+               ELSE
+                   MOVE 10 TO MESSAGE-NUM
+               END-IF
+               PERFORM 0140-READ-MESSAGE
+           END-IF.
+
