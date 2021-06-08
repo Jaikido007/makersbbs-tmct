@@ -7,15 +7,21 @@
              ORGANIZATION IS LINE SEQUENTIAL.
            SELECT F-WORD-FILE ASSIGN TO 'guessing-words.dat'
              ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT F-HIGH-SCORES-FILE ASSIGN TO 'high-scores.dat'
+             ORGANIZATION IS LINE SEQUENTIAL.
 
        DATA DIVISION.
            FILE SECTION.
-             FD F-WORD-FILE.
-               01 WORD PIC X(20).
-             FD F-MESSAGE-FILE.
-             01 MESSAGES.
-               05 MESSAGE-TITLE PIC X(60).
-               05 MESSAGE-BODY PIC X(500).
+           FD F-WORD-FILE.
+           01 WORD PIC X(20).
+           FD F-MESSAGE-FILE.
+           01 MESSAGES.
+              05 MESSAGE-TITLE PIC X(60).
+              05 MESSAGE-BODY PIC X(500).
+           FD F-HIGH-SCORES-FILE.
+           01 PLAYER-SCORES.
+              05 HIGH-SCORE PIC 99.
+              05 PLAYER-NAME PIC X(10).
 
            WORKING-STORAGE SECTION.
       *     Variables related to login and menu screen
@@ -52,22 +58,38 @@
            01 MESSAGE-DATE UNSIGNED-INT.
 
       *    Variables related to guessing game
-           01 WS-UNREVEALED-COUNTER PIC 99.
-           01 WS-STAR-COUNTER PIC 99.
            01 WS-COUNTERGAME PIC 99.
            01 WS-ANSWERWORD PIC X(20).
            01 RANDOMNUMBER PIC 99.
            01 WS-WORD PIC X(20).
-           01 WS-GUESSES-LEFT PIC 99.
-           01 WS-GUESSING-LOSING-CHOICE PIC X.
-           01 WS-GUESSING-WINNING-CHOICE PIC X.
            01 WS-GUESSING-CHOICE-WORDS.
                05 WS-GUESSING-CHOICE-WORD OCCURS 213 TIMES
                DESCENDING KEY IS WS-GUESSING-WORDS-WORD
                INDEXED BY WORD-IDX.
                    10 WS-GUESSING-WORDS-WORD PIC X(20).
            01 WS-GUESS-CHOICE PIC X(20).
-      
+
+      *    Variables related to high score screen
+           01 WS-HIGH-SCORE-CHOICE PIC X.
+           01 WS-HIGH-SCORE PIC 99.
+           01 WS-HIGH-SCORES.  
+              05 WS-TABLE-HIGH-SCORE OCCURS 100 TIMES     
+              ASCENDING KEY IS WS-SCORE
+              INDEXED BY SCORE-IDX.
+                  10 WS-SCORE PIC 99.
+                  10 WS-NAME PIC X(10).
+
+      *    Variables related to checking guesses  
+           01 WS-UNREVEALED-COUNTER PIC 99.
+           01 WS-STAR-COUNTER PIC 99.
+           01 WS-GUESSES-LEFT PIC 99.          
+
+      *    Variables related to winning and losing.
+           01 WS-GUESSING-LOSING-CHOICE PIC X.
+           01 WS-GUESSING-WINNING-CHOICE PIC X.
+           01 WS-CHARACTER-COUNTER UNSIGNED-INT.
+           01 WS-LENGTH-COUNTER PIC 99.
+    
            SCREEN SECTION.
            01 LOGIN-SCREEN.
              05 BLANK SCREEN.
@@ -207,12 +229,30 @@
              05 LINE 4 COLUMN 10 VALUE "You guessed the word!".
              05 LINE 6 COLUMN 10 PIC X(20) USING WS-ANSWERWORD.
              05 LINE 8 COLUMN 10 PIC 99 USING WS-GUESSES-LEFT.
-             05 LINE 10 COLUMN 10 VALUE "(p) Play Again".
-             05 LINE 11 COLUMN 10 VALUE "(h) See High Scores".
-             05 LINE 12 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 10 COLUMN 10 VALUE "You scored: ".
+             05 LINE 10 COLUMN 22 PIC 99 USING WS-HIGH-SCORE.
+             05 LINE 12 COLUMN 10 VALUE "(p) Play Again".
+             05 LINE 13 COLUMN 10 VALUE "(h) See High Scores".
+             05 LINE 14 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 15 COLUMN 10 VALUE "Pick: ".
              05 WS-GUESSING-CHOICE-WINNING-FIELD LINE 13 COLUMN 16 PIC X
                USING WS-GUESSING-WINNING-CHOICE.
 
+           01 HIGH-SCORE-SCREEN
+           BACKGROUND-COLOR IS 8.
+             05 BLANK SCREEN.
+             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+             05 LINE 4 COLUMN 10 VALUE "High Scores:".
+             05 LINE 6 COLUMN 10 PIC XX USING WS-SCORE(1).
+             05 LINE 6 COLUMN 14 PIC X(10) USING WS-NAME(1).
+             05 LINE 8 COLUMN 10 PIC XX USING WS-SCORE(2).
+             05 LINE 8 COLUMN 14 PIC X(10) USING WS-NAME(2).
+             05 LINE 10 COLUMN 10 PIC XX USING WS-SCORE(3).
+             05 LINE 10 COLUMN 14 PIC X(10) USING WS-NAME(3).
+             05 LINE 12 COLUMN 10 VALUE "(b) Go back".
+             05 LINE 14 COLUMN 10 VALUE "Pick: ".
+             05 WS-HIGH-SCORE-FIELD LINE 13 COLUMN 16 PIC X
+               USING WS-HIGH-SCORE-CHOICE.
        PROCEDURE DIVISION.
       
        0100-DISPLAY-LOGIN.
@@ -241,7 +281,6 @@
        
        0120-GENERATE-TABLE.
            SET COUNTER TO 0.
-           MOVE 0 TO WS-FILE-IS-ENDED.
            OPEN INPUT F-MESSAGE-FILE.
            MOVE 0 TO WS-FILE-IS-ENDED.
            PERFORM UNTIL WS-FILE-IS-ENDED = 1
@@ -445,6 +484,13 @@
            INSPECT WS-WORD REPLACING ALL 'y' BY '*'.
            INSPECT WS-WORD REPLACING ALL 'z' BY '*'.
            DISPLAY WORD-GUESSING-SCREEN.
+           MOVE 1 TO WS-CHARACTER-COUNTER.
+           PERFORM UNTIL WS-CHARACTER-COUNTER = 20
+             IF '*' EQUALS WS-WORD(WS-CHARACTER-COUNTER:1) 
+              THEN ADD 1 TO WS-LENGTH-COUNTER
+             END-IF
+             ADD 1 TO WS-CHARACTER-COUNTER
+           END-PERFORM.
            PERFORM 0170-IN-GAME-SCREEN.
           
        0170-IN-GAME-SCREEN.
@@ -488,12 +534,20 @@
            
        0190-WINNING-SCREEN.
            INITIALIZE WS-GUESSING-WINNING-CHOICE.
+           COMPUTE WS-HIGH-SCORE = WS-LENGTH-COUNTER * WS-GUESSES-LEFT.
            DISPLAY WORD-GUESSING-WINNING-SCREEN.
+           OPEN EXTEND F-HIGH-SCORES-FILE
+               MOVE WS-HIGH-SCORE TO HIGH-SCORE
+               MOVE USER-NAME TO PLAYER-NAME
+               WRITE PLAYER-SCORES 
+               END-WRITE.
+           CLOSE F-HIGH-SCORES-FILE.
+
            ACCEPT WS-GUESSING-WINNING-CHOICE.
            IF WS-GUESSING-WINNING-CHOICE = 'p'
                THEN PERFORM 0160-DISPLAY-GUESSING-GAME
-      *     ELSE IF WS-GUESSING-WINNING-CHOICE = 'h'
-      *       THEN PERFORM 0210-HIGH-SCORE-SCREEN
+           ELSE IF WS-GUESSING-WINNING-CHOICE = 'h'
+             THEN PERFORM 0210-HIGH-SCORE-TABLE
            ELSE IF WS-GUESSING-WINNING-CHOICE = '!'
              THEN PERFORM 0110-DISPLAY-MENU
            ELSE
@@ -507,10 +561,34 @@
            ACCEPT WS-GUESSING-LOSING-CHOICE.
            IF WS-GUESSING-LOSING-CHOICE = 'p'
                THEN PERFORM 0160-DISPLAY-GUESSING-GAME
-      *     ELSE IF WS-GUESSING-LOSING-CHOICE = 'h'
-      *       THEN PERFORM 0210-HIGH-SCORE-SCREEN
+           ELSE IF WS-GUESSING-LOSING-CHOICE = 'h'
+             THEN PERFORM 0210-HIGH-SCORE-TABLE
            ELSE IF WS-GUESSING-LOSING-CHOICE = '!'
              THEN PERFORM 0110-DISPLAY-MENU
            ELSE
              PERFORM 0200-LOSING-SCREEN
            END-IF.
+
+       0210-HIGH-SCORE-TABLE.
+           SET COUNTER TO 0.
+           OPEN INPUT F-HIGH-SCORES-FILE.
+           MOVE 0 TO WS-FILE-IS-ENDED.
+           PERFORM UNTIL WS-FILE-IS-ENDED = 1
+               READ F-HIGH-SCORES-FILE
+                   NOT AT END
+                       ADD 1 TO COUNTER
+                       MOVE HIGH-SCORE TO WS-SCORE(COUNTER)
+                       MOVE PLAYER-NAME TO WS-NAME(COUNTER)
+                   AT END 
+                       MOVE 1 TO WS-FILE-IS-ENDED
+               END-READ 
+           END-PERFORM.
+           CLOSE F-HIGH-SCORES-FILE.
+           PERFORM 0220-HIGH-SCORE-SCREEN.
+           
+
+       0220-HIGH-SCORE-SCREEN.
+           INITIALIZE WS-HIGH-SCORE-CHOICE.
+           SORT WS-TABLE-HIGH-SCORE ON DESCENDING WS-SCORE.
+           DISPLAY HIGH-SCORE-SCREEN.
+           ACCEPT WS-HIGH-SCORE-CHOICE.
