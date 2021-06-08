@@ -455,7 +455,7 @@
                PERFORM 0180-CHECK-GUESS
            END-IF.
            
-       0180-CHECK-GUESS.    
+       0180-CHECK-GUESS.
            MOVE 1 TO WS-COUNTERGAME.
            PERFORM UNTIL WS-COUNTERGAME = 20
                  IF WS-GUESS-CHOICE = WS-ANSWERWORD(WS-COUNTERGAME:1) 
@@ -464,6 +464,9 @@
                  END-IF
                  ADD 1 TO WS-COUNTERGAME     
            END-PERFORM.
+      *    Minus 1 to the guesses
+      *    Loop here to see if there are any stars left
+      *    Check to see if there are any guesses left
            PERFORM 0170-IN-GAME-SCREEN.
            
 
