@@ -126,6 +126,37 @@
             05 MESSAGE-CHOICE-FIELD LINE 21 COLUMN 16 PIC X
                 USING MESSAGE-CHOICE.
 
+           01 READ-MESSAGE-SCREEN
+           BACKGROUND-COLOR IS 8.
+            05 BLANK SCREEN.
+            05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+            05 LINE 4 COLUMN 10 VALUE "Title:".
+            05 LINE 4 COLUMN 18 PIC X(60) USING TITLE.
+            05 LINE 6 COLUMN 10 PIC X(500) USING BODY.
+            05 LINE 18 COLUMN 10 VALUE "(n) Next message".
+            05 LINE 18 COLUMN 30 VALUE "(p) Previous message".
+            05 LINE 18 COLUMN 60 VALUE "(q) Go back".   
+            05 LINE 20 COLUMN 10 VALUE "Pick: ".
+            05 READ-CHOICE-FIELD LINE 20 COLUMN 16 PIC X
+                USING READ-CHOICE.
+
+           01 POST-MESSAGE-SCREEN
+           BACKGROUND-COLOR IS 8.
+           05 BLANK SCREEN. 
+           05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+           05 LINE 4 COLUMN 10 VALUE "Post a message".
+           05 LINE 6 COLUMN 10 VALUE "Title".
+           05 POST-TITLE-FIELD LINE 7 COLUMN 10 PIC X(60)
+           USING POST-TITLE.
+           05 LINE 9 COLUMN 10 VALUE "Body".
+           05 POST-BODY-FIELD LINE 10 COLUMN 10 PIC X(500)
+           USING POST-BODY.
+           05 LINE 18 COLUMN 10 VALUE "(p) Post".
+           05 LINE 18 COLUMN 30 VALUE "(d) Discard".
+           05 LINE 20 COLUMN 10 VALUE "Pick: ".
+           05 POST-CHOICE-FIELD LINE 20 COLUMN 16 PIC X
+                USING POST-CHOICE.
+        
            01 WORD-GUESSING-SCREEN
                BACKGROUND-COLOR IS 8.
              05 BLANK SCREEN.
@@ -138,6 +169,20 @@
              05 LINE 11 COLUMN 10 VALUE "(!) Quit game".
              05 LINE 13 COLUMN 10 VALUE "Pick: ".
    
+           01 IN-GAME-SCREEN
+           BACKGROUND-COLOR IS 8.
+             05 BLANK SCREEN.
+             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+             05 LINE 4 COLUMN 10 VALUE "Guess this word: ".
+             05 LINE 6 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 8 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 8 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 10 COLUMN 10 VALUE "( ) Enter a letter to guess".
+             05 LINE 11 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 13 COLUMN 10 VALUE "Pick: ".
+             05 WS-GUESS-CHOICE-FIELD LINE 13 COLUMN 16 PIC X
+               USING WS-GUESS-CHOICE.
+
            01 WORD-GUESSING-LOSE-SCREEN
              BACKGROUND-COLOR IS 8.
              05 BLANK SCREEN.
@@ -165,52 +210,6 @@
              05 LINE 12 COLUMN 10 VALUE "(!) Quit game".
              05 WS-GUESSING-CHOICE-WINNING-FIELD LINE 13 COLUMN 16 PIC X
                USING WS-GUESSING-WINNING-CHOICE.
-
-           01 IN-GAME-SCREEN
-           BACKGROUND-COLOR IS 8.
-            05 BLANK SCREEN.
-            05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-            05 LINE 4 COLUMN 10 VALUE "Guess this word: ".
-            05 LINE 6 COLUMN 10 PIC X(20) USING WS-WORD.
-            05 LINE 8 COLUMN 10 VALUE "Guesses left: ".
-            05 LINE 8 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
-            05 LINE 10 COLUMN 10 VALUE "( ) Enter a letter to guess".
-            05 LINE 11 COLUMN 10 VALUE "(!) Quit game".
-            05 LINE 13 COLUMN 10 VALUE "Pick: ".
-            05 WS-GUESS-CHOICE-FIELD LINE 13 COLUMN 16 PIC X
-               USING WS-GUESS-CHOICE.
-
-           01 POST-MESSAGE-SCREEN
-           BACKGROUND-COLOR IS 8.
-           05 BLANK SCREEN. 
-           05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-           05 LINE 4 COLUMN 10 VALUE "Post a message".
-           05 LINE 6 COLUMN 10 VALUE "Title".
-           05 POST-TITLE-FIELD LINE 7 COLUMN 10 PIC X(60)
-           USING POST-TITLE.
-           05 LINE 9 COLUMN 10 VALUE "Body".
-           05 POST-BODY-FIELD LINE 10 COLUMN 10 PIC X(500)
-           USING POST-BODY.
-           05 LINE 18 COLUMN 10 VALUE "(p) Post".
-           05 LINE 18 COLUMN 30 VALUE "(d) Discard".
-           05 LINE 20 COLUMN 10 VALUE "Pick: ".
-           05 POST-CHOICE-FIELD LINE 20 COLUMN 16 PIC X
-                USING POST-CHOICE.
-
-           01 READ-MESSAGE-SCREEN
-           BACKGROUND-COLOR IS 8.
-           05 BLANK SCREEN.
-           05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-           05 LINE 4 COLUMN 10 VALUE "Title:".
-           05 LINE 4 COLUMN 18 PIC X(60) USING TITLE.
-           05 LINE 6 COLUMN 10 PIC X(500) USING BODY.
-           05 LINE 18 COLUMN 10 VALUE "(n) Next message".
-           05 LINE 18 COLUMN 30 VALUE "(p) Previous message".
-           05 LINE 18 COLUMN 60 VALUE "(q) Go back".   
-           05 LINE 20 COLUMN 10 VALUE "Pick: ".
-           05 READ-CHOICE-FIELD LINE 20 COLUMN 16 PIC X
-                USING READ-CHOICE.
-
 
        PROCEDURE DIVISION.
       
