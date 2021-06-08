@@ -172,6 +172,8 @@
                    COMPUTE PAGE-NUM = PAGE-NUM + 1
                    MOVE "Here are the next 10 messages:" TO 
                        DISPLAY-MESSAGE
+               ELSE 
+                   MOVE 10 TO OFFSET
                END-IF
                PERFORM 0130-DISPLAY-MESSAGEBOARD
            ELSE IF MESSAGE-CHOICE = "p" THEN
