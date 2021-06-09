@@ -53,6 +53,8 @@
            01 READ-CHOICE PIC X.
            01 BODY PIC X(500).
            01 TITLE PIC X(60).
+           01 POST-AUTHOR PIC X(10).
+           01 POST-DATE PIC X(10).
            01 MESSAGE-NUM UNSIGNED-INT.
 
       *    Variables related to post message screen
@@ -177,6 +179,10 @@
             05 LINE 4 COLUMN 10 VALUE "Title:".
             05 LINE 4 COLUMN 18 PIC X(60) USING TITLE.
             05 LINE 6 COLUMN 10 PIC X(500) USING BODY.
+            05 LINE 15 COLUMN 10 VALUE "Post Author:".
+            05 LINE 15 COLUMN 23 PIC X(10) USING POST-AUTHOR.
+            05 LINE 15 COLUMN 34 VALUE "Posted On:".
+            05 LINE 15 COLUMN 45 PIC X(10) USINg POST-DATE. 
             05 LINE 18 COLUMN 10 VALUE "(n) Next message".
             05 LINE 18 COLUMN 30 VALUE "(p) Previous message".
             05 LINE 18 COLUMN 60 VALUE "(q) Go back".   
@@ -392,33 +398,53 @@
            IF MESSAGE-NUM = 1
                        MOVE WS-TITLE(OFFSET) TO TITLE
                        MOVE WS-BODY(OFFSET) TO BODY
+                       MOVE WS-AUTHOR(OFFSET) TO POST-AUTHOR
+                       MOVE WS-DATE(OFFSET) TO POST-DATE
            ELSE IF MESSAGE-NUM = 2
                        MOVE WS-TITLE(OFFSET - 1) TO TITLE
                        MOVE WS-BODY(OFFSET - 1) TO BODY
+                       MOVE WS-AUTHOR(OFFSET - 1) TO POST-AUTHOR
+                       MOVE WS-DATE(OFFSET - 1) TO POST-DATE
            ELSE IF MESSAGE-NUM = 3
                        MOVE WS-TITLE(OFFSET - 2) TO TITLE
-                       MOVE WS-BODY(OFFSET - 2) TO BODY 
+                       MOVE WS-BODY(OFFSET - 2) TO BODY
+                       MOVE WS-AUTHOR(OFFSET - 2) TO POST-AUTHOR
+                       MOVE WS-DATE(OFFSET - 2) TO POST-DATE
            ELSE IF MESSAGE-NUM = 4
                        MOVE WS-TITLE(OFFSET - 3) TO TITLE
                        MOVE WS-BODY(OFFSET - 3) TO BODY 
+                       MOVE WS-AUTHOR(OFFSET - 3) TO POST-AUTHOR
+                       MOVE WS-DATE(OFFSET - 3) TO POST-DATE
            ELSE IF MESSAGE-NUM = 5
                        MOVE WS-TITLE(OFFSET - 4) TO TITLE
                        MOVE WS-BODY(OFFSET - 4) TO BODY
+                       MOVE WS-AUTHOR(OFFSET - 4) TO POST-AUTHOR
+                       MOVE WS-DATE(OFFSET - 4) TO POST-DATE
            ELSE IF MESSAGE-NUM = 6
                        MOVE WS-TITLE(OFFSET - 5) TO TITLE
-                       MOVE WS-BODY(OFFSET - 5) TO BODY 
+                       MOVE WS-BODY(OFFSET - 5) TO BODY
+                       MOVE WS-AUTHOR(OFFSET - 5) TO POST-AUTHOR
+                       MOVE WS-DATE(OFFSET - 5) TO POST-DATE 
            ELSE IF MESSAGE-NUM = 7
                        MOVE WS-TITLE(OFFSET - 6) TO TITLE
                        MOVE WS-BODY(OFFSET - 6) TO BODY
+                       MOVE WS-AUTHOR(OFFSET - 6) TO POST-AUTHOR
+                       MOVE WS-DATE(OFFSET - 6) TO POST-DATE
            ELSE IF MESSAGE-NUM = 8
                        MOVE WS-TITLE(OFFSET - 7) TO TITLE
                        MOVE WS-BODY(OFFSET - 7) TO BODY
+                       MOVE WS-AUTHOR(OFFSET - 7) TO POST-AUTHOR
+                       MOVE WS-DATE(OFFSET - 7) TO POST-DATE
            ELSE IF MESSAGE-NUM = 9
                        MOVE WS-TITLE(OFFSET - 8) TO TITLE
                        MOVE WS-BODY(OFFSET - 8) TO BODY
+                       MOVE WS-AUTHOR(OFFSET - 8) TO POST-AUTHOR
+                       MOVE WS-DATE(OFFSET - 8) TO POST-DATE
            ELSE IF MESSAGE-NUM = 10
                        MOVE WS-TITLE(OFFSET - 9) TO TITLE
-                       MOVE WS-BODY(OFFSET - 9) TO BODY                       
+                       MOVE WS-BODY(OFFSET - 9) TO BODY    
+                       MOVE WS-AUTHOR(OFFSET - 9) TO POST-AUTHOR
+                       MOVE WS-DATE(OFFSET - 9) TO POST-DATE                   
            END-IF.
            DISPLAY READ-MESSAGE-SCREEN.
            ACCEPT READ-CHOICE.
