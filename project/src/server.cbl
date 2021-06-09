@@ -177,15 +177,46 @@
            01 MENU-SCREEN
              BACKGROUND-COLOR IS 8.
              05 BLANK SCREEN.
+      *      Turtle goes here
+             05 LINE 25 COLUMN 10 VALUE
+           "               (_(___/                         \_____)_)  ".
+             05 LINE 24 COLUMN 10 VALUE
+           "        (_(__/  ./     /                    \_\      \.   ".
+             05 LINE 23 COLUMN 10 VALUE
+           "       ~-----||====/~     |==================|       |/~~~".
+             05 LINE 22 COLUMN 10 VALUE
+           "     \       ||------_-~~-_ ------------- \ --/~   ~\    |".
+             05 LINE 21 COLUMN 10 VALUE 
+           "   \         ||           \______________/      _-_      |".
+             05 LINE 20 COLUMN 10 VALUE
+           " \         \^\\         \                  /             |".
+             05 LINE 19 COLUMN 10 VALUE
+           "|         / /         \                      /           |".
+             05 LINE 18 COLUMN 10 VALUE
+           "|   (_______) /______/                        \_________ \".
+             05 LINE 17 COLUMN 10 VALUE
+           "|          \    /      /                    \          \  ".
+             05 LINE 16 COLUMN 10 VALUE 
+           "| |___||__|      /       /                \          \    ".
+             05 LINE 15 COLUMN 10 VALUE
+           " /|  O|| O|        /      \_______________/        \      ".
+             05 LINE 14 COLUMN 10 VALUE
+           "   /^\__/^\         /~  \                   /    \        ".
+             05 LINE 13 COLUMN 10 VALUE
+           "                      _-~                    /~-_         ".
+             05 LINE 12 COLUMN 10 VALUE
+           "                         _-~~             ~~-_            ".
+             05 LINE 11 COLUMN 10 VALUE
+           "                             ___-------___                ".
              05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
              05 LINE 2 COLUMN 37 VALUE "Turtles Bulletin Board".
              05 LINE 4 COLUMN 10 VALUE "Welcome, ".
              05 LINE 4 COLUMN 19 PIC X(10) USING USER-NAME.
              05 LINE 28 COLUMN 10 VALUE "(n) Nothing".
-             05 LINE 28 COLUMN 60 VALUE "(m) Message board".
-             05 LINE 28 COLUMN 90 VALUE "(g) Guessing Game".
-             05 LINE 28 COLUMN 30 VALUE "(l) Logout".
-             05 LINE 28 COLUMN 40 VALUE "(q) Quit".
+             05 LINE 28 COLUMN 50 VALUE "(m) Message board".
+             05 LINE 28 COLUMN 70 VALUE "(g) Guessing Game".
+             05 LINE 28 COLUMN 25 VALUE "(l) Logout".
+             05 LINE 28 COLUMN 39 VALUE "(q) Quit".
              05 LINE 30 COLUMN 10 VALUE "Pick: ".
              05 MENU-CHOICE-FIELD LINE 30 COLUMN 16 PIC X
                 USING MENU-CHOICE.
@@ -209,52 +240,86 @@
            01 MESSAGEBOARD-SCREEN
              BACKGROUND-COLOR IS 8.
             05 BLANK SCREEN.
-            05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-            05 LINE 2 COLUMN 30 VALUE "Page: ".
-            05 LINE 2 COLUMN 37 PIC 99 USING PAGE-NUM.
-            05 LINE 4 COLUMN 10 PIC X(40) USING DISPLAY-MESSAGE.
-            05 LINE 6 COLUMN 10 VALUE "1.".
-            05 LINE 6 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET).
-            05 LINE 7 COLUMN 10 VALUE "2.".
-            05 LINE 7 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 1).
-            05 LINE 8 COLUMN 10 VALUE "3.".
-            05 LINE 8 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 2).
-            05 LINE 9 COLUMN 10 VALUE "4.".
-            05 LINE 9 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 3).
-            05 LINE 10 COLUMN 10 VALUE "5.".
-            05 LINE 10 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 4).
-            05 LINE 11 COLUMN 10 VALUE "6.".
-            05 LINE 11 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 5).
-            05 LINE 12 COLUMN 10 VALUE "7.".
-            05 LINE 12 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 6).
-            05 LINE 13 COLUMN 10 VALUE "8.".
-            05 LINE 13 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 7).
-            05 LINE 14 COLUMN 10 VALUE "9.".
-            05 LINE 14 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 8).
-            05 LINE 15 COLUMN 10 VALUE "10.".
-            05 LINE 15 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 9).
-            05 LINE 17 COLUMN 10 VALUE "( ) Read the full message by".
-            05 LINE 17 COLUMN 39 VALUE "number".
-            05 LINE 18 COLUMN 10 VALUE "(m) Post a message of your own".
-            05 LINE 19 COLUMN 10 VALUE "(n) Next page".
-            05 LINE 19 COLUMN 30 VALUE "(p) Previous page".
-            05 LINE 19 COLUMN 60 VALUE "(q) Go back".
-            05 LINE 21 COLUMN 10 VALUE "Pick: ".
-            05 MESSAGE-CHOICE-FIELD LINE 21 COLUMN 16 PIC X
+            05 LINE 11 COLUMN 60 VALUE 
+           "   \__|   \__|     \__|\__|  \__| \______/   \__|   ".
+             05 LINE 10 COLUMN 60 VALUE
+           "   $$ |   $$ | \_/ $$ |$$ | \$$ |\$$$$$$  |  $$ |   ".
+             05 LINE 9 COLUMN 60 VALUE
+           "   $$ |   $$ |\$  /$$ |$$ |\$$$ |$$ |  $$\   $$ |   ".
+             05 LINE 8 COLUMN 60 VALUE
+           "   $$ |   $$ \$$$  $$ |$$ \$$$$ |$$ |        $$ |   ".
+             05 LINE 7 COLUMN 60 VALUE
+           "   $$ |   $$\$$\$$ $$ |$$ $$\$$ |$$ |        $$ |   ".
+             05 LINE 6 COLUMN 60 VALUE
+           "   $$ |   $$$$\  $$$$ |$$$$\ $$ |$$ /  \__|  $$ |   ".
+             05 LINE 5 COLUMN 60 VALUE
+           "\__$$  __|$$$\    $$$ |$$$\  $$ |$$  __$$\\__$$  __|".
+             05 LINE 4 COLUMN 60 VALUE
+           "$$$$$$$$\ $$\      $$\ $$\   $$\  $$$$$$\ $$$$$$$$\ ".
+            05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Message Board".
+            05 LINE 18 COLUMN 10 VALUE "Page: ".
+            05 LINE 18 COLUMN 17 PIC 99 USING PAGE-NUM.
+            05 LINE 17 COLUMN 10 PIC X(40) USING DISPLAY-MESSAGE.
+            05 LINE 19 COLUMN 10 VALUE "1.".
+            05 LINE 19 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET).
+            05 LINE 20 COLUMN 10 VALUE "2.".
+            05 LINE 20 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 1).
+            05 LINE 21 COLUMN 10 VALUE "3.".
+            05 LINE 21 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 2).
+            05 LINE 22 COLUMN 10 VALUE "4.".
+            05 LINE 22 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 3).
+            05 LINE 23 COLUMN 10 VALUE "5.".
+            05 LINE 23 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 4).
+            05 LINE 24 COLUMN 10 VALUE "6.".
+            05 LINE 24 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 5).
+            05 LINE 25 COLUMN 10 VALUE "7.".
+            05 LINE 25 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 6).
+            05 LINE 26 COLUMN 10 VALUE "8.".
+            05 LINE 26 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 7).
+            05 LINE 27 COLUMN 10 VALUE "9.".
+            05 LINE 27 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 8).
+            05 LINE 28 COLUMN 10 VALUE "10.".
+            05 LINE 28 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 9).
+            05 LINE 30 COLUMN 10 VALUE "( ) Read the full message by".
+            05 LINE 30 COLUMN 39 VALUE "number".
+            05 LINE 31 COLUMN 10 VALUE "(m) Post a message of your own".
+            05 LINE 32 COLUMN 10 VALUE "(n) Next page".
+            05 LINE 32 COLUMN 30 VALUE "(p) Previous page".
+            05 LINE 32 COLUMN 60 VALUE "(q) Go back".
+            05 LINE 34 COLUMN 10 VALUE "Pick: ".
+            05 MESSAGE-CHOICE-FIELD LINE 34 COLUMN 16 PIC X
                 USING MESSAGE-CHOICE.
 
            01 READ-MESSAGE-SCREEN
            BACKGROUND-COLOR IS 8.
             05 BLANK SCREEN.
-            05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-            05 LINE 4 COLUMN 10 VALUE "Title:".
-            05 LINE 4 COLUMN 18 PIC X(60) USING TITLE.
-            05 LINE 6 COLUMN 10 PIC X(500) USING BODY.
-            05 LINE 18 COLUMN 10 VALUE "(n) Next message".
-            05 LINE 18 COLUMN 30 VALUE "(p) Previous message".
-            05 LINE 18 COLUMN 60 VALUE "(q) Go back".   
-            05 LINE 20 COLUMN 10 VALUE "Pick: ".
-            05 READ-CHOICE-FIELD LINE 20 COLUMN 16 PIC X
+             05 LINE 11 COLUMN 60 VALUE 
+           "   \__|   \__|     \__|\__|  \__| \______/   \__|   ".
+             05 LINE 10 COLUMN 60 VALUE
+           "   $$ |   $$ | \_/ $$ |$$ | \$$ |\$$$$$$  |  $$ |   ".
+             05 LINE 9 COLUMN 60 VALUE
+           "   $$ |   $$ |\$  /$$ |$$ |\$$$ |$$ |  $$\   $$ |   ".
+             05 LINE 8 COLUMN 60 VALUE
+           "   $$ |   $$ \$$$  $$ |$$ \$$$$ |$$ |        $$ |   ".
+             05 LINE 7 COLUMN 60 VALUE
+           "   $$ |   $$\$$\$$ $$ |$$ $$\$$ |$$ |        $$ |   ".
+             05 LINE 6 COLUMN 60 VALUE
+           "   $$ |   $$$$\  $$$$ |$$$$\ $$ |$$ /  \__|  $$ |   ".
+             05 LINE 5 COLUMN 60 VALUE
+           "\__$$  __|$$$\    $$$ |$$$\  $$ |$$  __$$\\__$$  __|".
+             05 LINE 4 COLUMN 60 VALUE
+           "$$$$$$$$\ $$\      $$\ $$\   $$\  $$$$$$\ $$$$$$$$\ ".
+            05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Message Board".
+            05 LINE 18 COLUMN 10 VALUE "Title:".
+            05 LINE 20 COLUMN 18 PIC X(60) USING TITLE.
+            05 LINE 22 COLUMN 10 PIC X(500) USING BODY.
+            05 LINE 35 COLUMN 10 VALUE "(n) Next message".
+            05 LINE 35 COLUMN 30 VALUE "(p) Previous message".
+            05 LINE 35 COLUMN 60 VALUE "(q) Go back".   
+            05 LINE 37 COLUMN 10 VALUE "Pick: ".
+            05 READ-CHOICE-FIELD LINE 37 COLUMN 16 PIC X
                 USING READ-CHOICE.
 
            01 POST-MESSAGE-SCREEN
@@ -277,74 +342,393 @@
            01 WORD-GUESSING-SCREEN
                BACKGROUND-COLOR IS 8.
              05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-             05 LINE 4 COLUMN 10 VALUE "Guess this word: ".
-             05 LINE 6 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 8 COLUMN 10 VALUE "Guesses left: ".
-             05 LINE 8 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
-             05 LINE 10 COLUMN 10 VALUE "( ) Enter a letter to guess".
-             05 LINE 11 COLUMN 10 VALUE "(!) Quit game".
-             05 LINE 13 COLUMN 10 VALUE "Pick: ".
+             05 LINE 11 COLUMN 60 VALUE 
+           "   \__|   \__|     \__|\__|  \__| \______/   \__|   ".
+             05 LINE 10 COLUMN 60 VALUE
+           "   $$ |   $$ | \_/ $$ |$$ | \$$ |\$$$$$$  |  $$ |   ".
+             05 LINE 9 COLUMN 60 VALUE
+           "   $$ |   $$ |\$  /$$ |$$ |\$$$ |$$ |  $$\   $$ |   ".
+             05 LINE 8 COLUMN 60 VALUE
+           "   $$ |   $$ \$$$  $$ |$$ \$$$$ |$$ |        $$ |   ".
+             05 LINE 7 COLUMN 60 VALUE
+           "   $$ |   $$\$$\$$ $$ |$$ $$\$$ |$$ |        $$ |   ".
+             05 LINE 6 COLUMN 60 VALUE
+           "   $$ |   $$$$\  $$$$ |$$$$\ $$ |$$ /  \__|  $$ |   ".
+             05 LINE 5 COLUMN 60 VALUE
+           "\__$$  __|$$$\    $$$ |$$$\  $$ |$$  __$$\\__$$  __|".
+             05 LINE 4 COLUMN 60 VALUE
+           "$$$$$$$$\ $$\      $$\ $$\   $$\  $$$$$$\ $$$$$$$$\ ".
+            05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
+             05 LINE 18 COLUMN 10 VALUE "Guess this word: ".
+             05 LINE 20 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 22 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 22 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 24 COLUMN 10 VALUE "( ) Enter a letter to guess".
+             05 LINE 25 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 26 COLUMN 10 VALUE "Pick: ".
    
            01 IN-GAME-SCREEN
            BACKGROUND-COLOR IS 8.
              05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-             05 LINE 4 COLUMN 10 VALUE "Guess this word: ".
-             05 LINE 6 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 8 COLUMN 10 VALUE "Guesses left: ".
-             05 LINE 8 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
-             05 LINE 10 COLUMN 10 VALUE "( ) Enter a letter to guess".
-             05 LINE 11 COLUMN 10 VALUE "(!) Quit game".
-             05 LINE 13 COLUMN 10 VALUE "Pick: ".
-             05 WS-GUESS-CHOICE-FIELD LINE 13 COLUMN 16 PIC X
+           
+             05 LINE 32 COLUMN 10 VALUE
+           "c$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$, '$$$$$$$$$$$$$$$$$$$$".
+             05 LINE 31 COLUMN 10 VALUE
+           "'.c$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$b  $$$$$$$$$$$$$$$$$$$$r".
+             05 LINE 30 COLUMN 10 VALUE
+           "!!' .d$$$$$$$$$$$$$$$$$$$$$$$$$$b ' z$$$$$$$$$$$$$$$$$$c <".
+             05 LINE 29 COLUMN 10 VALUE
+           "!!!!' .c$$$$$$$$$$$$$$$$$$$$$$$c  :: .c$$$$$$$$$$$$$$$. <!".
+             05 LINE 28 COLUMN 10 VALUE
+           " ;!!!!!'`.z$$$$$$$$$$$$$ec,. ```'''''''``` .,,ccecec,`'!!!".
+             05 LINE 27 COLUMN 10 VALUE
+           "$',;!!!!!!'``.,,,,,.```''!!!!!!!!!!!!!!!!!!!!'''''!!!!!>".
+             05 LINE 26 COLUMN 10 VALUE
+           "$$$P',;!!!!!!!!!!!!!!!!!!!!!!!;;;;;;!!!!!!!!!!!!!!!!!;  '".
+             05 LINE 25 COLUMN 10 VALUE
+           "$$$$$$$P' ,;;;<!!!!!>;;,. `'??????'  ,;;;;;;;;;, `'?$$".
+             05 LINE 24 COLUMN 10 VALUE
+           "$$$$$$$$ ?$???%   `'??$$$$$$$$$$$$bcucd$$$P'  ==$$$$$$$".
+             05 LINE 23 COLUMN 10 VALUE
+           "$$$$$$$b bc,.'??$$$$$$$$$$$$$$FF'?????',J$$$$$P' ,zd$$$".
+             05 LINE 22 COLUMN 10 VALUE
+           "$$$$$$c  '?$$$$$$$$$$$$$$$$$$$$$bc,,.`` .,,c$$$$$$$P',cb".
+             05 LINE 21 COLUMN 10 VALUE
+           "ec,.  `?$$$$$$$$$$$$$$$$$$$$$c.```%%%%,%%%,   c$$$$$$$$P'".
+             05 LINE 20 COLUMN 10 VALUE
+           "     '$$$$$$$$$$$$$$$$$$$$c.   ._              J$$$$$$$$$".
+             05 LINE 19 COLUMN 10 VALUE
+           "    ?$$$$$$$$$$$$$$$$$$c.      '????????' c$$$$$$$$P".
+             05 LINE 18 COLUMN 10 VALUE
+           "    $$$$$$$$$$$$$$ dbc `'?$$$$$$$$$$$$$$$$$$$$$$?$$$$$$$c".
+             05 LINE 17 COLUMN 10 VALUE
+           "    $$$$$$$$$$$$$$P'`?$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$b".
+           05 LINE 16 COLUMN 10 VALUE
+           "    J$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$c".
+             05 LINE 15 COLUMN 10 VALUE
+           "     z$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$c .".
+             05 LINE 14 COLUMN 10 VALUE
+           "      .e$$$$$$$$$$$$$$,$$$$$$$$$$$$$$$$$$$$$$$$$$.".
+             05 LINE 13 COLUMN 10 VALUE
+           "         .ze$$$$$$$$$er  .,cd$$$$$$$$$$$$$$$$bc.'".
+             05 LINE 12 COLUMN 10 VALUE
+           "              ```````''<!!!- '=-='     .  `--=',!>".
+             05 LINE 11 COLUMN 10 VALUE
+           "          `'-;,(<!!!!!!!!!> $F   )...:!.  d'  3 !>".
+             05 LINE 10 COLUMN 10 VALUE
+           "        `!  `!!!!><;;;!!!!! J$$b,`!>;!!:!!`,d?b`!>".
+             05 LINE 9 COLUMN 10 VALUE
+           "<!'''`  !!! ;,`'``''!!!;!!!!`..`!;  ,,,  .<!''`).".
+             05 LINE 8 COLUMN 10 VALUE
+           ".,,,.`` ,!!!' ;,(?';!!''<; `?$$$$$$PF ,;,".
+             05 LINE 7 COLUMN 10 VALUE
+           "!!!!>; `. ,;!>> .e$$$$$$$$''.  '?$$$$$$$e.".
+             05 LINE 6 COLUMN 10 VALUE
+           ";;, `\. `\         .,c$$$$$$$$$$$$$ec,.".
+             05 LINE 5 COLUMN 10 VALUE
+           "!!(``'!!".
+             05 LINE 4 COLUMN 10 VALUE
+           "!!!!!!;".  
+
+             05 LINE 11 COLUMN 60 VALUE 
+           "   \__|   \__|     \__|\__|  \__| \______/   \__|   ".
+             05 LINE 10 COLUMN 60 VALUE
+           "   $$ |   $$ | \_/ $$ |$$ | \$$ |\$$$$$$  |  $$ |   ".
+             05 LINE 9 COLUMN 60 VALUE
+           "   $$ |   $$ |\$  /$$ |$$ |\$$$ |$$ |  $$\   $$ |   ".
+             05 LINE 8 COLUMN 60 VALUE
+           "   $$ |   $$ \$$$  $$ |$$ \$$$$ |$$ |        $$ |   ".
+             05 LINE 7 COLUMN 60 VALUE
+           "   $$ |   $$\$$\$$ $$ |$$ $$\$$ |$$ |        $$ |   ".
+             05 LINE 6 COLUMN 60 VALUE
+           "   $$ |   $$$$\  $$$$ |$$$$\ $$ |$$ /  \__|  $$ |   ".
+             05 LINE 5 COLUMN 60 VALUE
+           "\__$$  __|$$$\    $$$ |$$$\  $$ |$$  __$$\\__$$  __|".
+             05 LINE 4 COLUMN 60 VALUE
+           "$$$$$$$$\ $$\      $$\ $$\   $$\  $$$$$$\ $$$$$$$$\ ".
+            05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
+             05 LINE 34 COLUMN 10 VALUE "Guess this word: ".
+             05 LINE 36 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 38 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 38 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 40 COLUMN 10 VALUE "( ) Enter a letter to guess".
+             05 LINE 41 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 42 COLUMN 10 VALUE "Pick: ".
+             05 WS-GUESS-CHOICE-FIELD LINE 42 COLUMN 16 PIC X
                USING WS-GUESS-CHOICE.
 
            01 WORD-GUESSING-LOSE-SCREEN
              BACKGROUND-COLOR IS 8.
              05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-             05 LINE 4 COLUMN 10 VALUE "You lost!".
-             05 LINE 6 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 8 COLUMN 10 VALUE "Guesses left: ".
-             05 LINE 8 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
-             05 LINE 10 COLUMN 10 VALUE "(p) Play again".
-             05 LINE 11 COLUMN 10 VALUE "(h) See high scores".
-             05 LINE 12 COLUMN 10 VALUE "(!) Quit game".
-             05 LINE 13 COLUMN 10 VALUE "Pick: ".
-             05 WS-GUESSING-CHOICE-LOSE-FIELD LINE 13 COLUMN 16 PIC X
+             05 LINE 32 COLUMN 10 VALUE
+           ":!! <!!!!!!!! ; z$F ` ?$$?bc,ze$$$$$$ `- $$$$$$$c ` ;!!!".
+             05 LINE 31 COLUMN 10 VALUE
+           "!`:! !!!!!!!!! ; 4e . 3$$$$$$P' .d$$$$$ ccd$$$$.`!!!' ;;".
+             05 LINE 30 COLUMN 10 VALUE
+           "!!!`> <!!!!!!!! ; ?$$$$$$$$$$cec- .$$$' .'$$$c`'!!!!!>".
+             05 LINE 29 COLUMN 10 VALUE
+           "!!!!' `:!!!!!!> ; $$$$$$$C???????' .z $$$b.`!!!!!!: :".
+             05 LINE 28 COLUMN 10 VALUE
+           "!!!!! !!`,;;;,`.`$cececd$$$$$$$$$$$$$$' zc' <!!!>: `<!!".
+             05 LINE 27 COLUMN 10 VALUE
+           "!!!!>'!!!!: `.'.'??????$$$$$$$$$$beeeeee' <!'``` `!!!!;".
+             05 LINE 26 COLUMN 10 VALUE
+           ";;.``:,(. `.`??$$$ec.??',,cecece$$$$cucdP=  .,,;; ;;;;,".
+             05 LINE 25 COLUMN 10 VALUE
+           "::.``<!> : '$$$$$$$$ed$??$$$$PF','??? '?$$$$$????''".
+             05 LINE 24 COLUMN 10 VALUE
+           "!!!!;,`~.`?$$$$d$$$ 4$$$$$$$$$$$$$$$$$$$$$$$$b,.```` ,;'".
+             05 LINE 23 COLUMN 10 VALUE
+           "`''--.'?$$ed$F4$$$'? ' ,cc,,,,.`' '.JL <,',' ;'".
+             05 LINE 22 COLUMN 10 VALUE
+           "  `$$$$$$$$,'3F4$$$$$'xn`$$ MM ?$'dMMM> bFJ$> < b$$$. > ;".
+             05 LINE 21 COLUMN 10 VALUE
+           "  4$$$$$$$c d$$$$$$$$$??$$$P'?$$P MMM> $$4$P';' 4$$ < `;".
+             05 LINE 20 COLUMN 10 VALUE
+           " ',$$$$$$$'=?$$$$$$$$$$$$$$$$$$$$$',dM>`$Fd''cPF'$$$??b,".
+             05 LINE 19 COLUMN 10 VALUE
+           " dP$$$$$$$$-'c$$$$$$$$$$$$$$$$$$$$$P'?$$F'dF'J$$$$$b".
+             05 LINE 18 COLUMN 10 VALUE
+           "d'z$$$$$$$$'z$$$$$$$$$$$$$$$$$$$$$$$$$bce$$'?>,r,cec,".
+             05 LINE 17 COLUMN 10 VALUE
+           "`,c$$$$$$$$$P',zce$$$$$b ``''''''''`,zec. `''''''".
+           05 LINE 16 COLUMN 10 VALUE
+           "!!'`..,,,,,,,,,```````` <CCC>>>>>>>>CCCCC,,,,,,,>".
+             05 LINE 15 COLUMN 10 VALUE
+           " !!!!!> <<<CCCCCCCCCCCC:CCC>       'CCCCC```````>".
+             05 LINE 14 COLUMN 10 VALUE
+           "  >,''  $$P'',,,ccCCC:CCCCCCCCCCCCCCCCCCCC>>>>".
+             05 LINE 13 COLUMN 10 VALUE
+           "    $$$',cc,,,ced$$PF'' ' `?'''':'".
+             05 LINE 12 COLUMN 10 VALUE
+           "    $$$$P ze`$$$P'd$$$$$$'.d$$$$$$b.'$$P',c, !!!".
+             05 LINE 11 COLUMN 10 VALUE
+           "    d$u$$$$$$$$ec,?$$$$$$$$'.zec,.'$$$$$$$c,`!!!".
+             05 LINE 10 COLUMN 10 VALUE
+           "     . ,c$$$c, =$$$$$$$$$$$$$$??$$$$$$$c.`'',;;;".
+             05 LINE 9 COLUMN 10 VALUE
+           "           `'!!!!'',,cecec$$$$$$$cec,.'! ;,,".
+             05 LINE 8 COLUMN 10 VALUE
+           "            <!!!!!!!!!!!!!''''''<!!!!!;!!'".
+             05 LINE 7 COLUMN 10 VALUE
+           "             ,!!!!!!!!!!!!!!!!!(;!!!!!! ,!!'".
+             05 LINE 6 COLUMN 10 VALUE
+           "               ,<!!!!!!!!!!!!!!''; !!!!!' ;!!".
+             05 LINE 5 COLUMN 10 VALUE
+           "                  .,!!!!!!!!!!!! /  !!!!!!  ;>".
+             05 LINE 4 COLUMN 10 VALUE
+           "                       .,;;<!!!!! /  <!!!;;".  
+           05 LINE 11 COLUMN 60 VALUE 
+           "   \__|   \__|     \__|\__|  \__| \______/   \__|   ".
+             05 LINE 10 COLUMN 60 VALUE
+           "   $$ |   $$ | \_/ $$ |$$ | \$$ |\$$$$$$  |  $$ |   ".
+             05 LINE 9 COLUMN 60 VALUE
+           "   $$ |   $$ |\$  /$$ |$$ |\$$$ |$$ |  $$\   $$ |   ".
+             05 LINE 8 COLUMN 60 VALUE
+           "   $$ |   $$ \$$$  $$ |$$ \$$$$ |$$ |        $$ |   ".
+             05 LINE 7 COLUMN 60 VALUE
+           "   $$ |   $$\$$\$$ $$ |$$ $$\$$ |$$ |        $$ |   ".
+             05 LINE 6 COLUMN 60 VALUE
+           "   $$ |   $$$$\  $$$$ |$$$$\ $$ |$$ /  \__|  $$ |   ".
+             05 LINE 5 COLUMN 60 VALUE
+           "\__$$  __|$$$\    $$$ |$$$\  $$ |$$  __$$\\__$$  __|".
+             05 LINE 4 COLUMN 60 VALUE
+           "$$$$$$$$\ $$\      $$\ $$\   $$\  $$$$$$\ $$$$$$$$\ ".
+            05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
+             05 LINE 34 COLUMN 10 VALUE "You lost!".
+             05 LINE 36 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 38 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 38 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 39 COLUMN 10 VALUE "(p) Play again".
+             05 LINE 40 COLUMN 10 VALUE "(h) See high scores".
+             05 LINE 41 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 42 COLUMN 10 VALUE "Pick: ".
+             05 WS-GUESSING-CHOICE-LOSE-FIELD LINE 42 COLUMN 16 PIC X
                USING WS-GUESSING-LOSING-CHOICE.
 
            01 WORD-GUESSING-WINNING-SCREEN
              BACKGROUND-COLOR IS 8.
              05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-             05 LINE 4 COLUMN 10 VALUE "You guessed the word!".
-             05 LINE 6 COLUMN 10 PIC X(20) USING WS-ANSWERWORD.
-             05 LINE 8 COLUMN 10 PIC 99 USING WS-GUESSES-LEFT.
-             05 LINE 10 COLUMN 10 VALUE "You scored: ".
-             05 LINE 10 COLUMN 22 PIC 99 USING WS-HIGH-SCORE.
-             05 LINE 12 COLUMN 10 VALUE "(p) Play Again".
-             05 LINE 13 COLUMN 10 VALUE "(h) See High Scores".
-             05 LINE 14 COLUMN 10 VALUE "(!) Quit game".
-             05 LINE 15 COLUMN 10 VALUE "Pick: ".
-             05 WS-GUESSING-CHOICE-WINNING-FIELD LINE 13 COLUMN 16 PIC X
+             05 LINE 32 COLUMN 10 VALUE
+           "$$$$$$P $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$' d$$$$$$$$$$$$".
+             05 LINE 31 COLUMN 10 VALUE
+           "$$$$$$$F.$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$' .$$$$$$$$$$$".
+             05 LINE 30 COLUMN 10 VALUE
+           "$$$$$$$$'.$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$P' d$$$$$$$$$".
+             05 LINE 29 COLUMN 10 VALUE
+           "$$$$$$$$$'.$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$% .$$$$$$$$".
+             05 LINE 28 COLUMN 10 VALUE
+           "$$$$$$$$$$'.d$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ec   '.c$$$$$".
+             05 LINE 27 COLUMN 10 VALUE
+           "$$$$$$$$$$$$'.c$$$$$$$$$$$$$$$$$$$$$$$$$c,.  '?$$$$P' .,c".
+             05 LINE 26 COLUMN 10 VALUE
+           "$$$$$$$$c,. `'?'.,cd$$$$$$$$$$$$ecc,.      .cd$$$$$c. `!''".
+             05 LINE 25 COLUMN 10 VALUE
+           "ec,,.  '??$$$$$$$%=-     `'???$$$$$PP'  ..``<!!!!!".
+             05 LINE 24 COLUMN 10 VALUE
+           "'               `'??$$$$$$$$$$$$$$$$$$$$$$$$P'  ,<!!;,".
+             05 LINE 23 COLUMN 10 VALUE
+           ". '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$P'".
+             05 LINE 22 COLUMN 10 VALUE
+           "'$$$$$$$$$$$$$$$$$$$$$$$$$bhbhU$$$$$$$$$$$$$$$$$$$$$$$'".
+             05 LINE 21 COLUMN 10 VALUE
+           "$$$$$$$$$$b,,,,ce$$$$$$$$$$$$$?????????$$$$$$$$$$$$$$$$P'".
+             05 LINE 20 COLUMN 10 VALUE
+           "$$$$$$$$$.'?4MMb`' .,,ce$$$$$$$$$$$$$$$$eee$$$$$$$$$$$$$$".
+             05 LINE 19 COLUMN 10 VALUE
+           "$$$$$$$$, C,um. 'MMMMPP'`````'TTTTT '.z$$$$$$$$".
+             05 LINE 18 COLUMN 10 VALUE
+           "$$$$$$$$'4>?ML`NMMT4beeuueuueuueedMMMMMCLnn.'MMP 4$$$$$$$".
+             05 LINE 17 COLUMN 10 VALUE
+           "z$$$$$$$$P',n.nmn,'???$$$$$$$$PPP' .,nMMP ?P' ' $$$$$$.".
+           05 LINE 16 COLUMN 10 VALUE
+           "  z$$$$$$$$$$$??$$$$$$$$$$$$$$$$$$$$$$$P'.,r<MM  `$$$$b.".
+             05 LINE 15 COLUMN 10 VALUE
+           "     ,cd$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$P'?$$$c.".
+             05 LINE 14 COLUMN 10 VALUE
+           " ``  >'` .,ce$'z$$$$$$$$$$$$$$$$$$$$$$$$$$$$d$$$$c.".
+             05 LINE 13 COLUMN 10 VALUE
+           "!!!!! `,;<!'''`` z$$$$$$$$$$$$$$$$$$$$$$$$c,c,.  `".
+             05 LINE 12 COLUMN 10 VALUE
+           ";!!;' <!!!'!!!!!.'.zd$$$$$$$$$$$$$$$$$c. ``''!;,".
+             05 LINE 11 COLUMN 10 VALUE
+           " ;<' ;!';<!!!!! ?$.   '.cc$$$$$$$$bc,.' `!!(`''!-".
+             05 LINE 10 COLUMN 10 VALUE
+           " !      ;<!!;!!'z$'  ')`'``      ^'   ,F !!!!;,`'".
+             05 LINE 9 COLUMN 10 VALUE
+           " !>     ,''.> <!',c$b.`!!!!!!!!' z$'3P !!!!!;.".
+             05 LINE 8 COLUMN 10 VALUE
+           "'!!       ,$P' ;!!'` !!>!!!!(,;!!',d$$b,\. .".
+             05 LINE 7 COLUMN 10 VALUE
+           "<!!>        ,cP' ,;;;, .;;;;;!  <!! C`'> 'c".
+             05 LINE 6 COLUMN 10 VALUE
+           "!!!>           ,cP???$$$$$$PPPPP' ;<!;, .".
+             05 LINE 5 COLUMN 10 VALUE
+           "!!!                ,ce$$$$$$$$$$$$P%=".
+             05 LINE 4 COLUMN 10 VALUE
+           "!!;                      .,,,,,,.".  
+           05 LINE 11 COLUMN 60 VALUE 
+           "   \__|   \__|     \__|\__|  \__| \______/   \__|   ".
+             05 LINE 10 COLUMN 60 VALUE
+           "   $$ |   $$ | \_/ $$ |$$ | \$$ |\$$$$$$  |  $$ |   ".
+             05 LINE 9 COLUMN 60 VALUE
+           "   $$ |   $$ |\$  /$$ |$$ |\$$$ |$$ |  $$\   $$ |   ".
+             05 LINE 8 COLUMN 60 VALUE
+           "   $$ |   $$ \$$$  $$ |$$ \$$$$ |$$ |        $$ |   ".
+             05 LINE 7 COLUMN 60 VALUE
+           "   $$ |   $$\$$\$$ $$ |$$ $$\$$ |$$ |        $$ |   ".
+             05 LINE 6 COLUMN 60 VALUE
+           "   $$ |   $$$$\  $$$$ |$$$$\ $$ |$$ /  \__|  $$ |   ".
+             05 LINE 5 COLUMN 60 VALUE
+           "\__$$  __|$$$\    $$$ |$$$\  $$ |$$  __$$\\__$$  __|".
+             05 LINE 4 COLUMN 60 VALUE
+           "$$$$$$$$\ $$\      $$\ $$\   $$\  $$$$$$\ $$$$$$$$\ ".
+            05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
+             05 LINE 34 COLUMN 10 VALUE "You guessed the word!".
+             05 LINE 36 COLUMN 10 PIC X(20) USING WS-ANSWERWORD.
+             05 LINE 38 COLUMN 10 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 40 COLUMN 10 VALUE "You scored: ".
+             05 LINE 40 COLUMN 22 PIC 99 USING WS-HIGH-SCORE.
+             05 LINE 42 COLUMN 10 VALUE "(p) Play Again".
+             05 LINE 43 COLUMN 10 VALUE "(h) See High Scores".
+             05 LINE 44 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 45 COLUMN 10 VALUE "Pick: ".
+             05 WS-GUESSING-CHOICE-WINNING-FIELD LINE 45 COLUMN 16 PIC X
                USING WS-GUESSING-WINNING-CHOICE.
 
            01 HIGH-SCORE-SCREEN
            BACKGROUND-COLOR IS 8.
              05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-             05 LINE 4 COLUMN 10 VALUE "High Scores:".
-             05 LINE 6 COLUMN 10 PIC XX USING WS-SCORE(1).
-             05 LINE 6 COLUMN 14 PIC X(10) USING WS-NAME(1).
-             05 LINE 8 COLUMN 10 PIC XX USING WS-SCORE(2).
-             05 LINE 8 COLUMN 14 PIC X(10) USING WS-NAME(2).
-             05 LINE 10 COLUMN 10 PIC XX USING WS-SCORE(3).
-             05 LINE 10 COLUMN 14 PIC X(10) USING WS-NAME(3).
-             05 LINE 12 COLUMN 10 VALUE "(b) Go back".
-             05 LINE 14 COLUMN 10 VALUE "Pick: ".
-             05 WS-HIGH-SCORE-FIELD LINE 13 COLUMN 16 PIC X
+             05 LINE 32 COLUMN 10 VALUE
+           "      :!  !!!!!!!i `'!!!!!!!!!!!!!!!'''`.;ii!!!!!'`.'` ;!!".
+             05 LINE 31 COLUMN 10 VALUE
+           "          !!!!!!; `!!!!!i;. ~~~~~~~ .;i!!!!''`.;i!!!!!!!'.".
+             05 LINE 30 COLUMN 10 VALUE
+           "         `!!!!! `!!!!;.  ~~~~~~~~~~~~~~  .;i!!!!' .i!!!!!!".
+             05 LINE 29 COLUMN 10 VALUE
+           "         :!!!!> !!!;  ~~~~~~~. '$. ~~~~~~~~ .;!!!!'  ;!!!!".
+             05 LINE 28 COLUMN 10 VALUE
+           "         !!!!i !i. `~~~~~~~~ `$c ~~~~~~~~~~~~  <!!!!'  i!!".
+             05 LINE 27 COLUMN 10 VALUE
+           "          ,i!    ~~~~~~~~~~ '$r'~~~~~~~~~~~~ '  ;!!!!!  ;!".
+             05 LINE 26 COLUMN 10 VALUE
+           "       :::'`   `~~~~~~~~~~ '$.`~~~~~~~~~~~~~~ .~ .!!!!!' ;".
+             05 LINE 25 COLUMN 10 VALUE
+           "      `:::::  ~~~~~~~~~~~ `$.`~~~~~~~~~~~~~~~~  ~  <!!!!' ".
+             05 LINE 24 COLUMN 10 VALUE
+           "      :::::  ~~~~~~~~~~~ '$c`~~~~~~~~~~~~~~~~~~~ ~~ ;!!!!'".
+             05 LINE 23 COLUMN 10 VALUE
+           "      ::::  ~~~~~~~~~~~ `$c'~~~~~~~~~~~~~~~~~~~~~ ~~ ,iiii".
+             05 LINE 22 COLUMN 10 VALUE
+           "     `:::  ~~~~~~~~~~~ `$L ~~~~~~~~~~~~~~~~~~~~~~~ .  `''`".
+             05 LINE 21 COLUMN 10 VALUE
+           "      ::  ~~~~~~~~~~~.`$b ~~~~~~~~~~~~~~~~~~~~~~~~. `:::::".
+             05 LINE 20 COLUMN 10 VALUE
+           "     ::       .~~~~~~ ?$ ~~~~~~~~~~~~~~~~~~~~~~~~.  ::::::".
+             05 LINE 19 COLUMN 10 VALUE
+           "    :::::  $$$PF' .~~.$.~~~~~~~~~~~~~~~~~~~~~~~~.  :::::::".
+             05 LINE 18 COLUMN 10 VALUE
+           "    :::::  $$$eeed' .~~~~~~~~~~~~~~~~~~~~~~~~~~~  ::::::::".
+             05 LINE 17 COLUMN 10 VALUE
+           "    :::: `? =       '   '?????????'  .~~~.  :'.::::::".
+           05 LINE 16 COLUMN 10 VALUE
+           "   `:::  $$$$$r-.  P9$$$?$bedE' .,d$$$$$$$P'   `::::' .:::".
+             05 LINE 15 COLUMN 10 VALUE
+           "   :::: ?Fx$b. '?$ $$$b($$'   dF   'ud$$$$$$c `:::::::' .:".
+             05 LINE 14 COLUMN 10 VALUE
+           "`''''''''''''''''` ..z e$$$F   d$P'`'??<<3c :::::::::::' ".
+             05 LINE 13 COLUMN 10 VALUE
+           "!!!!!!!!!!!!!!!!!!!!!!!!!''`,   $$$$$$$$$Fc ::::::::::::::".
+             05 LINE 12 COLUMN 10 VALUE
+           "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'`..euJB$. :::::::::::::::".
+             05 LINE 11 COLUMN 10 VALUE
+           "!!i;,;i!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!''`  ::::::::::::::::".
+             05 LINE 10 COLUMN 10 VALUE
+           "; `::' .!!!!!!!!!!!i;,;i!!!!!!!!!!!!!!!!!!' .:::::::::::::".
+             05 LINE 9 COLUMN 10 VALUE
+           "  ::::  !!!!!!!!!, `''''```  .,;ii!!!!!!!!!!!'' .:::::::: ".
+             05 LINE 8 COLUMN 10 VALUE
+           " `::::  !!!!!!!!.`::::::::::::::'` .,;i!!!!!!!!!!' ::::. ".
+             05 LINE 7 COLUMN 10 VALUE
+           "  :::: `!!!!!!!> :::::::::::::::::::''`  ,i!!!!!!!!'..   ".
+             05 LINE 6 COLUMN 10 VALUE
+           "  :::: <!!!!!!!> ::::::::::::::::::::::::'`  ,i!!!!!!'   ".
+             05 LINE 5 COLUMN 10 VALUE
+           "  .::: <!!!!!!!> ::::::::::::::::::::::::::::'` i!!!!!'  ".
+             05 LINE 4 COLUMN 10 VALUE
+           "   ::: <!!!!!!!! ::::::::::::::::::::::::::::::: i!!!!>".  
+           05 LINE 11 COLUMN 60 VALUE 
+           "   \__|   \__|     \__|\__|  \__| \______/   \__|   ".
+             05 LINE 10 COLUMN 60 VALUE
+           "   $$ |   $$ | \_/ $$ |$$ | \$$ |\$$$$$$  |  $$ |   ".
+             05 LINE 9 COLUMN 60 VALUE
+           "   $$ |   $$ |\$  /$$ |$$ |\$$$ |$$ |  $$\   $$ |   ".
+             05 LINE 8 COLUMN 60 VALUE
+           "   $$ |   $$ \$$$  $$ |$$ \$$$$ |$$ |        $$ |   ".
+             05 LINE 7 COLUMN 60 VALUE
+           "   $$ |   $$\$$\$$ $$ |$$ $$\$$ |$$ |        $$ |   ".
+             05 LINE 6 COLUMN 60 VALUE
+           "   $$ |   $$$$\  $$$$ |$$$$\ $$ |$$ /  \__|  $$ |   ".
+             05 LINE 5 COLUMN 60 VALUE
+           "\__$$  __|$$$\    $$$ |$$$\  $$ |$$  __$$\\__$$  __|".
+             05 LINE 4 COLUMN 60 VALUE
+           "$$$$$$$$\ $$\      $$\ $$\   $$\  $$$$$$\ $$$$$$$$\ ".
+            05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
+             05 LINE 34 COLUMN 10 VALUE "High Scores:".
+             05 LINE 36 COLUMN 10 PIC XX USING WS-SCORE(1).
+             05 LINE 36 COLUMN 14 PIC X(10) USING WS-NAME(1).
+             05 LINE 38 COLUMN 10 PIC XX USING WS-SCORE(2).
+             05 LINE 38 COLUMN 14 PIC X(10) USING WS-NAME(2).
+             05 LINE 40 COLUMN 10 PIC XX USING WS-SCORE(3).
+             05 LINE 40 COLUMN 14 PIC X(10) USING WS-NAME(3).
+             05 LINE 42 COLUMN 10 VALUE "(b) Go back".
+             05 LINE 44 COLUMN 10 VALUE "Pick: ".
+             05 WS-HIGH-SCORE-FIELD LINE 44 COLUMN 16 PIC X
                USING WS-HIGH-SCORE-CHOICE.
        PROCEDURE DIVISION.
       
@@ -533,7 +917,7 @@
            PERFORM 0120-GENERATE-TABLE.
 
        0160-DISPLAY-GUESSING-GAME.
-           MOVE 15 TO WS-GUESSES-LEFT.
+           MOVE 26 TO WS-GUESSES-LEFT.
            SET WORD-IDX TO 0.
            OPEN INPUT F-WORD-FILE.
            MOVE 0 TO WS-FILE-IS-ENDED.
