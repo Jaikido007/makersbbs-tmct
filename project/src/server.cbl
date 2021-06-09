@@ -93,16 +93,16 @@
                05 WS-MONTH PIC X(2).
                05 WS-DAY PIC X(2).
                05 WS-HOURS-MINS.
-                  10 WS-HOURS PIC X(2).
-                  10 WS-MINS PIC X(2).
-
+                   10 WS-HOURS PIC X(2).
+                   10 WS-MINS PIC X(2).
+                 
            SCREEN SECTION.
 
            01 TIME-SCREEN.
-             05 LINE 2 COLUMN 50 USING WS-HOURS.
+             05 LINE 2 COLUMN 50 PIC X(2) USING WS-HOURS.
              05 LINE 2 COLUMN 52 VALUE ":".
-             05 LINE 2 COLUMN 53 USING WS-MINS.
-
+             05 LINE 2 COLUMN 53 PIC X(2) USING WS-MINS.
+            
            01 LOGIN-SCREEN.
              05 BLANK SCREEN.
              05 LINE 2 COLUMN 10 VALUE "Makers BBS".
