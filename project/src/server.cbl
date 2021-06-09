@@ -28,17 +28,28 @@
               05 PLAYER-NAME PIC X(10).
            FD F-USERS-FILE.
            01 USERS.
-              05 USER-NAME PIC X(10).
+              05 USERNAME PIC X(10).
               05 USER-PASSWORD PIC X(20).   
 
            WORKING-STORAGE SECTION.
       *     Variables related to login and menu screen
            01 USER-NAME PIC X(10).
            01 WS-PASSWORD PIC X(20).
+           01 NEW-USER-NAME PIC X(10).
+           01 NEW-PASSWORD PIC X(20).
            01 LOGIN-CHOICE PIC X.
            01 MENU-CHOICE PIC X.
            01 ERROR-CHOICE PIC X.
            01 CREATE-CHOICE PIC X.
+           01 WS-USERS.
+               05 WS-USER OCCURS 100 TIMES
+               ASCENDING KEY IS WS-USERNAME
+               INDEXED BY USER-IDX.
+                   10 WS-USERNAME PIC X(10).
+                   10 WS-PWORD PIC X(20).
+           01 WS-FOUND PIC 9.
+           01 WS-IDX UNSIGNED-INT. 
+
       *    Variables related to creating table and reading file
            01 WS-FILE-IS-ENDED PIC 9.
            01 WS-MSGS.
@@ -107,42 +118,46 @@
              05 LINE 2 COLUMN 10 VALUE "Makers BBS".
              05 LINE 4 COLUMN 10 VALUE "(l) Go to Log-in.".
              05 LINE 5 COLUMN 10 VALUE "(c) Create an account.".
-             05 LINE 7 COLUMN 10 VALUE "Pick: ".
-             05 LOGIN-CHOICE-FIELD LINE 7 COLUMN 16 PIC X
+             05 LINE 6 COLUMN 10 VALUE "(q) Quit.".
+             05 LINE 8 COLUMN 10 VALUE "Pick: ".
+             05 LOGIN-CHOICE-FIELD LINE 8 COLUMN 16 PIC X
                 USING LOGIN-CHOICE.
 
            01 SIGN-IN-SCREEN
-           05 BLANK SCREEN.
+             BACKGROUND-COLOR IS 8.
+             05 BLANK SCREEN.
              05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-             05 LINE 4 COLUMN 10 VALUE "Enter your username?".
+             05 LINE 4 COLUMN 10 VALUE "Enter your username:".
              05 USER-NAME-FIELD LINE 6 COLUMN 10 PIC X(10)
                 USING USER-NAME.
-             05 LINE 8 COLUMN 10 VALUE "Enter your password?".
+             05 LINE 8 COLUMN 10 VALUE "Enter your password:".
              05 PASSWORD-FIELD LINE 10 COLUMN 10 PIC X(20)
                 USING WS-PASSWORD.
            
-           01 INCORRECT-LOGIN-SCREEN
-           05 BLANK SCREEN.
+           01 ERROR-SCREEN
+             BACKGROUND-COLOR IS 8.
+             05 BLANK SCREEN.
              05 LINE 2 COLUMN 10 VALUE "Makers BBS".
              05 LINE 4 COLUMN 10 VALUE "Incorrect Username or Password".
-             05 LINE 6 COLUMN 10 VALUE "(l) Back to Log-in."
+             05 LINE 6 COLUMN 10 VALUE "(l) Back to Log-in.".
              05 LINE 7 COLUMN 10 VALUE "(c) Create an account.".
              05 LINE 9 COLUMN 10 VALUE "Pick: ".
-             05 ERROR-CHOICE-FIELD LINE 7 COLUMN 16 PIC X
+             05 ERROR-CHOICE-FIELD LINE 9 COLUMN 16 PIC X
                 USING ERROR-CHOICE.
 
            01 CREATE-AN-ACCOUNT-SCREEN
+             BACKGROUND-COLOR IS 8.
              05 BLANK SCREEN.
              05 LINE 2 COLUMN 10 VALUE "Makers BBS".
              05 LINE 4 COLUMN 10 VALUE "Create your account".
-             05 LINE 6 COLUMN 10 VALUE "Enter a username?".
-             05 USER-NAME-FIELD LINE 8 COLUMN 10 PIC X(10)
-                USING USER-NAME.
-             05 LINE 10 COLUMN 10 VALUE "Enter a password?".
-             05 LINE 10 COLUMN 27 VALUE "(password must be lowercase,".
+             05 LINE 6 COLUMN 10 VALUE "Enter a username:".
+             05 NEW-USER-NAME-FIELD LINE 8 COLUMN 10 PIC X(10)
+                USING NEW-USER-NAME.
+             05 LINE 10 COLUMN 10 VALUE "Enter a password:".
+             05 LINE 10 COLUMN 28 VALUE "(password must be lowercase,".
              05 LINE 10 COLUMN 56 VALUE "max 20 characters)".
-             05 PASSWORD-FIELD LINE 12 COLUMN 10 PIC X(20)
-                USING WS-PASSWORD.
+             05 NEW-PASSWORD-FIELD LINE 12 COLUMN 10 PIC X(20)
+                USING NEW-PASSWORD.
              05 LINE 14 COLUMN 10 VALUE "(s) Submit".
              05 LINE 15 COLUMN 10 VALUE "(q) Go Back".
              05 LINE 17 COLUMN 10 VALUE "Pick: ".
@@ -332,11 +347,87 @@
        PROCEDURE DIVISION.
       
        0100-DISPLAY-LOGIN.
+           INITIALIZE LOGIN-CHOICE.      
+           DISPLAY LOGIN-SCREEN.
+           ACCEPT LOGIN-CHOICE-FIELD.
+           IF LOGIN-CHOICE = "l" THEN 
+               PERFORM 0101-SIGN-IN 
+           ELSE IF LOGIN-CHOICE = "c" THEN 
+               PERFORM 0102-SIGN-UP
+           ELSE IF LOGIN-CHOICE = "q" THEN 
+               STOP RUN
+           ELSE 
+               PERFORM 0100-DISPLAY-LOGIN
+           END-IF.
+
+       0101-SIGN-IN.
+           SET COUNTER TO 0.
+           OPEN INPUT F-USERS-FILE.
+           MOVE 0 TO WS-FILE-IS-ENDED.
+           PERFORM UNTIL WS-FILE-IS-ENDED = 1
+               READ F-USERS-FILE
+                   NOT AT END
+                       ADD 1 TO COUNTER
+                       MOVE USERNAME TO WS-USERNAME(COUNTER)
+                       MOVE USER-PASSWORD TO WS-PWORD(COUNTER)
+                   AT END 
+                       MOVE 1 TO WS-FILE-IS-ENDED
+               END-READ 
+           END-PERFORM.
+           CLOSE F-USERS-FILE.
            INITIALIZE USER-NAME.
            INITIALIZE WS-PASSWORD.
-           DISPLAY LOGIN-SCREEN.
+           DISPLAY SIGN-IN-SCREEN.
            ACCEPT USER-NAME-FIELD.
-           PERFORM 0110-DISPLAY-MENU.
+           ACCEPT PASSWORD-FIELD.
+           MOVE 0 TO WS-FOUND.
+           MOVE 1 TO WS-IDX.
+           ADD 1 TO COUNTER.
+           PERFORM UNTIL WS-IDX = COUNTER
+               IF USER-NAME = WS-USERNAME(WS-IDX) AND 
+               WS-PASSWORD = WS-PWORD(WS-IDX) THEN
+                   MOVE 1 TO WS-FOUND 
+               END-IF
+               ADD 1 TO WS-IDX 
+           END-PERFORM.
+
+           IF WS-FOUND = 1 THEN
+               PERFORM 0110-DISPLAY-MENU 
+           ELSE 
+               PERFORM 0103-ERROR-PAGE 
+           END-IF. 
+
+       0102-SIGN-UP.
+           INITIALIZE NEW-USER-NAME.
+           INITIALIZE NEW-PASSWORD.
+           INITIALIZE CREATE-CHOICE
+           DISPLAY CREATE-AN-ACCOUNT-SCREEN.
+           ACCEPT NEW-USER-NAME-FIELD.
+           ACCEPT NEW-PASSWORD-FIELD.
+           ACCEPT CREATE-CHOICE-FIELD.
+           IF CREATE-CHOICE = "q" THEN 
+               PERFORM 0100-DISPLAY-LOGIN
+           ELSE IF CREATE-CHOICE = "s" THEN 
+               OPEN EXTEND F-USERS-FILE
+               MOVE NEW-USER-NAME TO USERNAME
+               MOVE NEW-PASSWORD TO USER-PASSWORD
+               WRITE USERS
+               END-WRITE               
+           END-IF.
+           CLOSE F-USERS-FILE.
+           PERFORM 0101-SIGN-IN.
+
+       0103-ERROR-PAGE.
+           INITIALIZE ERROR-CHOICE.
+           DISPLAY ERROR-SCREEN.
+           ACCEPT ERROR-CHOICE-FIELD.
+           IF ERROR-CHOICE = "l" THEN 
+               PERFORM 0101-SIGN-IN
+           ELSE IF ERROR-CHOICE = "c" THEN 
+               PERFORM 0102-SIGN-UP 
+           ELSE 
+               PERFORM 0103-ERROR-PAGE 
+           END-IF.
 
        0110-DISPLAY-MENU.
            INITIALIZE MENU-CHOICE.
