@@ -47,6 +47,7 @@
            01 NEW-PASSWORD PIC X(20).
            01 LOGIN-CHOICE PIC X.
            01 MENU-CHOICE PIC X.
+
            01 ERROR-CHOICE PIC X.
            01 CREATE-CHOICE PIC X.
            01 WS-USERS.
@@ -57,7 +58,7 @@
                    10 WS-PWORD PIC X(20).
            01 WS-FOUND PIC 9.
            01 WS-IDX UNSIGNED-INT. 
-
+      
       *    Variables related to creating table and reading file
            01 WS-FILE-IS-ENDED PIC 9.
            01 WS-MSGS.
@@ -120,8 +121,23 @@
            01 WS-GUESSING-LOSING-CHOICE PIC X.
            01 WS-GUESSING-WINNING-CHOICE PIC X.
            01 WS-WORD-LENGTH PIC 99.
-    
+
+      *    Time
+           01 WS-TIME.
+               05 WS-YEAR PIC X(4).
+               05 WS-MONTH PIC X(2).
+               05 WS-DAY PIC X(2).
+               05 WS-HOURS-MINS.
+                   10 WS-HOURS PIC X(2).
+                   10 WS-MINS PIC X(2).
+                 
            SCREEN SECTION.
+
+           01 TIME-SCREEN.
+             05 LINE 2 COLUMN 50 PIC X(2) USING WS-HOURS.
+             05 LINE 2 COLUMN 52 VALUE ":".
+             05 LINE 2 COLUMN 53 PIC X(2) USING WS-MINS.
+            
            01 LOGIN-SCREEN.
              05 BLANK SCREEN.
              05 LINE 2 COLUMN 10 VALUE "Makers BBS".
@@ -354,10 +370,13 @@
              05 WS-HIGH-SCORE-FIELD LINE 13 COLUMN 16 PIC X
                USING WS-HIGH-SCORE-CHOICE.
        PROCEDURE DIVISION.
-      
+
+           
        0100-DISPLAY-LOGIN.
+           PERFORM 0230-CURRENT-TIME.
            INITIALIZE LOGIN-CHOICE.      
            DISPLAY LOGIN-SCREEN.
+           DISPLAY TIME-SCREEN.
            ACCEPT LOGIN-CHOICE-FIELD.
            IF LOGIN-CHOICE = "l" THEN 
                PERFORM 0101-SIGN-IN 
@@ -387,6 +406,7 @@
            INITIALIZE USER-NAME.
            INITIALIZE WS-PASSWORD.
            DISPLAY SIGN-IN-SCREEN.
+
            ACCEPT USER-NAME-FIELD.
            ACCEPT PASSWORD-FIELD.
            MOVE 0 TO WS-FOUND.
@@ -439,8 +459,10 @@
            END-IF.
 
        0110-DISPLAY-MENU.
+           PERFORM 0230-CURRENT-TIME.
            INITIALIZE MENU-CHOICE.
            DISPLAY MENU-SCREEN.
+           DISPLAY TIME-SCREEN.
            ACCEPT MENU-CHOICE-FIELD.
            IF MENU-CHOICE = "q" THEN
            STOP RUN
@@ -455,6 +477,7 @@
            ELSE 
                PERFORM 0110-DISPLAY-MENU
            END-IF. 
+           
        
        0120-GENERATE-TABLE.
            SET COUNTER TO 0.
@@ -481,8 +504,10 @@
            PERFORM 0130-DISPLAY-MESSAGEBOARD.
       
        0130-DISPLAY-MESSAGEBOARD.
+           PERFORM 0230-CURRENT-TIME.
            INITIALIZE MESSAGE-CHOICE.
            DISPLAY MESSAGEBOARD-SCREEN.
+           DISPLAY TIME-SCREEN.
            ACCEPT MESSAGE-CHOICE-FIELD.
            IF MESSAGE-CHOICE = "q" THEN 
                PERFORM 0110-DISPLAY-MENU
@@ -519,6 +544,7 @@
            END-IF.
 
        0140-READ-MESSAGE.
+           PERFORM 0230-CURRENT-TIME.
            INITIALIZE READ-CHOICE.
            IF MESSAGE-NUM = 1 OR 2 OR 3 OR 4 OR 5 OR 6 OR 7 OR 8 OR 9 
            OR 10
@@ -532,6 +558,7 @@
                TO POST-DATE                    
            END-IF.
            DISPLAY READ-MESSAGE-SCREEN.
+           DISPLAY TIME-SCREEN.
            ACCEPT READ-CHOICE.
            IF READ-CHOICE = "q" THEN
                PERFORM 0130-DISPLAY-MESSAGEBOARD
@@ -552,14 +579,17 @@
            END-IF.
 
        0150-POST-MESSAGE.
+           PERFORM 0230-CURRENT-TIME.
            STRING FUNCTION CURRENT-DATE(1:4) "-" 
                FUNCTION CURRENT-DATE(5:2) "-" FUNCTION CURRENT-DATE(7:2)
                INTO WS-FORMATTED-DATE
            END-STRING.
+
            INITIALIZE POST-CHOICE.
            INITIALIZE POST-TITLE.
            INITIALIZE POST-BODY.
            DISPLAY POST-MESSAGE-SCREEN.
+           DISPLAY TIME-SCREEN.
            ACCEPT POST-TITLE-FIELD.
            ACCEPT POST-BODY-FIELD.
            ACCEPT POST-CHOICE-FIELD.
@@ -578,6 +608,7 @@
            PERFORM 0120-GENERATE-TABLE.
 
        0160-DISPLAY-GUESSING-GAME.
+           PERFORM 0230-CURRENT-TIME.
            MOVE 15 TO WS-GUESSES-LEFT.
            SET WORD-IDX TO 0.
            OPEN INPUT F-WORD-FILE.
@@ -597,6 +628,7 @@
            MOVE WS-WORD TO WS-ANSWERWORD.
            MOVE REPLACE-LETTER(WS-WORD) TO WS-WORD. 
            DISPLAY WORD-GUESSING-SCREEN.
+           DISPLAY TIME-SCREEN.
            MOVE 1 TO COUNTER.
            PERFORM UNTIL COUNTER = 20
              IF '*' EQUALS WS-WORD(COUNTER:1) 
@@ -607,8 +639,10 @@
            PERFORM 0170-IN-GAME-SCREEN.
           
        0170-IN-GAME-SCREEN.
+           PERFORM 0230-CURRENT-TIME.
            INITIALIZE WS-GUESS-CHOICE.
            DISPLAY IN-GAME-SCREEN.
+           DISPLAY TIME-SCREEN.
            ACCEPT WS-GUESS-CHOICE-FIELD.
            IF WS-GUESS-CHOICE = '!' THEN 
                PERFORM 0110-DISPLAY-MENU
@@ -617,6 +651,7 @@
            END-IF.
            
        0180-CHECK-GUESS.
+           PERFORM 0230-CURRENT-TIME.
            MOVE 1 TO COUNTER.
            PERFORM UNTIL COUNTER = 20
                  IF WS-GUESS-CHOICE = WS-ANSWERWORD(COUNTER:1) 
@@ -646,9 +681,11 @@
       
            
        0190-WINNING-SCREEN.
+           PERFORM 0230-CURRENT-TIME.
            INITIALIZE WS-GUESSING-WINNING-CHOICE.
            COMPUTE WS-HIGH-SCORE = WS-LETTERS-LEFT * WS-GUESSES-LEFT.
            DISPLAY WORD-GUESSING-WINNING-SCREEN.
+           DISPLAY TIME-SCREEN.
            OPEN EXTEND F-HIGH-SCORES-FILE
                MOVE WS-HIGH-SCORE TO HIGH-SCORE
                MOVE USER-NAME TO PLAYER-NAME
@@ -669,8 +706,10 @@
 
 
        0200-LOSING-SCREEN.
+           PERFORM 0230-CURRENT-TIME.
            INITIALIZE WS-GUESSING-LOSING-CHOICE.
            DISPLAY WORD-GUESSING-LOSE-SCREEN.
+           DISPLAY TIME-SCREEN.
            ACCEPT WS-GUESSING-LOSING-CHOICE.
            IF WS-GUESSING-LOSING-CHOICE = 'p'
                THEN PERFORM 0160-DISPLAY-GUESSING-GAME
@@ -701,7 +740,13 @@
            
 
        0220-HIGH-SCORE-SCREEN.
+           PERFORM 0230-CURRENT-TIME.
            INITIALIZE WS-HIGH-SCORE-CHOICE.
            SORT WS-TABLE-HIGH-SCORE ON DESCENDING WS-SCORE.
            DISPLAY HIGH-SCORE-SCREEN.
+           DISPLAY TIME-SCREEN.
            ACCEPT WS-HIGH-SCORE-CHOICE.
+
+       0230-CURRENT-TIME.
+           MOVE FUNCTION CURRENT-DATE TO WS-TIME.
+             

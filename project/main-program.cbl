@@ -1,5 +1,11 @@
        IDENTIFICATION DIVISION.
        PROGRAM-ID. main-program.
+
+    
+       
+
+          
+
        ENVIRONMENT DIVISION.
            CONFIGURATION SECTION.
            REPOSITORY.
@@ -9,7 +15,9 @@
                FUNCTION DISPLAY-MESSAGE-AUTHOR
                FUNCTION DISPLAY-MESSAGE-DATE 
                FUNCTION REPLACE-LETTER.
+
        PROCEDURE DIVISION.
            CALL "server".
            GOBACK.
 
+           
