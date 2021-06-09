@@ -1,0 +1,35 @@
+       IDENTIFICATION DIVISION.
+       FUNCTION-ID. MESSAGE-CHOICE-TO-NUM.
+       DATA DIVISION.
+           LINKAGE SECTION.
+           01 LS-MESSAGE-CHOICE PIC XX.
+           01 LS-MESSAGE-NUM UNSIGNED-INT.
+           01 LS-RESULT UNSIGNED-INT.
+
+       PROCEDURE DIVISION USING LS-MESSAGE-CHOICE 
+       RETURNING LS-MESSAGE-NUM.
+
+           IF LS-MESSAGE-CHOICE = "1" 
+               SET LS-MESSAGE-NUM TO 1 
+           ELSE IF LS-MESSAGE-CHOICE = "2" 
+               SET LS-MESSAGE-NUM TO 2 
+           ELSE IF LS-MESSAGE-CHOICE = "3" 
+               SET LS-MESSAGE-NUM TO 3 
+           ELSE IF LS-MESSAGE-CHOICE = "4" 
+               SET LS-MESSAGE-NUM TO 4 
+           ELSE IF LS-MESSAGE-CHOICE = "5" 
+               SET LS-MESSAGE-NUM TO 5 
+           ELSE IF LS-MESSAGE-CHOICE = "6" 
+               SET LS-MESSAGE-NUM TO 6 
+           ELSE IF LS-MESSAGE-CHOICE = "7" 
+               SET LS-MESSAGE-NUM TO 7 
+           ELSE IF LS-MESSAGE-CHOICE = "8" 
+               SET LS-MESSAGE-NUM TO 8 
+           ELSE IF LS-MESSAGE-CHOICE = "9" 
+               SET LS-MESSAGE-NUM TO 9
+           ELSE IF LS-MESSAGE-CHOICE = "10" 
+               SET LS-MESSAGE-NUM TO 10 
+           END-IF.
+
+           END FUNCTION MESSAGE-CHOICE-TO-NUM.
+           

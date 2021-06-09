@@ -1,6 +1,12 @@
        IDENTIFICATION DIVISION.
        PROGRAM-ID. server.
        ENVIRONMENT DIVISION.
+           CONFIGURATION SECTION.
+           REPOSITORY.
+               FUNCTION MESSAGE-CHOICE-TO-NUM
+               FUNCTION DISPLAY-MESSAGE-TITLE
+               FUNCTION DISPLAY-MESSAGE-BODY
+               FUNCTION REPLACE-LETTER.
            INPUT-OUTPUT SECTION.
            FILE-CONTROL.
            SELECT F-MESSAGE-FILE ASSIGN TO "messages.dat"
@@ -76,6 +82,7 @@
            01 POST-AUTHOR PIC X(10).
            01 POST-DATE PIC X(10).
            01 MESSAGE-NUM UNSIGNED-INT.
+           01 RESULT UNSIGNED-INT.
 
       *    Variables related to post message screen
            01 POST-TITLE PIC X(60).
@@ -501,35 +508,9 @@
                    COMPUTE PAGE-NUM = PAGE-NUM - 1
                    PERFORM 0130-DISPLAY-MESSAGEBOARD
                END-IF
-           ELSE IF MESSAGE-CHOICE = "1" 
-               SET MESSAGE-NUM TO 1 
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "2" 
-               SET MESSAGE-NUM TO 2 
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "3" 
-               SET MESSAGE-NUM TO 3 
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "4" 
-               SET MESSAGE-NUM TO 4 
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "5" 
-               SET MESSAGE-NUM TO 5 
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "6" 
-               SET MESSAGE-NUM TO 6 
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "7" 
-               SET MESSAGE-NUM TO 7 
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "8" 
-               SET MESSAGE-NUM TO 8 
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "9" 
-               SET MESSAGE-NUM TO 9
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "10" 
-               SET MESSAGE-NUM TO 10 
+           ELSE IF MESSAGE-CHOICE = "1" OR "2" OR "3" OR "4" OR "5" 
+             OR "6" OR "7" OR "8" OR "9" OR "10"
+               SET MESSAGE-NUM TO MESSAGE-CHOICE-TO-NUM(MESSAGE-CHOICE)
                PERFORM 0140-READ-MESSAGE
            ELSE 
                PERFORM 0130-DISPLAY-MESSAGEBOARD
@@ -537,56 +518,12 @@
 
        0140-READ-MESSAGE.
            INITIALIZE READ-CHOICE.
-           IF MESSAGE-NUM = 1
-                       MOVE WS-TITLE(OFFSET) TO TITLE
-                       MOVE WS-BODY(OFFSET) TO BODY
-                       MOVE WS-AUTHOR(OFFSET) TO POST-AUTHOR
-                       MOVE WS-DATE(OFFSET) TO POST-DATE
-           ELSE IF MESSAGE-NUM = 2
-                       MOVE WS-TITLE(OFFSET - 1) TO TITLE
-                       MOVE WS-BODY(OFFSET - 1) TO BODY
-                       MOVE WS-AUTHOR(OFFSET - 1) TO POST-AUTHOR
-                       MOVE WS-DATE(OFFSET - 1) TO POST-DATE
-           ELSE IF MESSAGE-NUM = 3
-                       MOVE WS-TITLE(OFFSET - 2) TO TITLE
-                       MOVE WS-BODY(OFFSET - 2) TO BODY
-                       MOVE WS-AUTHOR(OFFSET - 2) TO POST-AUTHOR
-                       MOVE WS-DATE(OFFSET - 2) TO POST-DATE
-           ELSE IF MESSAGE-NUM = 4
-                       MOVE WS-TITLE(OFFSET - 3) TO TITLE
-                       MOVE WS-BODY(OFFSET - 3) TO BODY 
-                       MOVE WS-AUTHOR(OFFSET - 3) TO POST-AUTHOR
-                       MOVE WS-DATE(OFFSET - 3) TO POST-DATE
-           ELSE IF MESSAGE-NUM = 5
-                       MOVE WS-TITLE(OFFSET - 4) TO TITLE
-                       MOVE WS-BODY(OFFSET - 4) TO BODY
-                       MOVE WS-AUTHOR(OFFSET - 4) TO POST-AUTHOR
-                       MOVE WS-DATE(OFFSET - 4) TO POST-DATE
-           ELSE IF MESSAGE-NUM = 6
-                       MOVE WS-TITLE(OFFSET - 5) TO TITLE
-                       MOVE WS-BODY(OFFSET - 5) TO BODY
-                       MOVE WS-AUTHOR(OFFSET - 5) TO POST-AUTHOR
-                       MOVE WS-DATE(OFFSET - 5) TO POST-DATE 
-           ELSE IF MESSAGE-NUM = 7
-                       MOVE WS-TITLE(OFFSET - 6) TO TITLE
-                       MOVE WS-BODY(OFFSET - 6) TO BODY
-                       MOVE WS-AUTHOR(OFFSET - 6) TO POST-AUTHOR
-                       MOVE WS-DATE(OFFSET - 6) TO POST-DATE
-           ELSE IF MESSAGE-NUM = 8
-                       MOVE WS-TITLE(OFFSET - 7) TO TITLE
-                       MOVE WS-BODY(OFFSET - 7) TO BODY
-                       MOVE WS-AUTHOR(OFFSET - 7) TO POST-AUTHOR
-                       MOVE WS-DATE(OFFSET - 7) TO POST-DATE
-           ELSE IF MESSAGE-NUM = 9
-                       MOVE WS-TITLE(OFFSET - 8) TO TITLE
-                       MOVE WS-BODY(OFFSET - 8) TO BODY
-                       MOVE WS-AUTHOR(OFFSET - 8) TO POST-AUTHOR
-                       MOVE WS-DATE(OFFSET - 8) TO POST-DATE
-           ELSE IF MESSAGE-NUM = 10
-                       MOVE WS-TITLE(OFFSET - 9) TO TITLE
-                       MOVE WS-BODY(OFFSET - 9) TO BODY    
-                       MOVE WS-AUTHOR(OFFSET - 9) TO POST-AUTHOR
-                       MOVE WS-DATE(OFFSET - 9) TO POST-DATE                   
+           IF MESSAGE-NUM = 1 OR 2 OR 3 OR 4 OR 5 OR 6 OR 7 OR 8 OR 9 
+           OR 10
+               MOVE DISPLAY-MESSAGE-TITLE(OFFSET MESSAGE-NUM WS-MSGS) 
+               TO TITLE 
+               MOVE DISPLAY-MESSAGE-BODY(OFFSET MESSAGE-NUM WS-MSGS) 
+               TO BODY                      
            END-IF.
            DISPLAY READ-MESSAGE-SCREEN.
            ACCEPT READ-CHOICE.
@@ -652,32 +589,7 @@
            MOVE FUNCTION CURRENT-DATE(14:3) TO RANDOMNUMBER.
            MOVE WS-GUESSING-WORDS-WORD(RANDOMNUMBER) TO WS-WORD.
            MOVE WS-WORD TO WS-ANSWERWORD.
-           INSPECT WS-WORD REPLACING ALL 'a' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'b' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'c' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'd' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'e' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'f' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'g' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'h' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'i' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'j' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'k' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'l' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'm' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'n' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'o' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'p' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'q' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'r' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 's' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 't' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'u' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'v' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'w' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'x' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'y' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'z' BY '*'.
+           MOVE REPLACE-LETTER(WS-WORD) TO WS-WORD. 
            DISPLAY WORD-GUESSING-SCREEN.
            MOVE 1 TO COUNTER.
            PERFORM UNTIL COUNTER = 20
