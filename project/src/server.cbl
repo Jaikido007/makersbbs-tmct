@@ -432,7 +432,7 @@
             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
              05 LINE 2 COLUMN 37 VALUE "Turtles Message Board".
             05 LINE 18 COLUMN 10 VALUE "Title:".
-            05 LINE 20 COLUMN 18 PIC X(60) USING TITLE.
+            05 LINE 18 COLUMN 18 PIC X(60) USING TITLE.
             05 LINE 22 COLUMN 10 PIC X(500) USING BODY.
             05 LINE 31 COLUMN 10 VALUE "Post Author:".
             05 LINE 31 COLUMN 23 PIC X(10) USING POST-AUTHOR.
