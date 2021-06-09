@@ -79,7 +79,7 @@
            01 MESSAGE-CHOICE PIC XX.
 
       *    Variables related to read message screen
-           01 READ-CHOICE PIC X.
+           01 READ-CHOICE PIC XX.
            01 BODY PIC X(500).
            01 TITLE PIC X(60).
            01 POST-AUTHOR PIC X(10).
@@ -101,7 +101,7 @@
                DESCENDING KEY IS WS-GUESSING-WORDS-WORD
                INDEXED BY WORD-IDX.
                    10 WS-GUESSING-WORDS-WORD PIC X(20).
-           01 WS-GUESS-CHOICE PIC X(20).
+           01 WS-GUESS-CHOICE PIC X.
 
       *    Variables related to high score screen
            01 WS-HIGH-SCORE-CHOICE PIC X.
@@ -407,7 +407,7 @@
             05 LINE 32 COLUMN 30 VALUE "(p) Previous page".
             05 LINE 32 COLUMN 60 VALUE "(q) Go back".
             05 LINE 34 COLUMN 10 VALUE "Pick: ".
-            05 MESSAGE-CHOICE-FIELD LINE 34 COLUMN 16 PIC X
+            05 MESSAGE-CHOICE-FIELD LINE 34 COLUMN 16 PIC XX
                 USING MESSAGE-CHOICE.
 
            01 READ-MESSAGE-SCREEN
