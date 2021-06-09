@@ -15,6 +15,8 @@
              ORGANIZATION IS LINE SEQUENTIAL.
            SELECT F-HIGH-SCORES-FILE ASSIGN TO 'high-scores.dat'
              ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT F-USERS-FILE ASSIGN TO 'users.dat'
+             ORGANIZATION IS LINE SEQUENTIAL.
 
        DATA DIVISION.
            FILE SECTION.
@@ -24,15 +26,35 @@
            01 MESSAGES.
               05 MESSAGE-TITLE PIC X(60).
               05 MESSAGE-BODY PIC X(500).
+              05 MESSAGE-DATE PIC X(10).
+              05 MESSAGE-AUTHOR PIC X(10).
            FD F-HIGH-SCORES-FILE.
            01 PLAYER-SCORES.
               05 HIGH-SCORE PIC 99.
               05 PLAYER-NAME PIC X(10).
+           FD F-USERS-FILE.
+           01 USERS.
+              05 USERNAME PIC X(10).
+              05 USER-PASSWORD PIC X(20).   
 
            WORKING-STORAGE SECTION.
       *     Variables related to login and menu screen
            01 USER-NAME PIC X(10).
+           01 WS-PASSWORD PIC X(20).
+           01 NEW-USER-NAME PIC X(10).
+           01 NEW-PASSWORD PIC X(20).
+           01 LOGIN-CHOICE PIC X.
            01 MENU-CHOICE PIC X.
+           01 ERROR-CHOICE PIC X.
+           01 CREATE-CHOICE PIC X.
+           01 WS-USERS.
+               05 WS-USER OCCURS 100 TIMES
+               ASCENDING KEY IS WS-USERNAME
+               INDEXED BY USER-IDX.
+                   10 WS-USERNAME PIC X(10).
+                   10 WS-PWORD PIC X(20).
+           01 WS-FOUND PIC 9.
+           01 WS-IDX UNSIGNED-INT. 
 
       *    Variables related to creating table and reading file
            01 WS-FILE-IS-ENDED PIC 9.
@@ -42,6 +64,8 @@
                INDEXED BY MSG-IDX.
                    10 WS-TITLE PIC X(60).
                    10 WS-BODY PIC X(500).
+                   10 WS-DATE PIC X(10).
+                   10 WS-AUTHOR PIC X(10).
 
       *    Variables related to display message board screen
            01 PAGE-NUM PIC 99.
@@ -55,6 +79,8 @@
            01 READ-CHOICE PIC X.
            01 BODY PIC X(500).
            01 TITLE PIC X(60).
+           01 POST-AUTHOR PIC X(10).
+           01 POST-DATE PIC X(10).
            01 MESSAGE-NUM UNSIGNED-INT.
            01 RESULT UNSIGNED-INT.
 
@@ -62,8 +88,7 @@
            01 POST-TITLE PIC X(60).
            01 POST-BODY PIC X(500).
            01 POST-CHOICE PIC X.
-           01 MESSAGE-DATE UNSIGNED-INT.
-
+           01 WS-FORMATTED-DATE PIC X(10).
       *    Variables related to guessing game
            01 WS-ANSWERWORD PIC X(20).
            01 RANDOMNUMBER PIC 99.
@@ -98,9 +123,54 @@
            01 LOGIN-SCREEN.
              05 BLANK SCREEN.
              05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-             05 LINE 4 COLUMN 10 VALUE "What's your name?".
+             05 LINE 4 COLUMN 10 VALUE "(l) Go to Log-in.".
+             05 LINE 5 COLUMN 10 VALUE "(c) Create an account.".
+             05 LINE 6 COLUMN 10 VALUE "(q) Quit.".
+             05 LINE 8 COLUMN 10 VALUE "Pick: ".
+             05 LOGIN-CHOICE-FIELD LINE 8 COLUMN 16 PIC X
+                USING LOGIN-CHOICE.
+
+           01 SIGN-IN-SCREEN
+             BACKGROUND-COLOR IS 8.
+             05 BLANK SCREEN.
+             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+             05 LINE 4 COLUMN 10 VALUE "Enter your username:".
              05 USER-NAME-FIELD LINE 6 COLUMN 10 PIC X(10)
                 USING USER-NAME.
+             05 LINE 8 COLUMN 10 VALUE "Enter your password:".
+             05 PASSWORD-FIELD LINE 10 COLUMN 10 PIC X(20)
+                USING WS-PASSWORD.
+           
+           01 ERROR-SCREEN
+             BACKGROUND-COLOR IS 8.
+             05 BLANK SCREEN.
+             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+             05 LINE 4 COLUMN 10 VALUE "Incorrect Username or Password".
+             05 LINE 6 COLUMN 10 VALUE "(l) Back to Log-in.".
+             05 LINE 7 COLUMN 10 VALUE "(c) Create an account.".
+             05 LINE 9 COLUMN 10 VALUE "Pick: ".
+             05 ERROR-CHOICE-FIELD LINE 9 COLUMN 16 PIC X
+                USING ERROR-CHOICE.
+
+           01 CREATE-AN-ACCOUNT-SCREEN
+             BACKGROUND-COLOR IS 8.
+             05 BLANK SCREEN.
+             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+             05 LINE 4 COLUMN 10 VALUE "Create your account".
+             05 LINE 6 COLUMN 10 VALUE "Enter a username:".
+             05 NEW-USER-NAME-FIELD LINE 8 COLUMN 10 PIC X(10)
+                USING NEW-USER-NAME.
+             05 LINE 10 COLUMN 10 VALUE "Enter a password:".
+             05 LINE 10 COLUMN 28 VALUE "(password must be lowercase,".
+             05 LINE 10 COLUMN 56 VALUE "max 20 characters)".
+             05 NEW-PASSWORD-FIELD LINE 12 COLUMN 10 PIC X(20)
+                USING NEW-PASSWORD.
+             05 LINE 14 COLUMN 10 VALUE "(s) Submit".
+             05 LINE 15 COLUMN 10 VALUE "(q) Go Back".
+             05 LINE 17 COLUMN 10 VALUE "Pick: ".
+             05 CREATE-CHOICE-FIELD LINE 17 COLUMN 16 PIC X
+                USING CREATE-CHOICE.
+ 
 
            01 MENU-SCREEN
              BACKGROUND-COLOR IS 8.
@@ -125,25 +195,45 @@
             05 LINE 2 COLUMN 37 PIC 99 USING PAGE-NUM.
             05 LINE 4 COLUMN 10 PIC X(40) USING DISPLAY-MESSAGE.
             05 LINE 6 COLUMN 10 VALUE "1.".
-            05 LINE 6 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET).
+            05 LINE 6 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET).
+            05 LINE 6 COLUMN 75 VALUE "Posted by:".
+            05 LINE 6 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET).
             05 LINE 7 COLUMN 10 VALUE "2.".
-            05 LINE 7 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 1).
+            05 LINE 7 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 1).
+            05 LINE 7 COLUMN 75 VALUE "Posted by:".
+            05 LINE 7 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 1).
             05 LINE 8 COLUMN 10 VALUE "3.".
-            05 LINE 8 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 2).
+            05 LINE 8 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 2).
+            05 LINE 8 COLUMN 75 VALUE "Posted by:".
+            05 LINE 8 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 2).
             05 LINE 9 COLUMN 10 VALUE "4.".
-            05 LINE 9 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 3).
+            05 LINE 9 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 3).
+            05 LINE 9 COLUMN 75 VALUE "Posted by:".
+            05 LINE 9 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 3).
             05 LINE 10 COLUMN 10 VALUE "5.".
-            05 LINE 10 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 4).
+            05 LINE 10 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 4).
+            05 LINE 10 COLUMN 75 VALUE "Posted by:".
+            05 LINE 10 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 4).
             05 LINE 11 COLUMN 10 VALUE "6.".
-            05 LINE 11 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 5).
+            05 LINE 11 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 5).
+            05 LINE 11 COLUMN 75 VALUE "Posted by:".
+            05 LINE 11 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 5).
             05 LINE 12 COLUMN 10 VALUE "7.".
-            05 LINE 12 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 6).
+            05 LINE 12 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 6).
+            05 LINE 12 COLUMN 75 VALUE "Posted by:".
+            05 LINE 12 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 6).
             05 LINE 13 COLUMN 10 VALUE "8.".
-            05 LINE 13 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 7).
+            05 LINE 13 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 7).
+            05 LINE 13 COLUMN 75 VALUE "Posted by:".
+            05 LINE 13 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 7).
             05 LINE 14 COLUMN 10 VALUE "9.".
-            05 LINE 14 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 8).
+            05 LINE 14 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 8).    
+            05 LINE 14 COLUMN 75 VALUE "Posted by:".
+            05 LINE 14 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 8).
             05 LINE 15 COLUMN 10 VALUE "10.".
-            05 LINE 15 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 9).
+            05 LINE 15 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 9).
+            05 LINE 15 COLUMN 75 VALUE "Posted by:".
+            05 LINE 15 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 9).
             05 LINE 17 COLUMN 10 VALUE "( ) Read the full message by".
             05 LINE 17 COLUMN 39 VALUE "number".
             05 LINE 18 COLUMN 10 VALUE "(m) Post a message of your own".
@@ -161,6 +251,10 @@
             05 LINE 4 COLUMN 10 VALUE "Title:".
             05 LINE 4 COLUMN 18 PIC X(60) USING TITLE.
             05 LINE 6 COLUMN 10 PIC X(500) USING BODY.
+            05 LINE 15 COLUMN 10 VALUE "Post Author:".
+            05 LINE 15 COLUMN 23 PIC X(10) USING POST-AUTHOR.
+            05 LINE 15 COLUMN 34 VALUE "Posted On:".
+            05 LINE 15 COLUMN 45 PIC X(10) USINg POST-DATE. 
             05 LINE 18 COLUMN 10 VALUE "(n) Next message".
             05 LINE 18 COLUMN 30 VALUE "(p) Previous message".
             05 LINE 18 COLUMN 60 VALUE "(q) Go back".   
@@ -260,10 +354,87 @@
        PROCEDURE DIVISION.
       
        0100-DISPLAY-LOGIN.
-           INITIALIZE USER-NAME.
+           INITIALIZE LOGIN-CHOICE.      
            DISPLAY LOGIN-SCREEN.
+           ACCEPT LOGIN-CHOICE-FIELD.
+           IF LOGIN-CHOICE = "l" THEN 
+               PERFORM 0101-SIGN-IN 
+           ELSE IF LOGIN-CHOICE = "c" THEN 
+               PERFORM 0102-SIGN-UP
+           ELSE IF LOGIN-CHOICE = "q" THEN 
+               STOP RUN
+           ELSE 
+               PERFORM 0100-DISPLAY-LOGIN
+           END-IF.
+
+       0101-SIGN-IN.
+           SET COUNTER TO 0.
+           OPEN INPUT F-USERS-FILE.
+           MOVE 0 TO WS-FILE-IS-ENDED.
+           PERFORM UNTIL WS-FILE-IS-ENDED = 1
+               READ F-USERS-FILE
+                   NOT AT END
+                       ADD 1 TO COUNTER
+                       MOVE USERNAME TO WS-USERNAME(COUNTER)
+                       MOVE USER-PASSWORD TO WS-PWORD(COUNTER)
+                   AT END 
+                       MOVE 1 TO WS-FILE-IS-ENDED
+               END-READ 
+           END-PERFORM.
+           CLOSE F-USERS-FILE.
+           INITIALIZE USER-NAME.
+           INITIALIZE WS-PASSWORD.
+           DISPLAY SIGN-IN-SCREEN.
            ACCEPT USER-NAME-FIELD.
-           PERFORM 0110-DISPLAY-MENU.
+           ACCEPT PASSWORD-FIELD.
+           MOVE 0 TO WS-FOUND.
+           MOVE 1 TO WS-IDX.
+           ADD 1 TO COUNTER.
+           PERFORM UNTIL WS-IDX = COUNTER
+               IF USER-NAME = WS-USERNAME(WS-IDX) AND 
+               WS-PASSWORD = WS-PWORD(WS-IDX) THEN
+                   MOVE 1 TO WS-FOUND 
+               END-IF
+               ADD 1 TO WS-IDX 
+           END-PERFORM.
+
+           IF WS-FOUND = 1 THEN
+               PERFORM 0110-DISPLAY-MENU 
+           ELSE 
+               PERFORM 0103-ERROR-PAGE 
+           END-IF. 
+
+       0102-SIGN-UP.
+           INITIALIZE NEW-USER-NAME.
+           INITIALIZE NEW-PASSWORD.
+           INITIALIZE CREATE-CHOICE
+           DISPLAY CREATE-AN-ACCOUNT-SCREEN.
+           ACCEPT NEW-USER-NAME-FIELD.
+           ACCEPT NEW-PASSWORD-FIELD.
+           ACCEPT CREATE-CHOICE-FIELD.
+           IF CREATE-CHOICE = "q" THEN 
+               PERFORM 0100-DISPLAY-LOGIN
+           ELSE IF CREATE-CHOICE = "s" THEN 
+               OPEN EXTEND F-USERS-FILE
+               MOVE NEW-USER-NAME TO USERNAME
+               MOVE NEW-PASSWORD TO USER-PASSWORD
+               WRITE USERS
+               END-WRITE               
+           END-IF.
+           CLOSE F-USERS-FILE.
+           PERFORM 0101-SIGN-IN.
+
+       0103-ERROR-PAGE.
+           INITIALIZE ERROR-CHOICE.
+           DISPLAY ERROR-SCREEN.
+           ACCEPT ERROR-CHOICE-FIELD.
+           IF ERROR-CHOICE = "l" THEN 
+               PERFORM 0101-SIGN-IN
+           ELSE IF ERROR-CHOICE = "c" THEN 
+               PERFORM 0102-SIGN-UP 
+           ELSE 
+               PERFORM 0103-ERROR-PAGE 
+           END-IF.
 
        0110-DISPLAY-MENU.
            INITIALIZE MENU-CHOICE.
@@ -293,6 +464,8 @@
                        ADD 1 TO COUNTER
                        MOVE MESSAGE-TITLE TO WS-TITLE(COUNTER)
                        MOVE MESSAGE-BODY TO WS-BODY(COUNTER)
+                       MOVE MESSAGE-DATE TO WS-DATE(COUNTER)
+                       MOVE MESSAGE-AUTHOR TO WS-AUTHOR(COUNTER)
                    AT END 
                        MOVE 1 TO WS-FILE-IS-ENDED
                        MOVE COUNTER TO OFFSET
@@ -373,6 +546,10 @@
            END-IF.
 
        0150-POST-MESSAGE.
+           STRING FUNCTION CURRENT-DATE(1:4) "-" 
+               FUNCTION CURRENT-DATE(5:2) "-" FUNCTION CURRENT-DATE(7:2)
+               INTO WS-FORMATTED-DATE
+           END-STRING.
            INITIALIZE POST-CHOICE.
            INITIALIZE POST-TITLE.
            INITIALIZE POST-BODY.
@@ -386,7 +563,8 @@
                OPEN EXTEND F-MESSAGE-FILE
                MOVE POST-TITLE TO MESSAGE-TITLE
                MOVE POST-BODY TO MESSAGE-BODY
-               MOVE FUNCTION CURRENT-DATE(1:8) TO MESSAGE-DATE
+               MOVE WS-FORMATTED-DATE TO MESSAGE-DATE
+               MOVE USER-NAME TO MESSAGE-AUTHOR
                WRITE MESSAGES
                END-WRITE               
            END-IF.
@@ -394,7 +572,7 @@
            PERFORM 0120-GENERATE-TABLE.
 
        0160-DISPLAY-GUESSING-GAME.
-           MOVE 10 TO WS-GUESSES-LEFT.
+           MOVE 15 TO WS-GUESSES-LEFT.
            SET WORD-IDX TO 0.
            OPEN INPUT F-WORD-FILE.
            MOVE 0 TO WS-FILE-IS-ENDED.
