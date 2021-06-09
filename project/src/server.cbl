@@ -9,6 +9,8 @@
              ORGANIZATION IS LINE SEQUENTIAL.
            SELECT F-HIGH-SCORES-FILE ASSIGN TO 'high-scores.dat'
              ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT F-USERS-FILE ASSIGN TO 'users.dat'
+             ORGANIZATION IS LINE SEQUENTIAL.
 
        DATA DIVISION.
            FILE SECTION.
@@ -24,12 +26,19 @@
            01 PLAYER-SCORES.
               05 HIGH-SCORE PIC 99.
               05 PLAYER-NAME PIC X(10).
+           FD F-USERS-FILE.
+           01 USERS.
+              05 USER-NAME PIC X(10).
+              05 USER-PASSWORD PIC X(20).   
 
            WORKING-STORAGE SECTION.
       *     Variables related to login and menu screen
            01 USER-NAME PIC X(10).
+           01 WS-PASSWORD PIC X(20).
+           01 LOGIN-CHOICE PIC X.
            01 MENU-CHOICE PIC X.
-
+           01 ERROR-CHOICE PIC X.
+           01 CREATE-CHOICE PIC X.
       *    Variables related to creating table and reading file
            01 WS-FILE-IS-ENDED PIC 9.
            01 WS-MSGS.
@@ -96,9 +105,50 @@
            01 LOGIN-SCREEN.
              05 BLANK SCREEN.
              05 LINE 2 COLUMN 10 VALUE "Makers BBS".
-             05 LINE 4 COLUMN 10 VALUE "What's your name?".
+             05 LINE 4 COLUMN 10 VALUE "(l) Go to Log-in.".
+             05 LINE 5 COLUMN 10 VALUE "(c) Create an account.".
+             05 LINE 7 COLUMN 10 VALUE "Pick: ".
+             05 LOGIN-CHOICE-FIELD LINE 7 COLUMN 16 PIC X
+                USING LOGIN-CHOICE.
+
+           01 SIGN-IN-SCREEN
+           05 BLANK SCREEN.
+             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+             05 LINE 4 COLUMN 10 VALUE "Enter your username?".
              05 USER-NAME-FIELD LINE 6 COLUMN 10 PIC X(10)
                 USING USER-NAME.
+             05 LINE 8 COLUMN 10 VALUE "Enter your password?".
+             05 PASSWORD-FIELD LINE 10 COLUMN 10 PIC X(20)
+                USING WS-PASSWORD.
+           
+           01 INCORRECT-LOGIN-SCREEN
+           05 BLANK SCREEN.
+             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+             05 LINE 4 COLUMN 10 VALUE "Incorrect Username or Password".
+             05 LINE 6 COLUMN 10 VALUE "(l) Back to Log-in."
+             05 LINE 7 COLUMN 10 VALUE "(c) Create an account.".
+             05 LINE 9 COLUMN 10 VALUE "Pick: ".
+             05 ERROR-CHOICE-FIELD LINE 7 COLUMN 16 PIC X
+                USING ERROR-CHOICE.
+
+           01 CREATE-AN-ACCOUNT-SCREEN
+             05 BLANK SCREEN.
+             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+             05 LINE 4 COLUMN 10 VALUE "Create your account".
+             05 LINE 6 COLUMN 10 VALUE "Enter a username?".
+             05 USER-NAME-FIELD LINE 8 COLUMN 10 PIC X(10)
+                USING USER-NAME.
+             05 LINE 10 COLUMN 10 VALUE "Enter a password?".
+             05 LINE 10 COLUMN 27 VALUE "(password must be lowercase,".
+             05 LINE 10 COLUMN 56 VALUE "max 20 characters)".
+             05 PASSWORD-FIELD LINE 12 COLUMN 10 PIC X(20)
+                USING WS-PASSWORD.
+             05 LINE 14 COLUMN 10 VALUE "(s) Submit".
+             05 LINE 15 COLUMN 10 VALUE "(q) Go Back".
+             05 LINE 17 COLUMN 10 VALUE "Pick: ".
+             05 CREATE-CHOICE-FIELD LINE 17 COLUMN 16 PIC X
+                USING CREATE-CHOICE.
+ 
 
            01 MENU-SCREEN
              BACKGROUND-COLOR IS 8.
@@ -283,6 +333,7 @@
       
        0100-DISPLAY-LOGIN.
            INITIALIZE USER-NAME.
+           INITIALIZE WS-PASSWORD.
            DISPLAY LOGIN-SCREEN.
            ACCEPT USER-NAME-FIELD.
            PERFORM 0110-DISPLAY-MENU.
