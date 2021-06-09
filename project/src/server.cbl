@@ -1,6 +1,10 @@
        IDENTIFICATION DIVISION.
        PROGRAM-ID. server.
        ENVIRONMENT DIVISION.
+           CONFIGURATION SECTION.
+           REPOSITORY.
+               FUNCTION MESSAGE-CHOICE-TO-NUM
+               FUNCTION REPLACE-LETTER.
            INPUT-OUTPUT SECTION.
            FILE-CONTROL.
            SELECT F-MESSAGE-FILE ASSIGN TO "messages.dat"
@@ -328,35 +332,9 @@
                    COMPUTE PAGE-NUM = PAGE-NUM - 1
                    PERFORM 0130-DISPLAY-MESSAGEBOARD
                END-IF
-           ELSE IF MESSAGE-CHOICE = "1" 
-               SET MESSAGE-NUM TO 1 
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "2" 
-               SET MESSAGE-NUM TO 2 
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "3" 
-               SET MESSAGE-NUM TO 3 
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "4" 
-               SET MESSAGE-NUM TO 4 
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "5" 
-               SET MESSAGE-NUM TO 5 
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "6" 
-               SET MESSAGE-NUM TO 6 
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "7" 
-               SET MESSAGE-NUM TO 7 
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "8" 
-               SET MESSAGE-NUM TO 8 
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "9" 
-               SET MESSAGE-NUM TO 9
-               PERFORM 0140-READ-MESSAGE
-           ELSE IF MESSAGE-CHOICE = "10" 
-               SET MESSAGE-NUM TO 10 
+           ELSE IF MESSAGE-CHOICE = "1" OR "2" OR "3" OR "4" OR "5" 
+             OR "6" OR "7" OR "8" OR "9" OR "10"
+               MOVE MESSAGE-CHOICE-TO-NUM(MESSAGE-CHOICE) TO MESSAGE-NUM
                PERFORM 0140-READ-MESSAGE
            ELSE 
                PERFORM 0130-DISPLAY-MESSAGEBOARD
@@ -454,32 +432,7 @@
            MOVE FUNCTION CURRENT-DATE(14:3) TO RANDOMNUMBER.
            MOVE WS-GUESSING-WORDS-WORD(RANDOMNUMBER) TO WS-WORD.
            MOVE WS-WORD TO WS-ANSWERWORD.
-           INSPECT WS-WORD REPLACING ALL 'a' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'b' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'c' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'd' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'e' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'f' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'g' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'h' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'i' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'j' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'k' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'l' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'm' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'n' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'o' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'p' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'q' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'r' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 's' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 't' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'u' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'v' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'w' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'x' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'y' BY '*'.
-           INSPECT WS-WORD REPLACING ALL 'z' BY '*'.
+           MOVE REPLACE-LETTER(WS-WORD) TO WS-WORD. 
            DISPLAY WORD-GUESSING-SCREEN.
            MOVE 1 TO COUNTER.
            PERFORM UNTIL COUNTER = 20
