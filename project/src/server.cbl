@@ -58,7 +58,6 @@
            01 MESSAGE-DATE UNSIGNED-INT.
 
       *    Variables related to guessing game
-           01 WS-COUNTERGAME PIC 99.
            01 WS-ANSWERWORD PIC X(20).
            01 RANDOMNUMBER PIC 99.
            01 WS-WORD PIC X(20).
@@ -80,15 +79,13 @@
                   10 WS-NAME PIC X(10).
 
       *    Variables related to checking guesses  
-           01 WS-UNREVEALED-COUNTER PIC 99.
-           01 WS-STAR-COUNTER PIC 99.
+           01 WS-LETTERS-LEFT PIC 99.
            01 WS-GUESSES-LEFT PIC 99.          
 
       *    Variables related to winning and losing.
            01 WS-GUESSING-LOSING-CHOICE PIC X.
            01 WS-GUESSING-WINNING-CHOICE PIC X.
-           01 WS-CHARACTER-COUNTER UNSIGNED-INT.
-           01 WS-LENGTH-COUNTER PIC 99.
+           01 WS-WORD-LENGTH PIC 99.
     
            SCREEN SECTION.
            01 LOGIN-SCREEN.
@@ -484,12 +481,12 @@
            INSPECT WS-WORD REPLACING ALL 'y' BY '*'.
            INSPECT WS-WORD REPLACING ALL 'z' BY '*'.
            DISPLAY WORD-GUESSING-SCREEN.
-           MOVE 1 TO WS-CHARACTER-COUNTER.
-           PERFORM UNTIL WS-CHARACTER-COUNTER = 20
-             IF '*' EQUALS WS-WORD(WS-CHARACTER-COUNTER:1) 
-              THEN ADD 1 TO WS-LENGTH-COUNTER
+           MOVE 1 TO COUNTER.
+           PERFORM UNTIL COUNTER = 20
+             IF '*' EQUALS WS-WORD(COUNTER:1) 
+              THEN ADD 1 TO WS-WORD-LENGTH
              END-IF
-             ADD 1 TO WS-CHARACTER-COUNTER
+             ADD 1 TO COUNTER
            END-PERFORM.
            PERFORM 0170-IN-GAME-SCREEN.
           
@@ -504,24 +501,24 @@
            END-IF.
            
        0180-CHECK-GUESS.
-           MOVE 1 TO WS-COUNTERGAME.
-           PERFORM UNTIL WS-COUNTERGAME = 20
-                 IF WS-GUESS-CHOICE = WS-ANSWERWORD(WS-COUNTERGAME:1) 
+           MOVE 1 TO COUNTER.
+           PERFORM UNTIL COUNTER = 20
+                 IF WS-GUESS-CHOICE = WS-ANSWERWORD(COUNTER:1) 
                  THEN
-                      MOVE WS-GUESS-CHOICE TO WS-WORD(WS-COUNTERGAME:1) 
+                      MOVE WS-GUESS-CHOICE TO WS-WORD(COUNTER:1) 
                  END-IF
-                 ADD 1 TO WS-COUNTERGAME     
+                 ADD 1 TO COUNTER     
            END-PERFORM.
            SUBTRACT 1 FROM WS-GUESSES-LEFT.
-           MOVE 1 TO WS-STAR-COUNTER.
-           MOVE 0 TO WS-UNREVEALED-COUNTER.
-           PERFORM UNTIL WS-STAR-COUNTER = 20
-             IF '*' EQUALS WS-WORD(WS-STAR-COUNTER:1) 
-              THEN ADD 1 TO WS-UNREVEALED-COUNTER
+           MOVE 1 TO COUNTER.
+           MOVE 0 TO WS-LETTERS-LEFT.
+           PERFORM UNTIL COUNTER = 20
+             IF '*' EQUALS WS-WORD(COUNTER:1) 
+              THEN ADD 1 TO WS-LETTERS-LEFT
              END-IF
-             ADD 1 TO WS-STAR-COUNTER
+             ADD 1 TO COUNTER
            END-PERFORM.
-             IF WS-UNREVEALED-COUNTER = 0
+             IF WS-LETTERS-LEFT = 0
               THEN 
               PERFORM 0190-WINNING-SCREEN
              ELSE IF WS-GUESSES-LEFT = 0
@@ -534,7 +531,7 @@
            
        0190-WINNING-SCREEN.
            INITIALIZE WS-GUESSING-WINNING-CHOICE.
-           COMPUTE WS-HIGH-SCORE = WS-LENGTH-COUNTER * WS-GUESSES-LEFT.
+           COMPUTE WS-HIGH-SCORE = WS-LETTERS-LEFT * WS-GUESSES-LEFT.
            DISPLAY WORD-GUESSING-WINNING-SCREEN.
            OPEN EXTEND F-HIGH-SCORES-FILE
                MOVE WS-HIGH-SCORE TO HIGH-SCORE
