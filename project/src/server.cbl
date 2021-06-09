@@ -89,27 +89,123 @@
     
            SCREEN SECTION.
            01 LOGIN-SCREEN.
+      *       BACKGROUND-COLOR IS 10.
              05 BLANK SCREEN.
              05 LINE 2 COLUMN 10 VALUE "Makers BBS".
              05 LINE 4 COLUMN 10 VALUE "What's your name?".
              05 USER-NAME-FIELD LINE 6 COLUMN 10 PIC X(10)
                 USING USER-NAME.
-
+      *    TMNCT ART HERE      
+             05 LINE 38 COLUMN 30 VALUE 
+           "                                          <  !'`.::!!!!!!".
+             05 LINE 37 COLUMN 30 VALUE
+           "                                           !  !!!!''``..,".
+             05 LINE 36 COLUMN 30 VALUE
+           "                                           <!  !!!!!!!!!!".
+             05 LINE 35 COLUMN 30 VALUE 
+           "`'''                                        <!! ;!!!!!!!!".
+             05 LINE 34 COLUMN 30 VALUE
+           ":::::' `'        `?P??F'                    :!!! ;!!!!!!!".
+             05 LINE 33 COLUMN 30 VALUE
+           ":::::::.$$$P'    $$becd$$$'                  !!!!  !!!!!!".
+             05 LINE 32 COLUMN 30 value
+           "::::::.4$$$$$$F  J$ `:' z$$$'            `'?  !!!!  !!!!!".
+             05 LINE 31 COLUMN 30 VALUE
+           "  ..''$',$$$$$$$'' . ::;; .d$$' .$$F',c$?$$$$F <!!!!  !!!".
+             05 LINE 30 COLUMN 30 VALUE
+           "  $$$$$$P',$$$$$$P'   ;;;' c$$$' zd$F.- ze$$$' !!! <' <!!".
+             05 LINE 29 COLUMN 30 VALUE 
+           "  J$$$$$$$F.d$$$$$$P V  ,;; z$$$$$$$$$P''`.d$$ ;!!! :' <!".
+             05 LINE 28 COLUMN 30 value
+           "  .$$$$$$$$$P'`,e$$$$P'    , .$$$$$$$$$$$$$$$$P <!!' ;' ;".
+             05 LINE 27 COLUMN 30 VALUE 
+           "    $$$$$$$$$$$$P'`,e$$P''V    c$$$$$$$$$$$$$$$' <!!' ;! ".
+             05 LINE 26 COLUMN 30 VALUE
+           "    .$$$$$$$$$$$$$$$P',d$$$P''  ,d$$$$$$$$$$$$$$% <!!  ,!".
+             05 LINE 25 COLUMN 30 VALUE
+           "      z$$$$$$$$$$$$$$$P'.c$$$$$$P' ,c$$$$$$$$Lz$$' <!!  ;".
+             05 LINE 24 COLUMN 30 VALUE
+           "        z$$$$$$$$$$$$$$$$P'.cd$ed$$P .d$$$$$$$'.$$% <!!  ".
+             05 LINE 23 COLUMN 30 VALUE
+           "        4'.,ccd$$$$$$$$$$$$$$P???'L.z' d$$$$$$$ .d$% <!! ".
+             05 LINE 22 COLUMN 30 VALUE
+           "        4$P'cedd$$$$$$$$$$$$$$$$$$$$$P' d$$$$$$ % .$' ;!!".
+             05 LINE 21 COLUMN 30 VALUE
+           "       ?$$$$'dF''(($$$$$$$cec$Le$$$$$$$P',$$$$$$F %J$'  !".
+             05 LINE 20 COLUMN 30 VALUE
+           "       ,ec,,. zd$$$$$uCC$$$$$??$'z$$$$$$$?$$$$$$'3 z$$P' ".
+             05 LINE 19 COLUMN 30 VALUE
+           "        -$L   $FF''??%,,,,,ced$$$P$$$$$$$$$$$$$$$.' $$$$P".
+             05 LINE 18 COLUMN 30 VALUE
+           "       $P== '' $c`'',cd',gd$b  .e$$$$$$$$$$$$$$$'?L $c   ".
+             05 LINE 17 COLUMN 30 VALUE
+           "       .J'?$$$F$ $$$$$',eF' ,    '3$$$$$$$$$$$$$$c $$??4F".
+             05 LINE 16 COLUMN 30 VALUE
+           "        z$$$$$$$P'$$$$$$P?$$$$$$$$$$$$$$$$$$$$$$.'$$$$$$$".
+             05 LINE 15 COLUMN 30 VALUE
+           "          e$$$$$$$$$$$$$$$P'.,cecc,C$$$$$$$$$$$P$$$$$$$$$".
+             05 LINE 14 COLUMN 30 VALUE
+           "           J$$$$$$$$$$b$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$".
+             05 LINE 13 COLUMN 30 VALUE
+           "            $$$$$$$$$$$'. z$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$".
+             05 LINE 12 COLUMN 30 VALUE 
+           "          ''4$$$$$$$$$$$$P' . .,ce$be,3$$$$$$$$$$$$$$bc,.".
+             05 LINE 11 COLUMN 30 VALUE
+           "      `'$$$$ z$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$c,.     ".
+             05 LINE 10 COLUMN 30 VALUE
+           "     ?$$$$$$P z$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$c.         ".
+             05 LINE 9 COLUMN 30 VALUE
+           "    ?$$$$$$$$$'.r ,$$$$$$$$$$$$$$$$$$$$$$$$$c'           ".
+             05 LINE 8 COLUMN 30 VALUE 
+           "   `$$duJu,ec.      ,c$ce$$$$$$$$$$$$$$$$$$r'$P          ".
+             05 LINE 7 COLUMN 30 VALUE
+           "                      ,r= ze$e$$$$$$$$$P'z$'?            ".
+             05 LINE 6 COLUMN 30 VALUE
+           "                        c$$$$$$$$$, $F                   ".
+             05 LINE 5 COLUMN 30 VALUE 
+           "                          ,d$$$$$$F 4''                  ".
+             05 LINE 4 COLUMN 30 VALUE
+           "                            .zd$$$b $$c                  ".
+             05 LINE 3 COLUMN 30 VALUE 
+           "                               ,$$F $$                   ".
+             05 LINE 2 COLUMN 30 VALUE
+           "                                .d$ d$                   ".
+             05 LINE 1 COLUMN 30 VALUE 
+           "                                  ,d'e                   ".
+           
+             
            01 MENU-SCREEN
              BACKGROUND-COLOR IS 8.
              05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Makers BBS".
+             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Bulletin Board".
              05 LINE 4 COLUMN 10 VALUE "Welcome, ".
              05 LINE 4 COLUMN 19 PIC X(10) USING USER-NAME.
-             05 LINE 8 COLUMN 10 VALUE "(n) Nothing".
-             05 LINE 8 COLUMN 80 VALUE "(m) Message board".
-             05 LINE 8 COLUMN 100 VALUE "(g) Guessing Game".
-             05 LINE 8 COLUMN 30 VALUE "(l) Logout".
-             05 LINE 8 COLUMN 60 VALUE "(q) Quit".
-             05 LINE 20 COLUMN 10 VALUE "Pick: ".
-             05 MENU-CHOICE-FIELD LINE 20 COLUMN 16 PIC X
+             05 LINE 28 COLUMN 10 VALUE "(n) Nothing".
+             05 LINE 28 COLUMN 60 VALUE "(m) Message board".
+             05 LINE 28 COLUMN 90 VALUE "(g) Guessing Game".
+             05 LINE 28 COLUMN 30 VALUE "(l) Logout".
+             05 LINE 28 COLUMN 40 VALUE "(q) Quit".
+             05 LINE 30 COLUMN 10 VALUE "Pick: ".
+             05 MENU-CHOICE-FIELD LINE 30 COLUMN 16 PIC X
                 USING MENU-CHOICE.
-
+      *TMNCT letters bttom is line 23 to 7 up
+             05 LINE 11 COLUMN 60 VALUE 
+           "   \__|   \__|     \__|\__|  \__| \______/   \__|   ".
+             05 LINE 10 COLUMN 60 VALUE
+           "   $$ |   $$ | \_/ $$ |$$ | \$$ |\$$$$$$  |  $$ |   ".
+             05 LINE 9 COLUMN 60 VALUE
+           "   $$ |   $$ |\$  /$$ |$$ |\$$$ |$$ |  $$\   $$ |   ".
+             05 LINE 8 COLUMN 60 VALUE
+           "   $$ |   $$ \$$$  $$ |$$ \$$$$ |$$ |        $$ |   ".
+             05 LINE 7 COLUMN 60 VALUE
+           "   $$ |   $$\$$\$$ $$ |$$ $$\$$ |$$ |        $$ |   ".
+             05 LINE 6 COLUMN 60 VALUE
+           "   $$ |   $$$$\  $$$$ |$$$$\ $$ |$$ /  \__|  $$ |   ".
+             05 LINE 5 COLUMN 60 VALUE
+           "\__$$  __|$$$\    $$$ |$$$\  $$ |$$  __$$\\__$$  __|".
+             05 LINE 4 COLUMN 60 VALUE
+           "$$$$$$$$\ $$\      $$\ $$\   $$\  $$$$$$\ $$$$$$$$\ ".
            01 MESSAGEBOARD-SCREEN
              BACKGROUND-COLOR IS 8.
             05 BLANK SCREEN.
