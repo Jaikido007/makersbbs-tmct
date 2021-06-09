@@ -18,6 +18,8 @@
            01 MESSAGES.
               05 MESSAGE-TITLE PIC X(60).
               05 MESSAGE-BODY PIC X(500).
+              05 MESSAGE-DATE PIC X(10).
+              05 MESSAGE-AUTHOR PIC X(10).
            FD F-HIGH-SCORES-FILE.
            01 PLAYER-SCORES.
               05 HIGH-SCORE PIC 99.
@@ -36,6 +38,8 @@
                INDEXED BY MSG-IDX.
                    10 WS-TITLE PIC X(60).
                    10 WS-BODY PIC X(500).
+                   10 WS-DATE PIC X(10).
+                   10 WS-AUTHOR PIC X(10).
 
       *    Variables related to display message board screen
            01 PAGE-NUM PIC 99.
@@ -55,8 +59,7 @@
            01 POST-TITLE PIC X(60).
            01 POST-BODY PIC X(500).
            01 POST-CHOICE PIC X.
-           01 MESSAGE-DATE UNSIGNED-INT.
-
+           01 WS-FORMATTED-DATE PIC X(10).
       *    Variables related to guessing game
            01 WS-ANSWERWORD PIC X(20).
            01 RANDOMNUMBER PIC 99.
@@ -118,25 +121,45 @@
             05 LINE 2 COLUMN 37 PIC 99 USING PAGE-NUM.
             05 LINE 4 COLUMN 10 PIC X(40) USING DISPLAY-MESSAGE.
             05 LINE 6 COLUMN 10 VALUE "1.".
-            05 LINE 6 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET).
+            05 LINE 6 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET).
+            05 LINE 6 COLUMN 75 VALUE "Posted by:".
+            05 LINE 6 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET).
             05 LINE 7 COLUMN 10 VALUE "2.".
-            05 LINE 7 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 1).
+            05 LINE 7 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 1).
+            05 LINE 7 COLUMN 75 VALUE "Posted by:".
+            05 LINE 7 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 1).
             05 LINE 8 COLUMN 10 VALUE "3.".
-            05 LINE 8 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 2).
+            05 LINE 8 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 2).
+            05 LINE 8 COLUMN 75 VALUE "Posted by:".
+            05 LINE 8 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 2).
             05 LINE 9 COLUMN 10 VALUE "4.".
-            05 LINE 9 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 3).
+            05 LINE 9 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 3).
+            05 LINE 9 COLUMN 75 VALUE "Posted by:".
+            05 LINE 9 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 3).
             05 LINE 10 COLUMN 10 VALUE "5.".
-            05 LINE 10 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 4).
+            05 LINE 10 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 4).
+            05 LINE 10 COLUMN 75 VALUE "Posted by:".
+            05 LINE 10 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 4).
             05 LINE 11 COLUMN 10 VALUE "6.".
-            05 LINE 11 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 5).
+            05 LINE 11 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 5).
+            05 LINE 11 COLUMN 75 VALUE "Posted by:".
+            05 LINE 11 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 5).
             05 LINE 12 COLUMN 10 VALUE "7.".
-            05 LINE 12 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 6).
+            05 LINE 12 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 6).
+            05 LINE 12 COLUMN 75 VALUE "Posted by:".
+            05 LINE 12 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 6).
             05 LINE 13 COLUMN 10 VALUE "8.".
-            05 LINE 13 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 7).
+            05 LINE 13 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 7).
+            05 LINE 13 COLUMN 75 VALUE "Posted by:".
+            05 LINE 13 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 7).
             05 LINE 14 COLUMN 10 VALUE "9.".
-            05 LINE 14 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 8).
+            05 LINE 14 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 8).    
+            05 LINE 14 COLUMN 75 VALUE "Posted by:".
+            05 LINE 14 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 8).
             05 LINE 15 COLUMN 10 VALUE "10.".
-            05 LINE 15 COLUMN 14 PIC X(60) USING WS-MSG(OFFSET - 9).
+            05 LINE 15 COLUMN 14 PIC X(60) USING WS-TITLE(OFFSET - 9).
+            05 LINE 15 COLUMN 75 VALUE "Posted by:".
+            05 LINE 15 COLUMN 87 PIC X(10) USING WS-AUTHOR(OFFSET - 9).
             05 LINE 17 COLUMN 10 VALUE "( ) Read the full message by".
             05 LINE 17 COLUMN 39 VALUE "number".
             05 LINE 18 COLUMN 10 VALUE "(m) Post a message of your own".
@@ -286,6 +309,8 @@
                        ADD 1 TO COUNTER
                        MOVE MESSAGE-TITLE TO WS-TITLE(COUNTER)
                        MOVE MESSAGE-BODY TO WS-BODY(COUNTER)
+                       MOVE MESSAGE-DATE TO WS-DATE(COUNTER)
+                       MOVE MESSAGE-AUTHOR TO WS-AUTHOR(COUNTER)
                    AT END 
                        MOVE 1 TO WS-FILE-IS-ENDED
                        MOVE COUNTER TO OFFSET
@@ -416,6 +441,10 @@
            END-IF.
 
        0150-POST-MESSAGE.
+           STRING FUNCTION CURRENT-DATE(1:4) "-" 
+               FUNCTION CURRENT-DATE(5:2) "-" FUNCTION CURRENT-DATE(8:2)
+               INTO WS-FORMATTED-DATE
+           END-STRING.
            INITIALIZE POST-CHOICE.
            INITIALIZE POST-TITLE.
            INITIALIZE POST-BODY.
@@ -429,7 +458,8 @@
                OPEN EXTEND F-MESSAGE-FILE
                MOVE POST-TITLE TO MESSAGE-TITLE
                MOVE POST-BODY TO MESSAGE-BODY
-               MOVE FUNCTION CURRENT-DATE(1:8) TO MESSAGE-DATE
+               MOVE WS-FORMATTED-DATE TO MESSAGE-DATE
+               MOVE USER-NAME TO MESSAGE-AUTHOR
                WRITE MESSAGES
                END-WRITE               
            END-IF.
