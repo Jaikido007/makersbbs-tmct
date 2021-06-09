@@ -1,7 +1,7 @@
        IDENTIFICATION DIVISION.
-       FUNCTION-ID. DISPLAY-MESSAGE-TITLE.
+       FUNCTION-ID. DISPLAY-MESSAGE-DATE.
        DATA DIVISION.
-      
+   
            LINKAGE SECTION.
            01 LS-MESSAGE-NUM UNSIGNED-INT.
            01 LS-MSGS.
@@ -12,34 +12,33 @@
                    10 LS-BODY PIC X(500).
                    10 LS-DATE PIC X(10).
                    10 LS-AUTHOR PIC X(10).
-           01 TITLE PIC X(60).
+           01 POST-DATE PIC X(10).
            01 OFFSET UNSIGNED-INT.
 
        PROCEDURE DIVISION USING OFFSET LS-MESSAGE-NUM LS-MSGS 
-       RETURNING TITLE.
+       RETURNING POST-DATE.
            
            IF LS-MESSAGE-NUM = 1
-                       MOVE LS-TITLE(OFFSET) TO TITLE        
+                       MOVE LS-DATE (OFFSET) TO POST-DATE    
            ELSE IF LS-MESSAGE-NUM = 2
-                       MOVE LS-TITLE(OFFSET - 1) TO TITLE
+                       MOVE LS-DATE (OFFSET - 1) TO POST-DATE
            ELSE IF LS-MESSAGE-NUM = 3
-                       MOVE LS-TITLE(OFFSET - 2) TO TITLE 
+                       MOVE LS-DATE (OFFSET - 2) TO POST-DATE 
            ELSE IF LS-MESSAGE-NUM = 4
-                       MOVE LS-TITLE(OFFSET - 3) TO TITLE 
+                       MOVE LS-DATE (OFFSET - 3) TO POST-DATE 
            ELSE IF LS-MESSAGE-NUM = 5
-                       MOVE LS-TITLE(OFFSET - 4) TO TITLE
+                       MOVE LS-DATE (OFFSET - 4) TO POST-DATE
            ELSE IF LS-MESSAGE-NUM = 6
-                       MOVE LS-TITLE(OFFSET - 5) TO TITLE 
+                       MOVE LS-DATE (OFFSET - 5) TO POST-DATE 
            ELSE IF LS-MESSAGE-NUM = 7
-                       MOVE LS-TITLE(OFFSET - 6) TO TITLE
+                       MOVE LS-DATE (OFFSET - 6) TO POST-DATE
            ELSE IF LS-MESSAGE-NUM = 8
-                       MOVE LS-TITLE(OFFSET - 7) TO TITLE
+                       MOVE LS-DATE (OFFSET - 7) TO POST-DATE
            ELSE IF LS-MESSAGE-NUM = 9
-                       MOVE LS-TITLE(OFFSET - 8) TO TITLE
+                       MOVE LS-DATE (OFFSET - 8) TO POST-DATE
            ELSE IF LS-MESSAGE-NUM = 10
-                       MOVE LS-TITLE(OFFSET - 9) TO TITLE                       
+                       MOVE LS-DATE (OFFSET - 9) TO POST-DATE                       
            END-IF.
 
-           END FUNCTION DISPLAY-MESSAGE-TITLE.
-           
+           END FUNCTION DISPLAY-MESSAGE-DATE.
            

@@ -6,6 +6,8 @@
                FUNCTION MESSAGE-CHOICE-TO-NUM
                FUNCTION DISPLAY-MESSAGE-TITLE
                FUNCTION DISPLAY-MESSAGE-BODY
+               FUNCTION DISPLAY-MESSAGE-AUTHOR
+               FUNCTION DISPLAY-MESSAGE-DATE
                FUNCTION REPLACE-LETTER.
            INPUT-OUTPUT SECTION.
            FILE-CONTROL.
@@ -254,7 +256,7 @@
             05 LINE 15 COLUMN 10 VALUE "Post Author:".
             05 LINE 15 COLUMN 23 PIC X(10) USING POST-AUTHOR.
             05 LINE 15 COLUMN 34 VALUE "Posted On:".
-            05 LINE 15 COLUMN 45 PIC X(10) USINg POST-DATE. 
+            05 LINE 15 COLUMN 45 PIC X(10) USING POST-DATE. 
             05 LINE 18 COLUMN 10 VALUE "(n) Next message".
             05 LINE 18 COLUMN 30 VALUE "(p) Previous message".
             05 LINE 18 COLUMN 60 VALUE "(q) Go back".   
@@ -523,7 +525,11 @@
                MOVE DISPLAY-MESSAGE-TITLE(OFFSET MESSAGE-NUM WS-MSGS) 
                TO TITLE 
                MOVE DISPLAY-MESSAGE-BODY(OFFSET MESSAGE-NUM WS-MSGS) 
-               TO BODY                      
+               TO BODY  
+               MOVE DISPLAY-MESSAGE-AUTHOR(OFFSET MESSAGE-NUM WS-MSGS) 
+               TO POST-AUTHOR 
+               MOVE DISPLAY-MESSAGE-DATE(OFFSET MESSAGE-NUM WS-MSGS) 
+               TO POST-DATE                    
            END-IF.
            DISPLAY READ-MESSAGE-SCREEN.
            ACCEPT READ-CHOICE.

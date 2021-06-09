@@ -10,6 +10,8 @@
                INDEXED BY MSG-IDX.
                    10 LS-TITLE PIC X(60).
                    10 LS-BODY PIC X(500).
+                   10 LS-DATE PIC X(10).
+                   10 LS-AUTHOR PIC X(10).
            01 BODY PIC X(500).
            01 OFFSET UNSIGNED-INT.
 
@@ -39,3 +41,4 @@
            END-IF.
 
            END FUNCTION DISPLAY-MESSAGE-BODY.
+           
