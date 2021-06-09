@@ -4,6 +4,8 @@
            CONFIGURATION SECTION.
            REPOSITORY.
                FUNCTION MESSAGE-CHOICE-TO-NUM
+               FUNCTION DISPLAY-MESSAGE-TITLE
+               FUNCTION DISPLAY-MESSAGE-BODY
                FUNCTION REPLACE-LETTER.
            INPUT-OUTPUT SECTION.
            FILE-CONTROL.
@@ -54,6 +56,7 @@
            01 BODY PIC X(500).
            01 TITLE PIC X(60).
            01 MESSAGE-NUM UNSIGNED-INT.
+           01 RESULT UNSIGNED-INT.
 
       *    Variables related to post message screen
            01 POST-TITLE PIC X(60).
@@ -334,7 +337,7 @@
                END-IF
            ELSE IF MESSAGE-CHOICE = "1" OR "2" OR "3" OR "4" OR "5" 
              OR "6" OR "7" OR "8" OR "9" OR "10"
-               MOVE MESSAGE-CHOICE-TO-NUM(MESSAGE-CHOICE) TO MESSAGE-NUM
+               SET MESSAGE-NUM TO MESSAGE-CHOICE-TO-NUM(MESSAGE-CHOICE)
                PERFORM 0140-READ-MESSAGE
            ELSE 
                PERFORM 0130-DISPLAY-MESSAGEBOARD
@@ -342,36 +345,12 @@
 
        0140-READ-MESSAGE.
            INITIALIZE READ-CHOICE.
-           IF MESSAGE-NUM = 1
-                       MOVE WS-TITLE(OFFSET) TO TITLE
-                       MOVE WS-BODY(OFFSET) TO BODY
-           ELSE IF MESSAGE-NUM = 2
-                       MOVE WS-TITLE(OFFSET - 1) TO TITLE
-                       MOVE WS-BODY(OFFSET - 1) TO BODY
-           ELSE IF MESSAGE-NUM = 3
-                       MOVE WS-TITLE(OFFSET - 2) TO TITLE
-                       MOVE WS-BODY(OFFSET - 2) TO BODY 
-           ELSE IF MESSAGE-NUM = 4
-                       MOVE WS-TITLE(OFFSET - 3) TO TITLE
-                       MOVE WS-BODY(OFFSET - 3) TO BODY 
-           ELSE IF MESSAGE-NUM = 5
-                       MOVE WS-TITLE(OFFSET - 4) TO TITLE
-                       MOVE WS-BODY(OFFSET - 4) TO BODY
-           ELSE IF MESSAGE-NUM = 6
-                       MOVE WS-TITLE(OFFSET - 5) TO TITLE
-                       MOVE WS-BODY(OFFSET - 5) TO BODY 
-           ELSE IF MESSAGE-NUM = 7
-                       MOVE WS-TITLE(OFFSET - 6) TO TITLE
-                       MOVE WS-BODY(OFFSET - 6) TO BODY
-           ELSE IF MESSAGE-NUM = 8
-                       MOVE WS-TITLE(OFFSET - 7) TO TITLE
-                       MOVE WS-BODY(OFFSET - 7) TO BODY
-           ELSE IF MESSAGE-NUM = 9
-                       MOVE WS-TITLE(OFFSET - 8) TO TITLE
-                       MOVE WS-BODY(OFFSET - 8) TO BODY
-           ELSE IF MESSAGE-NUM = 10
-                       MOVE WS-TITLE(OFFSET - 9) TO TITLE
-                       MOVE WS-BODY(OFFSET - 9) TO BODY                       
+           IF MESSAGE-NUM = 1 OR 2 OR 3 OR 4 OR 5 OR 6 OR 7 OR 8 OR 9 
+           OR 10
+               MOVE DISPLAY-MESSAGE-TITLE(OFFSET MESSAGE-NUM WS-MSGS) 
+               TO TITLE 
+               MOVE DISPLAY-MESSAGE-BODY(OFFSET MESSAGE-NUM WS-MSGS) 
+               TO BODY                      
            END-IF.
            DISPLAY READ-MESSAGE-SCREEN.
            ACCEPT READ-CHOICE.

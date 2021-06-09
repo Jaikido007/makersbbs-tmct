@@ -4,6 +4,8 @@
            CONFIGURATION SECTION.
            REPOSITORY.
                FUNCTION MESSAGE-CHOICE-TO-NUM
+               FUNCTION DISPLAY-MESSAGE-TITLE
+               FUNCTION DISPLAY-MESSAGE-BODY
                FUNCTION REPLACE-LETTER.
        PROCEDURE DIVISION.
            CALL "server".
