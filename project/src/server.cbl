@@ -1,5 +1,6 @@
        IDENTIFICATION DIVISION.
        PROGRAM-ID. server.
+
        ENVIRONMENT DIVISION.
            CONFIGURATION SECTION.
            REPOSITORY.
@@ -9,6 +10,7 @@
                FUNCTION DISPLAY-MESSAGE-AUTHOR
                FUNCTION DISPLAY-MESSAGE-DATE
                FUNCTION REPLACE-LETTER.
+
            INPUT-OUTPUT SECTION.
            FILE-CONTROL.
            SELECT F-MESSAGE-FILE ASSIGN TO "messages.dat"
@@ -92,6 +94,7 @@
            01 POST-BODY PIC X(500).
            01 POST-CHOICE PIC X.
            01 WS-FORMATTED-DATE PIC X(10).
+
       *    Variables related to guessing game
            01 WS-ANSWERWORD PIC X(20).
            01 RANDOMNUMBER PIC 99.
@@ -236,7 +239,6 @@
            "                                  ,d'e                   ".
            
              
-
              05 LINE 8 COLUMN 10 VALUE "Enter your password:".
              05 PASSWORD-FIELD LINE 10 COLUMN 10 PIC X(20)
                 USING WS-PASSWORD.
@@ -1045,7 +1047,7 @@
            END-IF.
            DISPLAY READ-MESSAGE-SCREEN.
            DISPLAY TIME-SCREEN.
-           ACCEPT READ-CHOICE.
+           ACCEPT READ-CHOICE-FIELD.
            IF READ-CHOICE = "q" THEN
                PERFORM 0130-DISPLAY-MESSAGEBOARD
            ELSE IF READ-CHOICE = 'n' THEN 

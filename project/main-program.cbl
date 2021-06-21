@@ -1,11 +1,6 @@
        IDENTIFICATION DIVISION.
        PROGRAM-ID. main-program.
 
-    
-       
-
-          
-
        ENVIRONMENT DIVISION.
            CONFIGURATION SECTION.
            REPOSITORY.
@@ -18,6 +13,6 @@
 
        PROCEDURE DIVISION.
            CALL "server".
-           GOBACK.
-
+           GOBACK
+           .
            
