@@ -4,7 +4,6 @@
        ENVIRONMENT DIVISION.
            CONFIGURATION SECTION.
            REPOSITORY.
-               FUNCTION MESSAGE-CHOICE-TO-NUM
                FUNCTION REPLACE-LETTER.
                
            INPUT-OUTPUT SECTION.
@@ -124,8 +123,11 @@
                05 LS-PART-3            PIC X(60).
                05 LS-PART-4            PIC X(60).
                05 LS-PART-5            PIC X(60).
+           
+
            01 MSG-SELECT               PIC 999.
            01 MSG-VIEW-CHOICE          PIC X.
+           01 MSG-WRITE-CHOICE         PIC X.
            
            01 NEW-MESSAGE.
              05 WS-TITLE               PIC X(50).
@@ -402,6 +404,12 @@
       -      "GE*******************" FOREGROUND-COLOR IS 2.
              05 LINE 24 COL 10 VALUE "----------------------------------
       -      "---------------------" FOREGROUND-COLOR IS 3.
+             05 LINE 26 COL 10 VALUE "(s) Submit Message".
+             05 LINE 27 COL 10 VALUE "(d) Discard Message".
+             05 LINE 29 COL 10 VALUE "Choice:".
+             05 MSG-WRITE-CHOICE-FIELD 
+               LINE 29 COL 18 PIC X USING MSG-WRITE-CHOICE.
+               
            
            01 GAMES-MENU-SCREEN
              BACKGROUND-COLOR IS 0.
@@ -696,6 +704,7 @@
            INITIALIZE LS-PART-3.
            INITIALIZE LS-PART-4.
            INITIALIZE LS-PART-5.
+           INITIALIZE MSG-WRITE-CHOICE.
            DISPLAY WRITE-MSG-SCREEN.
            
            ACCEPT WS-TITLE-FIELD.
@@ -704,14 +713,23 @@
            ACCEPT LINE-3-FIELD.
            ACCEPT LINE-4-FIELD.
            ACCEPT LINE-5-FIELD.
-           
-           MOVE WS-CONTENT-DISPLAY TO WS-CONTENT.
-           MOVE USER-NAME TO WS-USERNAME.
+           ACCEPT MSG-WRITE-CHOICE-FIELD.
 
-           IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
-             CALL 'post-message' USING NEW-MESSAGE
+           IF MSG-WRITE-CHOICE-FIELD = "d" OR "D" THEN
              PERFORM 0130-MSG-MENU
            END-IF.
+
+           IF MSG-WRITE-CHOICE-FIELD = "s" OR "S" THEN 
+              MOVE WS-CONTENT-DISPLAY TO WS-CONTENT
+              MOVE USER-NAME TO WS-USERNAME
+
+             IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
+               CALL 'post-message' USING NEW-MESSAGE
+               PERFORM 0130-MSG-MENU
+             END-IF
+           END-IF.
+           
+           
 
            PERFORM 0120-DISPLAY-MENU.
       *******************************
