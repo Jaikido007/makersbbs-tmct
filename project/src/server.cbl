@@ -228,13 +228,13 @@
              05 LINE 13 COL 24 VALUE "* " FOREGROUND-COLOR IS 5.
              05 LINE 13 COL 26 VALUE "Most importantly. HAVE FUN!". 
 
-             05 LINE 19 COL 24 VALUE "(m) Messages    "
+             05 LINE 19 COL 24 VALUE "(M) Messages    "
                 REVERSE-VIDEO HIGHLIGHT FOREGROUND-COLOR IS 2.
-             05 LINE 19 COL 42 VALUE "(f) Fun & games "
+             05 LINE 19 COL 42 VALUE "(F) Fun & games "
                 REVERSE-VIDEO, HIGHLIGHT FOREGROUND-COLOR IS 5.
-             05 LINE 21 COL 24 VALUE "(l) Logout      "
+             05 LINE 21 COL 24 VALUE "(L) Logout      "
                 REVERSE-VIDEO , HIGHLIGHT.            
-             05 LINE 21 COL 42 VALUE "(q) Quit        "
+             05 LINE 21 COL 42 VALUE "(Q) Quit        "
                 REVERSE-VIDEO, HIGHLIGHT.  
              05 LINE 23 COL 24 VALUE "Pick: ".
              05 MENU-CHOICE-FIELD LINE 23 COL 30 PIC X
@@ -287,15 +287,15 @@
 
              05 LINE 25 COL 24 VALUE "( ) Read Message by Number "
              REVERSE-VIDEO HIGHLIGHT FOREGROUND-COLOR IS 2.  
-             05 LINE 27 COL 24 VALUE "(w) Write your own message "
+             05 LINE 27 COL 24 VALUE "(W) Write your own message "
              REVERSE-VIDEO HIGHLIGHT FOREGROUND-COLOR IS 2.               
-             05 LINE 29 COL 18 VALUE "(n) Next Page     "
+             05 LINE 29 COL 18 VALUE "(N) Next Page     "
              REVERSE-VIDEO, HIGHLIGHT FOREGROUND-COLOR IS 6.  
-             05 LINE 29 COL 41 VALUE "(p) Previous Page "
+             05 LINE 29 COL 41 VALUE "(P) Previous Page "
              REVERSE-VIDEO, HIGHLIGHT FOREGROUND-COLOR IS 6. 
-             05 LINE 31 COL 18 VALUE "(g) Go back       "
+             05 LINE 31 COL 18 VALUE "(G) Go back       "
              REVERSE-VIDEO, HIGHLIGHT.
-             05 LINE 31 COL 41 VALUE "(q) Quit          "
+             05 LINE 31 COL 41 VALUE "(Q) Quit          "
              REVERSE-VIDEO, HIGHLIGHT.
              05 LINE 33 COL 18 VALUE "Pick: ".
              05 MSG-MENU-CHOICE-FIELD LINE 33 COL 24 PIC XXX
@@ -337,9 +337,11 @@
              05 LINE 24 COL 10 VALUE "----------------------------------
       -      "---------------------" FOREGROUND-COLOR IS 3.  
 
-             05 LINE 27 COL 25 VALUE "(g) Go back"
+             05 LINE 26 COL 25 VALUE "(N) Next Message"
+                REVERSE-VIDEO , HIGHLIGHT. 
+             05 LINE 27 COL 25 VALUE "(G) Go back"
                 REVERSE-VIDEO , HIGHLIGHT.            
-             05 LINE 27 COL 39 VALUE "(q) Quit   "
+             05 LINE 27 COL 39 VALUE "(Q) Quit   "
                 REVERSE-VIDEO, HIGHLIGHT.  
              05 LINE 28 COL 25 VALUE "Pick: ".
              05 MSG-VIEW-CHOICE-FIELD LINE 28 COL 31 PIC X 
@@ -385,15 +387,11 @@
              05 LINE  2 COL 4 VALUE ":".
              05 LINE  2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.
 
-             05 LINE 30 COL 21 VALUE "(n) Guess The Number" 
+             05 LINE 30 COL 21 VALUE "(W) Guess The Word" 
              REVERSE-VIDEO, HIGHLIGHT FOREGROUND-COLOR IS 5.
-             05 LINE 32 COL 21 VALUE "(o) O and X         "  
-             REVERSE-VIDEO, HIGHLIGHT FOREGROUND-COLOR IS 5.
-             05 LINE 34 COL 21 VALUE "(m) Monkey?         " 
-             REVERSE-VIDEO, HIGHLIGHT FOREGROUND-COLOR IS 6.
-             05 LINE 36 COL 18 VALUE "(g) Go back "
+             05 LINE 36 COL 18 VALUE "(G) Go back "
              REVERSE-VIDEO, HIGHLIGHT.
-             05 LINE 36 COL 32 VALUE "(q) Quit    "
+             05 LINE 36 COL 32 VALUE "(Q) Quit    "
              REVERSE-VIDEO, HIGHLIGHT.
              05 LINE 38 COL 18 VALUE "Pick: ".
              05 GAMES-MENU-CHOICE-FIELD LINE 38 COL 24 PIC X
@@ -619,8 +617,155 @@
            MOVE WS-DATETIME(11:2) TO WS-FORMATTED-MINS.
            MOVE WS-DATETIME(13:2) TO WS-FORMATTED-SEC.
            MOVE WS-DATETIME(15:2) TO WS-FORMATTED-MS.
+      ****************************
+      *----WORD GUESSING GAME----*
+      ****************************
+       0210-DISPLAY-GUESSING-GAME.
+           MOVE 15 TO WS-GUESSES-LEFT.
+           SET WORD-IDX TO 0.
+           OPEN INPUT F-WORD-FILE.
+           MOVE 0 TO WS-FILE-IS-ENDED.
+           PERFORM UNTIL WS-FILE-IS-ENDED = 1
+               READ F-WORD-FILE
+                   NOT AT END
+                       ADD 1 TO WORD-IDX
+                       MOVE WORD TO WS-GUESSING-WORDS-WORD(WORD-IDX)
+                   AT END
+                       MOVE 1 TO WS-FILE-IS-ENDED
+               END-READ
+           END-PERFORM.
+           CLOSE F-WORD-FILE.
+           MOVE FUNCTION CURRENT-DATE(14:3) TO RANDOMNUMBER.
+           MOVE WS-GUESSING-WORDS-WORD(RANDOMNUMBER) TO WS-WORD.
+           MOVE WS-WORD TO WS-ANSWERWORD.
+           MOVE REPLACE-LETTER(WS-WORD) TO WS-WORD. 
+           DISPLAY WORD-GUESSING-SCREEN.
+           DISPLAY TIME-SCREEN.
+           MOVE 1 TO COUNTER.
+           PERFORM UNTIL COUNTER = 20
+             IF '*' EQUALS WS-WORD(COUNTER:1) 
+              THEN ADD 1 TO WS-WORD-LENGTH
+             END-IF
+             ADD 1 TO COUNTER
+           END-PERFORM.
+           PERFORM 0170-IN-GAME-SCREEN.
+          
+       0170-IN-GAME-SCREEN.
+           INITIALIZE WS-GUESS-CHOICE.
+           DISPLAY IN-GAME-SCREEN.
+           DISPLAY TIME-SCREEN.
+           ACCEPT WS-GUESS-CHOICE-FIELD.
+           IF WS-GUESS-CHOICE = '!' THEN 
+               PERFORM 0110-DISPLAY-MENU
+           ELSE
+               PERFORM 0180-CHECK-GUESS
+           END-IF.
+           
+       0180-CHECK-GUESS.
+           MOVE 1 TO COUNTER.
+           PERFORM UNTIL COUNTER = 20
+                 IF WS-GUESS-CHOICE = WS-ANSWERWORD(COUNTER:1) 
+                 THEN
+                      MOVE WS-GUESS-CHOICE TO WS-WORD(COUNTER:1) 
+                 END-IF
+                 ADD 1 TO COUNTER     
+           END-PERFORM.
+           SUBTRACT 1 FROM WS-GUESSES-LEFT.
+           MOVE 1 TO COUNTER.
+           MOVE 0 TO WS-LETTERS-LEFT.
+           PERFORM UNTIL COUNTER = 20
+             IF '*' EQUALS WS-WORD(COUNTER:1) 
+              THEN ADD 1 TO WS-LETTERS-LEFT
+             END-IF
+             ADD 1 TO COUNTER
+           END-PERFORM.
+             IF WS-LETTERS-LEFT = 0
+              THEN 
+              PERFORM 0190-WINNING-SCREEN
+             ELSE IF WS-GUESSES-LEFT = 0
+              THEN 
+              PERFORM 0200-LOSING-SCREEN
+             ELSE
+              PERFORM 0170-IN-GAME-SCREEN
+             END-IF.
+           
+       0190-WINNING-SCREEN.
+           INITIALIZE WS-GUESSING-WINNING-CHOICE.
+           COMPUTE WS-HIGH-SCORE = WS-LETTERS-LEFT * WS-GUESSES-LEFT.
+           DISPLAY WORD-GUESSING-WINNING-SCREEN.
+           DISPLAY TIME-SCREEN.
+           OPEN EXTEND F-HIGH-SCORES-FILE
+               MOVE WS-HIGH-SCORE TO HIGH-SCORE
+               MOVE USER-NAME TO PLAYER-NAME
+               WRITE PLAYER-SCORES 
+               END-WRITE.
+           CLOSE F-HIGH-SCORES-FILE.
+           ACCEPT WS-GUESSING-WINNING-CHOICE.
+           IF WS-GUESSING-WINNING-CHOICE = 'p'
+               THEN PERFORM 0210-DISPLAY-GUESSING-GAME
+           ELSE IF WS-GUESSING-WINNING-CHOICE = 'h'
+             THEN PERFORM 0210-HIGH-SCORE-TABLE
+           ELSE IF WS-GUESSING-WINNING-CHOICE = '!'
+             THEN PERFORM 0110-DISPLAY-MENU
+           ELSE
+             PERFORM 0190-WINNING-SCREEN
+           END-IF.
+
+       0200-LOSING-SCREEN.
+           PERFORM 0230-CURRENT-TIME.
+           INITIALIZE WS-GUESSING-LOSING-CHOICE.
+           DISPLAY WORD-GUESSING-LOSE-SCREEN.
+           DISPLAY TIME-SCREEN.
+           ACCEPT WS-GUESSING-LOSING-CHOICE.
+           IF WS-GUESSING-LOSING-CHOICE = 'p'
+               THEN PERFORM 0210-DISPLAY-GUESSING-GAME
+           ELSE IF WS-GUESSING-LOSING-CHOICE = 'h'
+             THEN PERFORM 0210-HIGH-SCORE-TABLE
+           ELSE IF WS-GUESSING-LOSING-CHOICE = '!'
+             THEN PERFORM 0110-DISPLAY-MENU
+           ELSE
+             PERFORM 0200-LOSING-SCREEN
+           END-IF.
+
+       0210-HIGH-SCORE-TABLE.
+           SET COUNTER TO 0.
+           OPEN INPUT F-HIGH-SCORES-FILE.
+           MOVE 0 TO WS-FILE-IS-ENDED.
+           PERFORM UNTIL WS-FILE-IS-ENDED = 1
+               READ F-HIGH-SCORES-FILE
+                   NOT AT END
+                       ADD 1 TO COUNTER
+                       MOVE HIGH-SCORE TO WS-SCORE(COUNTER)
+                       MOVE PLAYER-NAME TO WS-NAME(COUNTER)
+                   AT END 
+                       MOVE 1 TO WS-FILE-IS-ENDED
+               END-READ 
+           END-PERFORM.
+           CLOSE F-HIGH-SCORES-FILE.
+           PERFORM 0220-HIGH-SCORE-SCREEN.
+           
+       0220-HIGH-SCORE-SCREEN.
+           PERFORM 0230-CURRENT-TIME.
+           INITIALIZE WS-HIGH-SCORE-CHOICE.
+           SORT WS-TABLE-HIGH-SCORE ON DESCENDING WS-SCORE.
+           DISPLAY HIGH-SCORE-SCREEN.
+           DISPLAY TIME-SCREEN.
+           ACCEPT WS-HIGH-SCORE-CHOICE.
+           IF WS-HIGH-SCORE-CHOICE = 'b'
+             PERFORM 0110-DISPLAY-MENU
+           ELSE 
+               PERFORM 0220-HIGH-SCORE-SCREEN
+           END-IF.
+
+      *******************
+      *----PONG GAME----*
+      *******************   
+       
+           *>0230 THRU 0290
+
       *************************
       *----CREDITS SECTION----*
-      *************************
+      ************************* 
 
+           *> 0300 THRU 0399
        
