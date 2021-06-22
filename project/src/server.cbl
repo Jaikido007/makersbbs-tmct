@@ -153,7 +153,9 @@
            01 LOGIN-SCREEN
                BACKGROUND-COLOR IS 1.
                05 BLANK SCREEN.
-           *>upper border
+      ****************
+      *----Header----*
+      ****************
                05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -161,7 +163,9 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-           *>bottom border
+      ****************
+      *----Footer----*
+      ****************
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -171,7 +175,9 @@
                05 LINE 45 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-           *> general code
+      ***********************************
+      *----FriendFace logo ascii art----*
+      *********************************** 
                05 LINE 14 COL 34 VALUE " ________________________"
                    FOREGROUND-COLOR IS 7.
                05 LINE 15 COL 35 VALUE "|FFFFFFFFFFFFFFFFFFFFFF|"
@@ -198,7 +204,9 @@
                    FOREGROUND-COLOR IS 7.
                05 LINE 26 COL 34 VALUE " ------------------------"
                    FOREGROUND-COLOR IS 7.
-          
+      ***********************************
+      *----FriendFace text ascii art----*
+      ***********************************   
                05 LINE 31 COL 23 VALUE "______    _                ______
       -        "_" FOREGROUND-COLOR IS 7.
                05 LINE 32 COL 23 VALUE "|  ___|  (_)              | |  __
@@ -211,10 +219,9 @@
       -        "(_| | (_|  __/" FOREGROUND-COLOR IS 7.
                05 LINE 36 COL 23 VALUE "\_| |_|  |_|\___|_| |_|\__,_\_| \
       -        "__,_|\___\___|" FOREGROUND-COLOR IS 7.
-
-               
-
-
+      **************************
+      *----Pick positioning----*
+      **************************
                05 LINE 42 COLUMN 6 VALUE "Pick: ".
                05 LOGIN-CHOICE-FIELD LINE 42 COLUMN 12 PIC X
                   USING LOGIN-CHOICE.
@@ -225,7 +232,7 @@
              05 LINE 2 COL 2 PIC X(2) USING WS-FORMATTED-HOUR.
              05 LINE 2 COL 4 VALUE ":".
              05 LINE 2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.  
-             05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE, BLINK
+             05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE
              HIGHLIGHT, FOREGROUND-COLOR IS 3.
              05 LINE 6 COLUMN 10 VALUE "Enter your username:".
              05 USER-NAME-FIELD LINE 7 COLUMN 10 PIC X(16)
@@ -240,7 +247,7 @@
              05 LINE 2 COL 2 PIC X(2) USING WS-FORMATTED-HOUR.
              05 LINE 2 COL 4 VALUE ":".
              05 LINE 2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.  
-             05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE, BLINK
+             05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE
              HIGHLIGHT, FOREGROUND-COLOR IS 3.
              05 LINE 6 COLUMN 10 VALUE "Incorrect Username or Password".
              05 LINE 7 COLUMN 10 VALUE "(L) Back to Log-in.".
@@ -255,7 +262,7 @@
              05 LINE 2 COL 2 PIC X(2) USING WS-FORMATTED-HOUR.
              05 LINE 2 COL 4 VALUE ":".
              05 LINE 2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.  
-             05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE, BLINK
+             05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE
              HIGHLIGHT, FOREGROUND-COLOR IS 3.
              05 LINE 6 COLUMN 10 VALUE "Create your account".
              05 LINE 8 COLUMN 10 VALUE "Enter a username: ".
@@ -317,7 +324,7 @@
       -      "---------------------" FOREGROUND-COLOR IS 3.
 
              05 LINE 9 COL 10 VALUE "*********************BULLETIN BOARD
-      -      "*********************" BLINK, HIGHLIGHT, FOREGROUND-COLOR 
+      -      "*********************" HIGHLIGHT, FOREGROUND-COLOR 
              IS 2.
              05 LINE 10 COL 10 VALUE "-----------------------------------
       -      "---------------------" FOREGROUND-COLOR IS 3.
@@ -378,7 +385,7 @@
       -      "---------------------" FOREGROUND-COLOR IS 3.
 
              05 LINE 9 COL 10 VALUE "*********************BULLETIN BOARD
-      -      "*********************" BLINK, HIGHLIGHT, FOREGROUND-COLOR 
+      -      "*********************" HIGHLIGHT, FOREGROUND-COLOR 
              IS 2.
              05 LINE 10 COL 10 VALUE "-----------------------------------
       -      "---------------------" FOREGROUND-COLOR IS 3.
@@ -426,7 +433,7 @@
       -      "---------------------" FOREGROUND-COLOR IS 3.
 
              05 LINE 9 COL 10 VALUE "*********************BULLETIN BOARD
-      -      "*********************" BLINK, HIGHLIGHT, FOREGROUND-COLOR 
+      -      "*********************" HIGHLIGHT, FOREGROUND-COLOR 
              IS 2.
              05 LINE 10 COL 10 VALUE "----------------------------------
       -      "---------------------" FOREGROUND-COLOR IS 3.
@@ -476,69 +483,81 @@
        01 WORD-GUESSING-SCREEN
                BACKGROUND-COLOR IS 0.
              05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
-             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
-             05 LINE 18 COLUMN 10 VALUE "Guess this word: ".
-             05 LINE 20 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 22 COLUMN 10 VALUE "Guesses left: ".
-             05 LINE 22 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
-             05 LINE 24 COLUMN 10 VALUE "( ) Enter a letter to guess".
-             05 LINE 25 COLUMN 10 VALUE "(!) Quit game".
-             05 LINE 26 COLUMN 10 VALUE "Pick: ".
+             05 LINE 2 COLUMN 10 VALUE "Thank you Turtles!".
+             05 LINE 2 COLUMN 37 VALUE "Word Guessing Game".
+             05 LINE 14 COLUMN 10 VALUE "Guess this word: ".
+             05 LINE 16 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 18 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 18 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 20 COLUMN 10 VALUE "( ) Enter a letter to guess".
+             05 LINE 21 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 22 COLUMN 10 VALUE "Pick: ".
    
            01 IN-GAME-SCREEN
            BACKGROUND-COLOR IS 0.
              05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
-             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
-             05 LINE 34 COLUMN 10 VALUE "Guess this word: ".
-             05 LINE 36 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 38 COLUMN 10 VALUE "Guesses left: ".
-             05 LINE 38 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
-             05 LINE 40 COLUMN 10 VALUE "( ) Enter a letter to guess".
-             05 LINE 41 COLUMN 10 VALUE "(!) Quit game".
-             05 LINE 42 COLUMN 10 VALUE "Pick: ".
-             05 WS-GUESS-CHOICE-FIELD LINE 42 COLUMN 16 PIC X
+             05 LINE 2 COLUMN 10 VALUE "Thank you Turtles!".
+             05 LINE 2 COLUMN 37 VALUE "Word Guessing Game".
+             05 LINE 14 COLUMN 10 VALUE "Guess this word: ".
+             05 LINE 16 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 18 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 18 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 20 COLUMN 10 VALUE "( ) Enter a letter to guess".
+             05 LINE 21 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 22 COLUMN 10 VALUE "Pick: ".
+             05 WS-GUESS-CHOICE-FIELD LINE 22 COLUMN 16 PIC X
                USING WS-GUESS-CHOICE.
 
            01 WORD-GUESSING-LOSE-SCREEN
              BACKGROUND-COLOR IS 4.
              05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
-             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
-             05 LINE 34 COLUMN 10 VALUE "You lost!".
-             05 LINE 36 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 38 COLUMN 10 VALUE "Guesses left: ".
-             05 LINE 38 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
-             05 LINE 39 COLUMN 10 VALUE "(p) Play again".
-             05 LINE 40 COLUMN 10 VALUE "(h) See high scores".
-             05 LINE 41 COLUMN 10 VALUE "(!) Quit game".
-             05 LINE 42 COLUMN 10 VALUE "Pick: ".
-             05 WS-GUESSING-CHOICE-LOSE-FIELD LINE 42 COLUMN 16 PIC X
+             05 LINE 2 COLUMN 10 VALUE "Thank you Turtles!".
+             05 LINE 2 COLUMN 37 VALUE "Word Guessing Game".
+             05 LINE 14 COLUMN 10 VALUE "You lost!".
+             05 LINE 16 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 18 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 18 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 19 COLUMN 10 VALUE "(p) Play again".
+             05 LINE 20 COLUMN 10 VALUE "(h) See high scores".
+             05 LINE 21 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 22 COLUMN 10 VALUE "Pick: ".
+             05 WS-GUESSING-CHOICE-LOSE-FIELD LINE 22 COLUMN 16 PIC X
                USING WS-GUESSING-LOSING-CHOICE.
 
            01 WORD-GUESSING-WINNING-SCREEN
              BACKGROUND-COLOR IS 2.
              05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
-             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
-             05 LINE 34 COLUMN 10 VALUE "You guessed the word!".
-             05 LINE 36 COLUMN 10 PIC X(20) USING WS-ANSWERWORD.
-             05 LINE 38 COLUMN 10 PIC 99 USING WS-GUESSES-LEFT.
-             05 LINE 40 COLUMN 10 VALUE "You scored: ".
-             05 LINE 40 COLUMN 22 PIC 99 USING WS-HIGH-SCORE.
-             05 LINE 42 COLUMN 10 VALUE "(p) Play Again".
-             05 LINE 43 COLUMN 10 VALUE "(h) See High Scores".
-             05 LINE 44 COLUMN 10 VALUE "(!) Quit game".
-             05 LINE 45 COLUMN 10 VALUE "Pick: ".
-             05 WS-GUESSING-CHOICE-WINNING-FIELD LINE 45 COLUMN 16 PIC X
-               USING WS-GUESSING-WINNING-CHOICE.
+             05 LINE 2 COLUMN 10 VALUE "Thank you Turtles!"
+               FOREGROUND-COLOR IS 0.
+             05 LINE 2 COLUMN 37 VALUE "Word Guessing Game"
+               FOREGROUND-COLOR IS 0.
+             05 LINE 14 COLUMN 10 VALUE "You guessed the word!"
+               FOREGROUND-COLOR IS 0.
+             05 LINE 16 COLUMN 10 PIC X(20) USING WS-ANSWERWORD
+               FOREGROUND-COLOR IS 0.
+             05 LINE 18 COLUMN 10 PIC 99 USING WS-GUESSES-LEFT
+               FOREGROUND-COLOR IS 0.
+             05 LINE 20 COLUMN 10 VALUE "You scored: "
+               FOREGROUND-COLOR IS 0.
+             05 LINE 20 COLUMN 22 PIC 99 USING WS-HIGH-SCORE
+               FOREGROUND-COLOR IS 0.
+             05 LINE 22 COLUMN 10 VALUE "(p) Play Again"
+               FOREGROUND-COLOR IS 0.
+             05 LINE 23 COLUMN 10 VALUE "(h) See High Scores"
+               FOREGROUND-COLOR IS 0.
+             05 LINE 24 COLUMN 10 VALUE "(!) Quit game"
+               FOREGROUND-COLOR IS 0.
+             05 LINE 25 COLUMN 10 VALUE "Pick: "
+               FOREGROUND-COLOR IS 0.
+             05 WS-GUESSING-CHOICE-WINNING-FIELD LINE 25 COLUMN 16 PIC X
+               USING WS-GUESSING-WINNING-CHOICE
+               FOREGROUND-COLOR IS 0.
 
            01 HIGH-SCORE-SCREEN
            BACKGROUND-COLOR IS 2.
              05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
-             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
+             05 LINE 2 COLUMN 10 VALUE "Thank you Turtles!".
+             05 LINE 2 COLUMN 37 VALUE "Word Guessing Game".
              05 LINE 34 COLUMN 10 VALUE "High Scores:".
              05 LINE 36 COLUMN 10 PIC XX USING WS-SCORE(1).
              05 LINE 36 COLUMN 14 PIC X(10) USING WS-NAME(1).
