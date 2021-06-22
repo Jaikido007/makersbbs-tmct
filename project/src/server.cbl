@@ -4,7 +4,6 @@
        ENVIRONMENT DIVISION.
            CONFIGURATION SECTION.
            REPOSITORY.
-               FUNCTION MESSAGE-CHOICE-TO-NUM
                FUNCTION REPLACE-LETTER.
                
            INPUT-OUTPUT SECTION.
@@ -154,7 +153,7 @@
            *>upper border
                05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
-           FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
@@ -162,15 +161,32 @@
            *>bottom border
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
-           FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 44 COL 1 VALUE "     (L) Go to Log-in     (C) Cre
       -    "ate an account     (Q) Quit                                "                                 
                 FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 45 COL 1 VALUE "                                 
       -    "                                                           "
-           FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
            *> general code
-                    
+
+          
+               05 LINE 31 COL 5 VALUE "______    _                ______
+      -        "_" FOREGROUND-COLOR IS 7.
+               05 LINE 32 COL 5 VALUE "|  ___|  (_)              | |  __
+      -        "_| " FOREGROUND-COLOR IS 7.
+               05 LINE 33 COL 5 VALUE "| |_ _ __ _  ___ _ __   __| | |_ 
+      -        "__ _  ___ ___" FOREGROUND-COLOR IS 7.
+               05 LINE 34 COL 5 VALUE "|  _| '__| |/ _ \ '_ \ / _` |  _/
+      -        " _` |/ __/ _ \" FOREGROUND-COLOR IS 7.
+               05 LINE 35 COL 5 VALUE "| | | |  | |  __/ | | | (_| | || 
+      -        "(_| | (_|  __/" FOREGROUND-COLOR IS 7.
+               05 LINE 36 COL 5 VALUE "\_| |_|  |_|\___|_| |_|\__,_\_| \
+      -        "__,_|\___\___|" FOREGROUND-COLOR IS 7.
+
+               
+
+
                05 LINE 42 COLUMN 6 VALUE "Pick: ".
                05 LOGIN-CHOICE-FIELD LINE 42 COLUMN 12 PIC X
                   USING LOGIN-CHOICE.
@@ -238,14 +254,14 @@
              05 LINE  6 COL 10 VALUE "Hi, ".
              05 LINE  6 COL 14 PIC X(16) USING USER-NAME.
              05 LINE  8 COL 10 VALUE "Welcome to COBOL The Barbarian's s
-      -      "tate of the art Bulletin Board.".  
-             05 LINE  9 COL 10 VALUE "Feel free to:".
+      -      "tate oF the art Bulletin Board.".  
+             05 LINE  9 COL 10 VALUE "Feel Free to:".
              05 LINE 10 COL 24 VALUE "* " FOREGROUND-COLOR IS 2.
              05 LINE 10 COL 26 VALUE "Read our message board.".
              05 LINE 11 COL 24 VALUE "* " FOREGROUND-COLOR IS 5.
-             05 LINE 11 COL 26 VALUE "Play a few games.".
+             05 LINE 11 COL 26 VALUE "Play a Few games.".
              05 LINE 12 COL 24 VALUE "* " FOREGROUND-COLOR IS 2.
-             05 LINE 12 COL 26 VALUE "Leave a message of your own.". 
+             05 LINE 12 COL 26 VALUE "Leave a message oF your own.". 
              05 LINE 13 COL 24 VALUE "* " FOREGROUND-COLOR IS 5.
              05 LINE 13 COL 26 VALUE "Most importantly. HAVE FUN!". 
 
@@ -430,7 +446,7 @@
              05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
              05 LINE 18 COLUMN 10 VALUE "Guess this word: ".
              05 LINE 20 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 22 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 22 COLUMN 10 VALUE "Guesses leFt: ".
              05 LINE 22 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
              05 LINE 24 COLUMN 10 VALUE "( ) Enter a letter to guess".
              05 LINE 25 COLUMN 10 VALUE "(!) Quit game".
@@ -443,7 +459,7 @@
              05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
              05 LINE 34 COLUMN 10 VALUE "Guess this word: ".
              05 LINE 36 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 38 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 38 COLUMN 10 VALUE "Guesses leFt: ".
              05 LINE 38 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
              05 LINE 40 COLUMN 10 VALUE "( ) Enter a letter to guess".
              05 LINE 41 COLUMN 10 VALUE "(!) Quit game".
@@ -458,7 +474,7 @@
              05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
              05 LINE 34 COLUMN 10 VALUE "You lost!".
              05 LINE 36 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 38 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 38 COLUMN 10 VALUE "Guesses leFt: ".
              05 LINE 38 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
              05 LINE 39 COLUMN 10 VALUE "(p) Play again".
              05 LINE 40 COLUMN 10 VALUE "(h) See high scores".
@@ -605,7 +621,7 @@
              PERFORM 0110-DISPLAY-LOGIN
            ELSE IF MENU-CHOICE =   "m" or "M" THEN
              PERFORM 0130-MSG-MENU
-           ELSE IF MENU-CHOICE =   "f" or "F" THEN
+           ELSE IF MENU-CHOICE =   "F" or "F" THEN
              PERFORM 0160-GAMES-MENU
            END-IF.
 
@@ -615,7 +631,7 @@
       ************************************************
        0130-MSG-MENU.
            PERFORM 0200-TIME-AND-DATE.
-           CALL 'number-of-file-lines' USING NUM-FILE-LINES.
+           CALL 'number-oF-File-lines' USING NUM-FILE-LINES.
            CALL 'get-list-page-alt' USING NUM-FILE-LINES WS-LIST-TABLE.
            *> CALL 'id-sort' USING WS-LIST-TABLE. <*
            INITIALIZE MSG-MENU-CHOICE.
@@ -657,7 +673,7 @@
 
        0140-MESSAGE-VIEW. 
            PERFORM 0200-TIME-AND-DATE.  
-           CALL 'number-of-file-lines' USING NUM-FILE-LINES.
+           CALL 'number-oF-File-lines' USING NUM-FILE-LINES.
            CALL 'get-list-page-alt' USING NUM-FILE-LINES WS-LIST-TABLE.
            *> CALL 'id-sort' USING WS-LIST-TABLE. <*        
            MOVE LIST-CONTENT(MSG-SELECT) TO WS-CONTENT-DISPLAY.
