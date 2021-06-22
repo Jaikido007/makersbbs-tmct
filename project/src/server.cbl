@@ -172,7 +172,7 @@
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
            *> general code
-
+           
           
                05 LINE 31 COL 5 VALUE "______    _                ______
       -        "_" FOREGROUND-COLOR IS 7.
@@ -205,8 +205,8 @@
              05 LINE 6 COLUMN 10 VALUE "Enter your username:".
              05 USER-NAME-FIELD LINE 7 COLUMN 10 PIC X(16)
                 USING USER-NAME.   
-             05 LINE 8 COLUMN 10 VALUE "Enter your password:".
-             05 PASSWORD-FIELD LINE 9 COLUMN 10 PIC X(20)
+             05 LINE 9 COLUMN 10 VALUE "Enter your password:".
+             05 PASSWORD-FIELD LINE 10 COLUMN 10 PIC X(20)
                 USING WS-PASSWORD.    
 
            01 ERROR-SCREEN
@@ -233,15 +233,15 @@
              05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE, BLINK
              HIGHLIGHT, FOREGROUND-COLOR IS 3.
              05 LINE 6 COLUMN 10 VALUE "Create your account".
-             05 LINE 8 COLUMN 10 VALUE "Enter a username:".
-             05 NEW-USER-NAME-FIELD LINE 8 COLUMN 10 PIC X(10)
+             05 LINE 8 COLUMN 10 VALUE "Enter a username: ".
+             05 NEW-USER-NAME-FIELD LINE 9 COLUMN 10 PIC X(16)
                 USING NEW-USER-NAME.
-             05 LINE 10 COLUMN 10 VALUE "Enter a password: ".
-             05 LINE 10 COLUMN 29 VALUE "(max 20 characters)".
-             05 NEW-PASSWORD-FIELD LINE 11 COLUMN 10 PIC X(20)
+             05 LINE 11 COLUMN 10 VALUE "Enter a password: ".
+             05 LINE 11 COLUMN 29 VALUE "(max 20 characters)".
+             05 NEW-PASSWORD-FIELD LINE 12 COLUMN 10 PIC X(20)
                 USING NEW-PASSWORD.
-             05 LINE 12 COLUMN 10 VALUE "(S) Submit".
-             05 LINE 13 COLUMN 10 VALUE "(Q) Go Back".
+             05 LINE 14 COLUMN 10 VALUE "(S) Submit".
+             05 LINE 15 COLUMN 10 VALUE "(Q) Go Back".
              05 LINE 17 COLUMN 10 VALUE "Pick: ".
              05 CREATE-CHOICE-FIELD LINE 17 COLUMN 16 PIC X
                 USING CREATE-CHOICE.        
