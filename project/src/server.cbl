@@ -31,7 +31,9 @@
               05 USER-PASSWORD PIC X(20).   
                       
            WORKING-STORAGE SECTION.
-      *     Variables related to login and menu screen
+      ****************************************************
+      *----Variables related to login and menu screen----*
+      ****************************************************
            01 USER-NAME PIC X(16).
            01 WS-PASSWORD PIC X(20).
            01 NEW-USER-NAME PIC X(16).
@@ -48,8 +50,9 @@
                    10 WS-PWORD PIC X(20).
            01 WS-FOUND PIC 9.
            01 WS-IDX UNSIGNED-INT. 
-      
-      *    Variables related to guessing game
+      ********************************************
+      *----Variables related to guessing game----*
+      ********************************************
            01 WS-ANSWERWORD PIC X(20).
            01 RANDOMNUMBER PIC 99.
            01 WS-WORD PIC X(20).
@@ -59,8 +62,9 @@
                INDEXED BY WORD-IDX.
                    10 WS-GUESSING-WORDS-WORD PIC X(20).
            01 WS-GUESS-CHOICE PIC X.
-
-      *    Variables related to high score screen
+      ************************************************
+      *----Variables related to high score screen----*
+      ************************************************
            01 WS-HIGH-SCORE-CHOICE PIC X.
            01 WS-HIGH-SCORE PIC 99.
            01 WS-HIGH-SCORES.  
@@ -69,12 +73,14 @@
               INDEXED BY SCORE-IDX.
                   10 WS-SCORE PIC 99.
                   10 WS-NAME PIC X(10).
-
-      *    Variables related to checking guesses  
+      ***********************************************
+      *----Variables related to checking guesses----*
+      ***********************************************  
            01 WS-LETTERS-LEFT PIC 99.
            01 WS-GUESSES-LEFT PIC 99.          
-
-      *    Variables related to winning and losing.
+      *************************************************
+      *----Variables related to winning and losing----*
+      *************************************************
            01 WS-GUESSING-LOSING-CHOICE PIC X.
            01 WS-GUESSING-WINNING-CHOICE PIC X.
            01 WS-WORD-LENGTH PIC 99.
@@ -203,6 +209,7 @@
            01 MENU-SCREEN
              BACKGROUND-COLOR IS 0.
              05 BLANK SCREEN.
+             05 LINE  1 FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
              05 LINE  2 COL 2 PIC X(2) USING WS-FORMATTED-HOUR.
              05 LINE  2 COL 4 VALUE ":".
              05 LINE  2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.  
@@ -393,7 +400,9 @@
                 USING GAMES-MENU-CHOICE.     
 
        PROCEDURE DIVISION.
-
+      ************************************
+      *----LOGIN / SIGN-IN/UP SECTION----*
+      ************************************
        0110-DISPLAY-LOGIN.
            PERFORM 0200-TIME-AND-DATE.
            INITIALIZE LOGIN-CHOICE. 
@@ -479,7 +488,9 @@
            ELSE 
                PERFORM 0113-ERROR-PAGE 
            END-IF.
-
+      **************************************************     
+      *----DISPLAY MENU COMES AFTER SUCCESFUL LOGIN----*
+      **************************************************
        0120-DISPLAY-MENU.
            PERFORM 0200-TIME-AND-DATE.
            INITIALIZE MENU-CHOICE.
@@ -496,12 +507,14 @@
            END-IF.
 
            PERFORM 0120-DISPLAY-MENU.
-
+      ************************************************
+      *----MESSAGE SECTION FOR READ/WRITE/COMMENT----*
+      ************************************************
        0130-MSG-MENU.
            PERFORM 0200-TIME-AND-DATE.
            CALL 'number-of-file-lines' USING NUM-FILE-LINES.
            CALL 'get-list-page-alt' USING NUM-FILE-LINES WS-LIST-TABLE.
-          *>  CALL 'id-sort' USING WS-LIST-TABLE.
+           *> CALL 'id-sort' USING WS-LIST-TABLE. <*
            INITIALIZE MSG-MENU-CHOICE.
            DISPLAY MSG-MENU-SCREEN.
            ACCEPT MSG-MENU-CHOICE-FIELD.
@@ -579,7 +592,9 @@
            END-IF.
 
            PERFORM 0120-DISPLAY-MENU.
-       
+      *******************************
+      *----FUN AND GAMES SECTION----*
+      *******************************
        0160-GAMES-MENU.
            PERFORM 0200-TIME-AND-DATE.
            INITIALIZE GAMES-MENU-CHOICE.
@@ -592,7 +607,9 @@
            END-IF.
 
            PERFORM 0160-GAMES-MENU.
-
+      ***************************
+      *----TIME/DATE SECTION----*
+      ***************************
        0200-TIME-AND-DATE.
            MOVE FUNCTION CURRENT-DATE TO WS-DATETIME. 
            MOVE WS-DATETIME(1:4)  TO WS-FORMATTED-YEAR.
@@ -602,5 +619,8 @@
            MOVE WS-DATETIME(11:2) TO WS-FORMATTED-MINS.
            MOVE WS-DATETIME(13:2) TO WS-FORMATTED-SEC.
            MOVE WS-DATETIME(15:2) TO WS-FORMATTED-MS.
+      *************************
+      *----CREDITS SECTION----*
+      *************************
 
        
