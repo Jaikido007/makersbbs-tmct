@@ -258,13 +258,13 @@
              05 LINE  6 COL 14 PIC X(16) USING USER-NAME.
              05 LINE  8 COL 10 VALUE "Welcome to COBOL The Barbarian's s
       -      "tate oF the art Bulletin Board.".  
-             05 LINE  9 COL 10 VALUE "Feel Free to:".
+             05 LINE  9 COL 10 VALUE "Feel free to:".
              05 LINE 10 COL 24 VALUE "* " FOREGROUND-COLOR IS 2.
              05 LINE 10 COL 26 VALUE "Read our message board.".
              05 LINE 11 COL 24 VALUE "* " FOREGROUND-COLOR IS 5.
-             05 LINE 11 COL 26 VALUE "Play a Few games.".
+             05 LINE 11 COL 26 VALUE "Play a few games.".
              05 LINE 12 COL 24 VALUE "* " FOREGROUND-COLOR IS 2.
-             05 LINE 12 COL 26 VALUE "Leave a message oF your own.". 
+             05 LINE 12 COL 26 VALUE "Leave a message of your own.". 
              05 LINE 13 COL 24 VALUE "* " FOREGROUND-COLOR IS 5.
              05 LINE 13 COL 26 VALUE "Most importantly. HAVE FUN!". 
 
@@ -455,7 +455,7 @@
              05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
              05 LINE 18 COLUMN 10 VALUE "Guess this word: ".
              05 LINE 20 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 22 COLUMN 10 VALUE "Guesses leFt: ".
+             05 LINE 22 COLUMN 10 VALUE "Guesses left: ".
              05 LINE 22 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
              05 LINE 24 COLUMN 10 VALUE "( ) Enter a letter to guess".
              05 LINE 25 COLUMN 10 VALUE "(!) Quit game".
@@ -468,7 +468,7 @@
              05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
              05 LINE 34 COLUMN 10 VALUE "Guess this word: ".
              05 LINE 36 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 38 COLUMN 10 VALUE "Guesses leFt: ".
+             05 LINE 38 COLUMN 10 VALUE "Guesses left: ".
              05 LINE 38 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
              05 LINE 40 COLUMN 10 VALUE "( ) Enter a letter to guess".
              05 LINE 41 COLUMN 10 VALUE "(!) Quit game".
@@ -483,7 +483,7 @@
              05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
              05 LINE 34 COLUMN 10 VALUE "You lost!".
              05 LINE 36 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 38 COLUMN 10 VALUE "Guesses leFt: ".
+             05 LINE 38 COLUMN 10 VALUE "Guesses left: ".
              05 LINE 38 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
              05 LINE 39 COLUMN 10 VALUE "(p) Play again".
              05 LINE 40 COLUMN 10 VALUE "(h) See high scores".
@@ -543,7 +543,7 @@
            ELSE IF LOGIN-CHOICE = "q" OR "Q" THEN 
                STOP RUN
            ELSE 
-               PERFORM 0120-DISPLAY-MENU
+               PERFORM 0110-DISPLAY-LOGIN
            END-IF.
 
        0111-SIGN-IN.
@@ -630,7 +630,7 @@
              PERFORM 0110-DISPLAY-LOGIN
            ELSE IF MENU-CHOICE =   "m" or "M" THEN
              PERFORM 0130-MSG-MENU
-           ELSE IF MENU-CHOICE =   "F" or "F" THEN
+           ELSE IF MENU-CHOICE =   "f" or "F" THEN
              PERFORM 0160-GAMES-MENU
            END-IF.
 
@@ -640,7 +640,7 @@
       ************************************************
        0130-MSG-MENU.
            PERFORM 0200-TIME-AND-DATE.
-           CALL 'number-oF-File-lines' USING NUM-FILE-LINES.
+           CALL 'number-of-file-lines' USING NUM-FILE-LINES.
            CALL 'get-list-page-alt' USING NUM-FILE-LINES WS-LIST-TABLE.
            *> CALL 'id-sort' USING WS-LIST-TABLE. <*
            INITIALIZE MSG-MENU-CHOICE.
@@ -682,7 +682,7 @@
 
        0140-MESSAGE-VIEW. 
            PERFORM 0200-TIME-AND-DATE.  
-           CALL 'number-oF-File-lines' USING NUM-FILE-LINES.
+           CALL 'number-of-file-lines' USING NUM-FILE-LINES.
            CALL 'get-list-page-alt' USING NUM-FILE-LINES WS-LIST-TABLE.
            *> CALL 'id-sort' USING WS-LIST-TABLE. <*        
            MOVE LIST-CONTENT(MSG-SELECT) TO WS-CONTENT-DISPLAY.
