@@ -27,7 +27,7 @@
               05 PLAYER-NAME PIC X(10).
            FD F-USERS-FILE.
            01 USERS.
-              05 USERNAME PIC X(10).
+              05 USERNAME PIC X(16).
               05 USER-PASSWORD PIC X(20).   
                       
            WORKING-STORAGE SECTION.
@@ -131,6 +131,16 @@
              05 WS-TITLE               PIC X(50).
              05 WS-CONTENT             PIC X(300).
              05 WS-USERNAME            PIC X(16).
+      **************
+      *----Time----*
+      **************
+           01 WS-TIME.
+               05 WS-YEAR PIC X(4).
+               05 WS-MONTH PIC X(2).
+               05 WS-DAY PIC X(2).
+               05 WS-HOURS-MINS.
+                   10 WS-HOURS PIC X(2).
+                   10 WS-MINS PIC X(2).
            
            LINKAGE SECTION.
            01 LS-COUNTER UNSIGNED-INT.
@@ -139,19 +149,30 @@
 
            SCREEN SECTION.
            01 LOGIN-SCREEN
-               BACKGROUND-COLOR IS 0.
+               BACKGROUND-COLOR IS 1.
                05 BLANK SCREEN.
-               05 LINE 2 COL 2 PIC X(2) USING WS-FORMATTED-HOUR.
-               05 LINE 2 COL 4 VALUE ":".
-               05 LINE 2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.  
-               05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE, BLINK
-               HIGHLIGHT, FOREGROUND-COLOR IS 3.
-          
-               05 LINE 7 COLUMN 10 VALUE "(L) Go to Log-in.".
-               05 LINE 8 COLUMN 10 VALUE "(C) Create an account.".
-               05 LINE 9 COLUMN 10 VALUE "(Q) Quit.".
-               05 LINE 11 COLUMN 10 VALUE "Pick: ".
-               05 LOGIN-CHOICE-FIELD LINE 11 COLUMN 16 PIC X
+           *>upper border
+               05 LINE 1 COL 1  VALUE "   :                              
+      -    "                                                           "
+           FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
+               FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+               05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
+               FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+           *>bottom border
+               05 LINE 43 COL 1 VALUE "                                 
+      -    "                                                           "
+           FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 44 COL 1 VALUE "     (L) Go to Log-in     (C) Cre
+      -    "ate an account     (Q) Quit                                "                                 
+                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 45 COL 1 VALUE "                                 
+      -    "                                                           "
+           FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+           *> general code
+                    
+               05 LINE 42 COLUMN 6 VALUE "Pick: ".
+               05 LOGIN-CHOICE-FIELD LINE 42 COLUMN 12 PIC X
                   USING LOGIN-CHOICE.
 
            01 SIGN-IN-SCREEN
@@ -163,7 +184,7 @@
              05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE, BLINK
              HIGHLIGHT, FOREGROUND-COLOR IS 3.
              05 LINE 6 COLUMN 10 VALUE "Enter your username:".
-             05 USER-NAME-FIELD LINE 7 COLUMN 10 PIC X(10)
+             05 USER-NAME-FIELD LINE 7 COLUMN 10 PIC X(16)
                 USING USER-NAME.   
              05 LINE 8 COLUMN 10 VALUE "Enter your password:".
              05 PASSWORD-FIELD LINE 9 COLUMN 10 PIC X(20)
@@ -335,17 +356,19 @@
              05 LINE 23 COL 10 VALUE "*********************CHOSEN MESSAG
       -      "E********************" FOREGROUND-COLOR IS 2.
              05 LINE 24 COL 10 VALUE "----------------------------------
-      -      "---------------------" FOREGROUND-COLOR IS 3.  
+      -      "---------------------" FOREGROUND-COLOR IS 3.
 
-             05 LINE 26 COL 25 VALUE "(N) Next Message"
-                REVERSE-VIDEO , HIGHLIGHT. 
-             05 LINE 27 COL 25 VALUE "(G) Go back"
-                REVERSE-VIDEO , HIGHLIGHT.            
-             05 LINE 27 COL 39 VALUE "(Q) Quit   "
-                REVERSE-VIDEO, HIGHLIGHT.  
-             05 LINE 28 COL 25 VALUE "Pick: ".
-             05 MSG-VIEW-CHOICE-FIELD LINE 28 COL 31 PIC X 
-               USING MSG-VIEW-CHOICE.
+             05 LINE 29 COL 18 VALUE "(N) Next Page     "
+             REVERSE-VIDEO, HIGHLIGHT FOREGROUND-COLOR IS 6.
+             05 LINE 29 COL 41 VALUE "(P) Previous Page "
+             REVERSE-VIDEO, HIGHLIGHT FOREGROUND-COLOR IS 6.
+             05 LINE 31 COL 18 VALUE "(G) Go back       "
+             REVERSE-VIDEO, HIGHLIGHT.
+             05 LINE 31 COL 41 VALUE "(Q) Quit          "
+             REVERSE-VIDEO, HIGHLIGHT.
+             05 LINE 33 COL 18 VALUE "Pick: ".
+             05 MSG-VIEW-CHOICE-FIELD LINE 33 COL 24 PIC XXX
+                USING MSG-VIEW-CHOICE.
 
            01 WRITE-MSG-SCREEN
              BACKGROUND-COLOR IS 0.
@@ -395,7 +418,89 @@
              REVERSE-VIDEO, HIGHLIGHT.
              05 LINE 38 COL 18 VALUE "Pick: ".
              05 GAMES-MENU-CHOICE-FIELD LINE 38 COL 24 PIC X
-                USING GAMES-MENU-CHOICE.     
+                USING GAMES-MENU-CHOICE.  
+
+      ******************************************************************
+      *----WORD GUESSING GAME SCREEN SECTION----************************
+      ******************************************************************             
+       01 WORD-GUESSING-SCREEN
+               BACKGROUND-COLOR IS 0.
+             05 BLANK SCREEN.
+             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
+             05 LINE 18 COLUMN 10 VALUE "Guess this word: ".
+             05 LINE 20 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 22 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 22 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 24 COLUMN 10 VALUE "( ) Enter a letter to guess".
+             05 LINE 25 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 26 COLUMN 10 VALUE "Pick: ".
+   
+           01 IN-GAME-SCREEN
+           BACKGROUND-COLOR IS 0.
+             05 BLANK SCREEN.
+             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
+             05 LINE 34 COLUMN 10 VALUE "Guess this word: ".
+             05 LINE 36 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 38 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 38 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 40 COLUMN 10 VALUE "( ) Enter a letter to guess".
+             05 LINE 41 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 42 COLUMN 10 VALUE "Pick: ".
+             05 WS-GUESS-CHOICE-FIELD LINE 42 COLUMN 16 PIC X
+               USING WS-GUESS-CHOICE.
+
+           01 WORD-GUESSING-LOSE-SCREEN
+             BACKGROUND-COLOR IS 4.
+             05 BLANK SCREEN.
+             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
+             05 LINE 34 COLUMN 10 VALUE "You lost!".
+             05 LINE 36 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 38 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 38 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 39 COLUMN 10 VALUE "(p) Play again".
+             05 LINE 40 COLUMN 10 VALUE "(h) See high scores".
+             05 LINE 41 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 42 COLUMN 10 VALUE "Pick: ".
+             05 WS-GUESSING-CHOICE-LOSE-FIELD LINE 42 COLUMN 16 PIC X
+               USING WS-GUESSING-LOSING-CHOICE.
+
+           01 WORD-GUESSING-WINNING-SCREEN
+             BACKGROUND-COLOR IS 2.
+             05 BLANK SCREEN.
+             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
+             05 LINE 34 COLUMN 10 VALUE "You guessed the word!".
+             05 LINE 36 COLUMN 10 PIC X(20) USING WS-ANSWERWORD.
+             05 LINE 38 COLUMN 10 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 40 COLUMN 10 VALUE "You scored: ".
+             05 LINE 40 COLUMN 22 PIC 99 USING WS-HIGH-SCORE.
+             05 LINE 42 COLUMN 10 VALUE "(p) Play Again".
+             05 LINE 43 COLUMN 10 VALUE "(h) See High Scores".
+             05 LINE 44 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 45 COLUMN 10 VALUE "Pick: ".
+             05 WS-GUESSING-CHOICE-WINNING-FIELD LINE 45 COLUMN 16 PIC X
+               USING WS-GUESSING-WINNING-CHOICE.
+
+           01 HIGH-SCORE-SCREEN
+           BACKGROUND-COLOR IS 2.
+             05 BLANK SCREEN.
+             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
+             05 LINE 34 COLUMN 10 VALUE "High Scores:".
+             05 LINE 36 COLUMN 10 PIC XX USING WS-SCORE(1).
+             05 LINE 36 COLUMN 14 PIC X(10) USING WS-NAME(1).
+             05 LINE 38 COLUMN 10 PIC XX USING WS-SCORE(2).
+             05 LINE 38 COLUMN 14 PIC X(10) USING WS-NAME(2).
+             05 LINE 40 COLUMN 10 PIC XX USING WS-SCORE(3).
+             05 LINE 40 COLUMN 14 PIC X(10) USING WS-NAME(3).
+             05 LINE 42 COLUMN 10 VALUE "(b) Go back".
+             05 LINE 44 COLUMN 10 VALUE "Pick: ".
+             05 WS-HIGH-SCORE-FIELD LINE 44 COLUMN 16 PIC X
+               USING WS-HIGH-SCORE-CHOICE.
+
 
        PROCEDURE DIVISION.
       ************************************
@@ -551,12 +656,31 @@
            PERFORM 0130-MSG-MENU.
 
        0140-MESSAGE-VIEW. 
-           PERFORM 0200-TIME-AND-DATE.          
+           PERFORM 0200-TIME-AND-DATE.  
+           CALL 'number-of-file-lines' USING NUM-FILE-LINES.
+           CALL 'get-list-page-alt' USING NUM-FILE-LINES WS-LIST-TABLE.
+           *> CALL 'id-sort' USING WS-LIST-TABLE. <*        
            MOVE LIST-CONTENT(MSG-SELECT) TO WS-CONTENT-DISPLAY.
            INITIALIZE MSG-VIEW-CHOICE.
            DISPLAY MESSAGE-VIEW-SCREEN.
            ACCEPT MSG-VIEW-CHOICE-FIELD.
-           IF MSG-VIEW-CHOICE =        "g" OR "G" THEN
+
+           IF MSG-VIEW-CHOICE =        "n" OR 'N' THEN
+             COMPUTE MSG-SELECT = MSG-SELECT + 1
+               IF MSG-SELECT IS GREATER THAN OR EQUAL TO NUM-FILE-LINES
+                 COMPUTE MSG-SELECT = MSG-SELECT - 1
+                 PERFORM 0140-MESSAGE-VIEW
+               ELSE
+                   PERFORM 0140-MESSAGE-VIEW
+               END-IF                
+           ELSE IF MSG-VIEW-CHOICE =   "p" OR "P" THEN
+             COMPUTE MSG-SELECT = MSG-SELECT - 1
+               IF MSG-SELECT IS LESS THAN 1
+                 COMPUTE MSG-SELECT = MSG-SELECT + 1
+               ELSE
+                   PERFORM 0140-MESSAGE-VIEW
+               END-IF 
+           ELSE IF MSG-VIEW-CHOICE =   "g" OR "G" THEN
                PERFORM 0130-MSG-MENU
            ELSE IF MSG-VIEW-CHOICE =   "q" OR "Q" THEN
               STOP RUN  
@@ -602,6 +726,8 @@
                STOP RUN
            ELSE IF GAMES-MENU-CHOICE = "g" or "G" THEN
                PERFORM 0120-DISPLAY-MENU   
+           ELSE IF GAMES-MENU-CHOICE = "w" or "W" THEN
+               PERFORM 0210-DISPLAY-GUESSING-GAME 
            END-IF.
 
            PERFORM 0160-GAMES-MENU.
@@ -617,10 +743,11 @@
            MOVE WS-DATETIME(11:2) TO WS-FORMATTED-MINS.
            MOVE WS-DATETIME(13:2) TO WS-FORMATTED-SEC.
            MOVE WS-DATETIME(15:2) TO WS-FORMATTED-MS.
-      ****************************
-      *----WORD GUESSING GAME----*
-      ****************************
+      ************************************
+      *----WORD GUESSING GAME SECTION----*
+      ************************************
        0210-DISPLAY-GUESSING-GAME.
+           PERFORM 0200-TIME-AND-DATE.
            MOVE 15 TO WS-GUESSES-LEFT.
            SET WORD-IDX TO 0.
            OPEN INPUT F-WORD-FILE.
@@ -640,7 +767,6 @@
            MOVE WS-WORD TO WS-ANSWERWORD.
            MOVE REPLACE-LETTER(WS-WORD) TO WS-WORD. 
            DISPLAY WORD-GUESSING-SCREEN.
-           DISPLAY TIME-SCREEN.
            MOVE 1 TO COUNTER.
            PERFORM UNTIL COUNTER = 20
              IF '*' EQUALS WS-WORD(COUNTER:1) 
@@ -648,20 +774,20 @@
              END-IF
              ADD 1 TO COUNTER
            END-PERFORM.
-           PERFORM 0170-IN-GAME-SCREEN.
+           PERFORM 0220-IN-GAME-SCREEN.
           
-       0170-IN-GAME-SCREEN.
+       0220-IN-GAME-SCREEN.
+           PERFORM 0200-TIME-AND-DATE.
            INITIALIZE WS-GUESS-CHOICE.
            DISPLAY IN-GAME-SCREEN.
-           DISPLAY TIME-SCREEN.
            ACCEPT WS-GUESS-CHOICE-FIELD.
            IF WS-GUESS-CHOICE = '!' THEN 
-               PERFORM 0110-DISPLAY-MENU
+               PERFORM 0120-DISPLAY-MENU
            ELSE
-               PERFORM 0180-CHECK-GUESS
+               PERFORM 0230-CHECK-GUESS
            END-IF.
            
-       0180-CHECK-GUESS.
+       0230-CHECK-GUESS.
            MOVE 1 TO COUNTER.
            PERFORM UNTIL COUNTER = 20
                  IF WS-GUESS-CHOICE = WS-ANSWERWORD(COUNTER:1) 
@@ -681,19 +807,19 @@
            END-PERFORM.
              IF WS-LETTERS-LEFT = 0
               THEN 
-              PERFORM 0190-WINNING-SCREEN
+              PERFORM 0240-WINNING-SCREEN
              ELSE IF WS-GUESSES-LEFT = 0
               THEN 
-              PERFORM 0200-LOSING-SCREEN
+              PERFORM 0250-LOSING-SCREEN
              ELSE
-              PERFORM 0170-IN-GAME-SCREEN
+              PERFORM 0220-IN-GAME-SCREEN
              END-IF.
            
-       0190-WINNING-SCREEN.
+       0240-WINNING-SCREEN.
+           PERFORM 0200-TIME-AND-DATE.
            INITIALIZE WS-GUESSING-WINNING-CHOICE.
            COMPUTE WS-HIGH-SCORE = WS-LETTERS-LEFT * WS-GUESSES-LEFT.
            DISPLAY WORD-GUESSING-WINNING-SCREEN.
-           DISPLAY TIME-SCREEN.
            OPEN EXTEND F-HIGH-SCORES-FILE
                MOVE WS-HIGH-SCORE TO HIGH-SCORE
                MOVE USER-NAME TO PLAYER-NAME
@@ -704,30 +830,29 @@
            IF WS-GUESSING-WINNING-CHOICE = 'p'
                THEN PERFORM 0210-DISPLAY-GUESSING-GAME
            ELSE IF WS-GUESSING-WINNING-CHOICE = 'h'
-             THEN PERFORM 0210-HIGH-SCORE-TABLE
+             THEN PERFORM 0260-HIGH-SCORE-TABLE
            ELSE IF WS-GUESSING-WINNING-CHOICE = '!'
-             THEN PERFORM 0110-DISPLAY-MENU
+             THEN PERFORM 0120-DISPLAY-MENU
            ELSE
-             PERFORM 0190-WINNING-SCREEN
+             PERFORM 0240-WINNING-SCREEN
            END-IF.
 
-       0200-LOSING-SCREEN.
+       0250-LOSING-SCREEN.
            PERFORM 0230-CURRENT-TIME.
            INITIALIZE WS-GUESSING-LOSING-CHOICE.
            DISPLAY WORD-GUESSING-LOSE-SCREEN.
-           DISPLAY TIME-SCREEN.
            ACCEPT WS-GUESSING-LOSING-CHOICE.
            IF WS-GUESSING-LOSING-CHOICE = 'p'
                THEN PERFORM 0210-DISPLAY-GUESSING-GAME
            ELSE IF WS-GUESSING-LOSING-CHOICE = 'h'
-             THEN PERFORM 0210-HIGH-SCORE-TABLE
+             THEN PERFORM 0260-HIGH-SCORE-TABLE
            ELSE IF WS-GUESSING-LOSING-CHOICE = '!'
-             THEN PERFORM 0110-DISPLAY-MENU
+             THEN PERFORM 0120-DISPLAY-MENU
            ELSE
-             PERFORM 0200-LOSING-SCREEN
+             PERFORM 0250-LOSING-SCREEN
            END-IF.
 
-       0210-HIGH-SCORE-TABLE.
+       0260-HIGH-SCORE-TABLE.
            SET COUNTER TO 0.
            OPEN INPUT F-HIGH-SCORES-FILE.
            MOVE 0 TO WS-FILE-IS-ENDED.
@@ -742,20 +867,22 @@
                END-READ 
            END-PERFORM.
            CLOSE F-HIGH-SCORES-FILE.
-           PERFORM 0220-HIGH-SCORE-SCREEN.
+           PERFORM 0270-HIGH-SCORE-SCREEN.
            
-       0220-HIGH-SCORE-SCREEN.
+       0270-HIGH-SCORE-SCREEN.
            PERFORM 0230-CURRENT-TIME.
            INITIALIZE WS-HIGH-SCORE-CHOICE.
            SORT WS-TABLE-HIGH-SCORE ON DESCENDING WS-SCORE.
            DISPLAY HIGH-SCORE-SCREEN.
-           DISPLAY TIME-SCREEN.
            ACCEPT WS-HIGH-SCORE-CHOICE.
-           IF WS-HIGH-SCORE-CHOICE = 'b'
-             PERFORM 0110-DISPLAY-MENU
+           IF WS-HIGH-SCORE-CHOICE = "b" OR "B"
+             PERFORM 0120-DISPLAY-MENU
            ELSE 
-               PERFORM 0220-HIGH-SCORE-SCREEN
+               PERFORM 0270-HIGH-SCORE-SCREEN
            END-IF.
+
+       0230-CURRENT-TIME.
+           MOVE FUNCTION CURRENT-DATE TO WS-TIME.
 
       *******************
       *----PONG GAME----*
