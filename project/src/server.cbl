@@ -172,19 +172,44 @@
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
            *> general code
-           
+               05 LINE 14 COL 34 VALUE " ________________________"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 15 COL 35 VALUE "|FFFFFFFFFFFFFFFFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 16 COL 35 VALUE "|FFFFFFFFFFFFF_____FFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 17 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 18 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 19 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 20 COL 35 VALUE "|FFFFFFFFF________FFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 21 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 22 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 23 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 24 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 25 COL 35 VALUE "|FFFFFFFFFFFFFFFFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 26 COL 34 VALUE " ------------------------"
+                   FOREGROUND-COLOR IS 7.
           
-               05 LINE 31 COL 5 VALUE "______    _                ______
+               05 LINE 31 COL 23 VALUE "______    _                ______
       -        "_" FOREGROUND-COLOR IS 7.
-               05 LINE 32 COL 5 VALUE "|  ___|  (_)              | |  __
+               05 LINE 32 COL 23 VALUE "|  ___|  (_)              | |  __
       -        "_| " FOREGROUND-COLOR IS 7.
-               05 LINE 33 COL 5 VALUE "| |_ _ __ _  ___ _ __   __| | |_ 
+               05 LINE 33 COL 23 VALUE "| |_ _ __ _  ___ _ __   __| | |_ 
       -        "__ _  ___ ___" FOREGROUND-COLOR IS 7.
-               05 LINE 34 COL 5 VALUE "|  _| '__| |/ _ \ '_ \ / _` |  _/
+               05 LINE 34 COL 23 VALUE "|  _| '__| |/ _ \ '_ \ / _` |  _/
       -        " _` |/ __/ _ \" FOREGROUND-COLOR IS 7.
-               05 LINE 35 COL 5 VALUE "| | | |  | |  __/ | | | (_| | || 
+               05 LINE 35 COL 23 VALUE "| | | |  | |  __/ | | | (_| | || 
       -        "(_| | (_|  __/" FOREGROUND-COLOR IS 7.
-               05 LINE 36 COL 5 VALUE "\_| |_|  |_|\___|_| |_|\__,_\_| \
+               05 LINE 36 COL 23 VALUE "\_| |_|  |_|\___|_| |_|\__,_\_| \
       -        "__,_|\___\___|" FOREGROUND-COLOR IS 7.
 
                
