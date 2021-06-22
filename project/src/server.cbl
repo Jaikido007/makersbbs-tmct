@@ -732,21 +732,26 @@
            ACCEPT LINE-5-FIELD.
            ACCEPT MSG-WRITE-CHOICE-FIELD.
 
+           PERFORM UNTIL MSG-WRITE-CHOICE-FIELD = "d" OR "D" OR "s"
+             OR "S"
+
+             ACCEPT MSG-WRITE-CHOICE-FIELD
+
+           END-PERFORM.
+
            IF MSG-WRITE-CHOICE-FIELD = "d" OR "D" THEN
-             PERFORM 0130-MSG-MENU
+               PERFORM 0130-MSG-MENU
            END-IF.
 
            IF MSG-WRITE-CHOICE-FIELD = "s" OR "S" THEN 
               MOVE WS-CONTENT-DISPLAY TO WS-CONTENT
               MOVE USER-NAME TO WS-USERNAME
 
-             IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
-               CALL 'post-message' USING NEW-MESSAGE
-               PERFORM 0130-MSG-MENU
-             END-IF
+                IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
+                  CALL 'post-message' USING NEW-MESSAGE
+                  PERFORM 0130-MSG-MENU
+                END-IF    
            END-IF.
-           
-           
 
            PERFORM 0120-DISPLAY-MENU.
       *******************************
