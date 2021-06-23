@@ -35,7 +35,9 @@
            01 MENU-CHOICE PIC X.
            01 ERROR-CHOICE PIC X.
            01 CREATE-CHOICE PIC X.
-           01 WS-LOGIN-CORRECT PIC 9. 
+           01 WS-LOGIN-CORRECT PIC 9.
+           01 WS-ERROR-MSG PIC X(40).
+           01 WS-UNAME-UNAVAILABLE PIC 9.
       ********************************************
       *----Variables related to guessing game----*
       ********************************************
@@ -236,7 +238,7 @@
              05 LINE 2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.  
              05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE
              HIGHLIGHT, FOREGROUND-COLOR IS 3.
-             05 LINE 6 COLUMN 10 VALUE "Incorrect Username or Password".
+             05 LINE 6 COLUMN 10 PIC X(40) USING WS-ERROR-MSG.
              05 LINE 7 COLUMN 10 VALUE "(L) Back to Log-in.".
              05 LINE 8 COLUMN 10 VALUE "(C) Create an account.".
              05 LINE 10 COLUMN 10 VALUE "Pick: ".
@@ -591,7 +593,8 @@
            IF WS-LOGIN-CORRECT = 1 THEN
                PERFORM 0120-DISPLAY-MENU 
            ELSE 
-               PERFORM 0113-ERROR-PAGE 
+               MOVE "Incorrect Username or Password" TO WS-ERROR-MSG
+               PERFORM 0114-ERROR-PAGE  
            END-IF. 
 
        0112-SIGN-UP.
@@ -602,14 +605,26 @@
            ACCEPT WS-NEW-USER-NAME-FIELD.
            ACCEPT WS-NEW-PASSWORD-FIELD.
            ACCEPT CREATE-CHOICE-FIELD.
+           
            IF CREATE-CHOICE = "q" OR "Q" THEN 
-               PERFORM 0110-DISPLAY-LOGIN
-           ELSE IF CREATE-CHOICE = "s" THEN 
-               CALL 'sign-up' USING WS-NEW-USER-NAME WS-NEW-PASSWORD
-           END-IF.    
-           PERFORM 0111-SIGN-IN.
+               PERFORM 0110-DISPLAY-LOGIN   
+           ELSE IF CREATE-CHOICE = "s" THEN
+               PERFORM 0113-SIGN-UP-CHECK
+           END-IF.
 
-       0113-ERROR-PAGE.
+       0113-SIGN-UP-CHECK.
+           CALL 'sign-up-check' USING WS-NEW-USER-NAME 
+               WS-UNAME-UNAVAILABLE.
+
+           IF WS-UNAME-UNAVAILABLE = 1 THEN
+               MOVE "Username Taken" TO WS-ERROR-MSG
+               PERFORM 0114-ERROR-PAGE
+           ELSE
+               CALL 'sign-up' USING WS-NEW-USER-NAME WS-NEW-PASSWORD
+               PERFORM 0111-SIGN-IN
+           END-IF.
+
+       0114-ERROR-PAGE.
            INITIALIZE ERROR-CHOICE.
            DISPLAY ERROR-SCREEN.
            ACCEPT ERROR-CHOICE-FIELD.
@@ -618,7 +633,7 @@
            ELSE IF ERROR-CHOICE = "c" OR "C" THEN 
                PERFORM 0112-SIGN-UP 
            ELSE 
-               PERFORM 0113-ERROR-PAGE 
+               PERFORM 0114-ERROR-PAGE 
            END-IF.
       **************************************************     
       *----DISPLAY MENU COMES AFTER SUCCESFUL LOGIN----*
