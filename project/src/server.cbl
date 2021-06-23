@@ -13,8 +13,6 @@
              ORGANIZATION IS LINE SEQUENTIAL.
            SELECT F-HIGH-SCORES-FILE ASSIGN TO 'high-scores.dat'
              ORGANIZATION IS LINE SEQUENTIAL.
-           SELECT F-USERS-FILE ASSIGN TO 'users.dat'
-             ORGANIZATION IS LINE SEQUENTIAL.
            
        DATA DIVISION.
            FILE SECTION.
@@ -23,32 +21,21 @@
            FD F-HIGH-SCORES-FILE.
            01 PLAYER-SCORES.
               05 HIGH-SCORE PIC 99.
-              05 PLAYER-NAME PIC X(10).
-           FD F-USERS-FILE.
-           01 USERS.
-              05 USERNAME PIC X(16).
-              05 USER-PASSWORD PIC X(20).   
+              05 PLAYER-NAME PIC X(10).  
                       
            WORKING-STORAGE SECTION.
       ****************************************************
       *----Variables related to login and menu screen----*
       ****************************************************
-           01 USER-NAME PIC X(16).
+           01 WS-USERNAME PIC X(16).
            01 WS-PASSWORD PIC X(20).
-           01 NEW-USER-NAME PIC X(16).
-           01 NEW-PASSWORD PIC X(20).
+           01 WS-NEW-USER-NAME PIC X(16).
+           01 WS-NEW-PASSWORD PIC X(20).
            01 LOGIN-CHOICE PIC X.
            01 MENU-CHOICE PIC X.
            01 ERROR-CHOICE PIC X.
            01 CREATE-CHOICE PIC X.
-           01 WS-USERS.
-               05 WS-USER OCCURS 100 TIMES
-               ASCENDING KEY IS WS-UNAME
-               INDEXED BY USER-IDX.
-                   10 WS-UNAME PIC X(16).
-                   10 WS-PWORD PIC X(20).
-           01 WS-FOUND PIC 9.
-           01 WS-IDX UNSIGNED-INT. 
+           01 WS-LOGIN-CORRECT PIC 9. 
       ********************************************
       *----Variables related to guessing game----*
       ********************************************
@@ -132,7 +119,7 @@
            01 NEW-MESSAGE.
              05 WS-TITLE               PIC X(50).
              05 WS-CONTENT             PIC X(300).
-             05 WS-USERNAME            PIC X(16).
+             05 WS-MSG-AUTHOR          PIC X(16).
       **************
       *----Time----*
       **************
@@ -235,10 +222,10 @@
              05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE
              HIGHLIGHT, FOREGROUND-COLOR IS 3.
              05 LINE 6 COLUMN 10 VALUE "Enter your username:".
-             05 USER-NAME-FIELD LINE 7 COLUMN 10 PIC X(16)
-                USING USER-NAME.   
+             05 WS-USERNAME-FIELD LINE 7 COLUMN 10 PIC X(16)
+                USING WS-USERNAME.   
              05 LINE 9 COLUMN 10 VALUE "Enter your password:".
-             05 PASSWORD-FIELD LINE 10 COLUMN 10 PIC X(20)
+             05 WS-PASSWORD-FIELD LINE 10 COLUMN 10 PIC X(20)
                 USING WS-PASSWORD.    
 
            01 ERROR-SCREEN
@@ -266,12 +253,12 @@
              HIGHLIGHT, FOREGROUND-COLOR IS 3.
              05 LINE 6 COLUMN 10 VALUE "Create your account".
              05 LINE 8 COLUMN 10 VALUE "Enter a username: ".
-             05 NEW-USER-NAME-FIELD LINE 9 COLUMN 10 PIC X(16)
-                USING NEW-USER-NAME.
+             05 WS-NEW-USER-NAME-FIELD LINE 9 COLUMN 10 PIC X(16)
+                USING WS-NEW-USER-NAME.
              05 LINE 11 COLUMN 10 VALUE "Enter a password: ".
              05 LINE 11 COLUMN 29 VALUE "(max 20 characters)".
-             05 NEW-PASSWORD-FIELD LINE 12 COLUMN 10 PIC X(20)
-                USING NEW-PASSWORD.
+             05 WS-NEW-PASSWORD-FIELD LINE 12 COLUMN 10 PIC X(20)
+                USING WS-NEW-PASSWORD.
              05 LINE 14 COLUMN 10 VALUE "(S) Submit".
              05 LINE 15 COLUMN 10 VALUE "(Q) Go Back".
              05 LINE 17 COLUMN 10 VALUE "Pick: ".
@@ -287,7 +274,7 @@
              05 LINE  2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.  
              05 LINE  4 COL 10 VALUE "MAKERS BBS" UNDERLINE.
              05 LINE  6 COL 10 VALUE "Hi, ".
-             05 LINE  6 COL 14 PIC X(16) USING USER-NAME.
+             05 LINE  6 COL 14 PIC X(16) USING WS-USERNAME.
              05 LINE  8 COL 10 VALUE "Welcome to COBOL The Barbarian's s
       -      "tate oF the art Bulletin Board.".  
              05 LINE  9 COL 10 VALUE "Feel free to:".
@@ -591,62 +578,35 @@
            END-IF.
 
        0111-SIGN-IN.
-           SET COUNTER TO 0.
-           OPEN INPUT F-USERS-FILE.
-           MOVE 0 TO WS-FILE-IS-ENDED.
-           PERFORM UNTIL WS-FILE-IS-ENDED = 1
-               READ F-USERS-FILE
-                   NOT AT END
-                       ADD 1 TO COUNTER
-                       MOVE USERNAME TO WS-UNAME(COUNTER)
-                       MOVE USER-PASSWORD TO WS-PWORD(COUNTER)
-                   AT END 
-                       MOVE 1 TO WS-FILE-IS-ENDED
-               END-READ 
-           END-PERFORM.
-
-           CLOSE F-USERS-FILE.
-           INITIALIZE USER-NAME.
+           INITIALIZE WS-USERNAME.
            INITIALIZE WS-PASSWORD.
            DISPLAY SIGN-IN-SCREEN.
+           ACCEPT WS-USERNAME-FIELD.
+           ACCEPT WS-PASSWORD-FIELD.
+           MOVE 0 TO WS-LOGIN-CORRECT.
 
-           ACCEPT USER-NAME-FIELD.
-           ACCEPT PASSWORD-FIELD.
-           MOVE 0 TO WS-FOUND.
-           MOVE 1 TO WS-IDX.
-           ADD 1 TO COUNTER.
-           PERFORM UNTIL WS-IDX = COUNTER
-               IF USER-NAME = WS-UNAME(WS-IDX) AND 
-               WS-PASSWORD = WS-PWORD(WS-IDX) THEN
-                   MOVE 1 TO WS-FOUND 
-               END-IF
-               ADD 1 TO WS-IDX 
-           END-PERFORM.
+           CALL 'sign-in' USING WS-USERNAME, WS-PASSWORD, 
+           WS-LOGIN-CORRECT.
 
-           IF WS-FOUND = 1 THEN
+           IF WS-LOGIN-CORRECT = 1 THEN
                PERFORM 0120-DISPLAY-MENU 
            ELSE 
                PERFORM 0113-ERROR-PAGE 
            END-IF. 
 
        0112-SIGN-UP.
-           INITIALIZE NEW-USER-NAME.
-           INITIALIZE NEW-PASSWORD.
+           INITIALIZE WS-NEW-USER-NAME.
+           INITIALIZE WS-NEW-PASSWORD.
            INITIALIZE CREATE-CHOICE
            DISPLAY CREATE-AN-ACCOUNT-SCREEN.
-           ACCEPT NEW-USER-NAME-FIELD.
-           ACCEPT NEW-PASSWORD-FIELD.
+           ACCEPT WS-NEW-USER-NAME-FIELD.
+           ACCEPT WS-NEW-PASSWORD-FIELD.
            ACCEPT CREATE-CHOICE-FIELD.
            IF CREATE-CHOICE = "q" OR "Q" THEN 
                PERFORM 0110-DISPLAY-LOGIN
            ELSE IF CREATE-CHOICE = "s" THEN 
-               OPEN EXTEND F-USERS-FILE
-               MOVE NEW-USER-NAME TO USERNAME
-               MOVE NEW-PASSWORD TO USER-PASSWORD
-               WRITE USERS
-               END-WRITE               
-           END-IF.
-           CLOSE F-USERS-FILE.
+               CALL 'sign-up' USING WS-NEW-USER-NAME WS-NEW-PASSWORD
+           END-IF.    
            PERFORM 0111-SIGN-IN.
 
        0113-ERROR-PAGE.
@@ -789,7 +749,7 @@
 
            IF MSG-WRITE-CHOICE-FIELD = "s" OR "S" THEN 
               MOVE WS-CONTENT-DISPLAY TO WS-CONTENT
-              MOVE USER-NAME TO WS-USERNAME
+              MOVE WS-USERNAME TO WS-MSG-AUTHOR
 
                 IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
                   CALL 'post-message' USING NEW-MESSAGE
@@ -906,7 +866,7 @@
            DISPLAY WORD-GUESSING-WINNING-SCREEN.
            OPEN EXTEND F-HIGH-SCORES-FILE
                MOVE WS-HIGH-SCORE TO HIGH-SCORE
-               MOVE USER-NAME TO PLAYER-NAME
+               MOVE WS-USERNAME TO PLAYER-NAME
                WRITE PLAYER-SCORES 
                END-WRITE.
            CLOSE F-HIGH-SCORES-FILE.
