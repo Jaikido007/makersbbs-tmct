@@ -581,88 +581,88 @@
              05 LINE 1 COL 10 VALUE "Comments for:".
              05 LINE 2 COL 10 PIC X(50) USING LIST-TITLE(MSG-SELECT).
 
-             05 LINE 10 COL 10 VALUE "Posted by:".
+            *>  05 LINE 10 COL 10 VALUE "Posted by:".
              05 LINE 10 COL 22 PIC X(16) USING COM-AUTHOR(COM-INDEX).
-             05 LINE 10 COL 39 VALUE 'on'.
+            *>  05 LINE 10 COL 39 VALUE 'on'.
              05 LINE 10 COL 42 PIC X(21) USING COM-DATE(COM-INDEX).
              05 LINE 12 COL 10 PIC X(50) USING COM-COMMENT(COM-INDEX).
 
-             05 LINE 14 COL 10 VALUE "Posted by:".
+            *>  05 LINE 14 COL 10 VALUE "Posted by:".
              05 LINE 14 COL 22 PIC X(16) 
              USING COM-AUTHOR(COM-INDEX + 1).
-             05 LINE 14 COL 39 VALUE 'on'.
+            *>  05 LINE 14 COL 39 VALUE 'on'.
              05 LINE 14 COL 42 PIC X(21) 
              USING COM-DATE(COM-INDEX + 1).
              05 LINE 16 COL 10 PIC X(50) 
              USING COM-COMMENT(COM-INDEX + 1).
 
-             05 LINE 18 COL 10 VALUE "Posted by:".
+            *>  05 LINE 18 COL 10 VALUE "Posted by:".
              05 LINE 18 COL 22 PIC X(16) 
              USING COM-AUTHOR(COM-INDEX + 2).
-             05 LINE 18 COL 39 VALUE 'on'.
+            *>  05 LINE 18 COL 39 VALUE 'on'.
              05 LINE 18 COL 42 PIC X(21) 
              USING COM-DATE(COM-INDEX + 2).
              05 LINE 20 COL 10 PIC X(50) 
              USING COM-COMMENT(COM-INDEX + 2).
 
-             05 LINE 22 COL 10 VALUE "Posted by:".
+            *>  05 LINE 22 COL 10 VALUE "Posted by:".
              05 LINE 22 COL 22 PIC X(16) 
              USING COM-AUTHOR(COM-INDEX + 3).
-             05 LINE 22 COL 39 VALUE 'on'.
+            *>  05 LINE 22 COL 39 VALUE 'on'.
              05 LINE 22 COL 42 PIC X(21) 
              USING COM-DATE(COM-INDEX + 3).
              05 LINE 24 COL 10 PIC X(50) 
              USING COM-COMMENT(COM-INDEX + 3).
 
-             05 LINE 26 COL 10 VALUE "Posted by:".
+            *>  05 LINE 26 COL 10 VALUE "Posted by:".
              05 LINE 26 COL 22 PIC X(16) 
              USING COM-AUTHOR(COM-INDEX + 4).
-             05 LINE 26 COL 39 VALUE 'on'.
+            *>  05 LINE 26 COL 39 VALUE 'on'.
              05 LINE 26 COL 42 PIC X(21) 
              USING COM-DATE(COM-INDEX + 4).
              05 LINE 28 COL 10 PIC X(50) 
              USING COM-COMMENT(COM-INDEX + 4).
 
-             05 LINE 30 COL 10 VALUE "Posted by:".
+            *>  05 LINE 30 COL 10 VALUE "Posted by:".
              05 LINE 30 COL 22 PIC X(16) 
              USING COM-AUTHOR(COM-INDEX + 5).
-             05 LINE 30 COL 39 VALUE 'on'.
+            *>  05 LINE 30 COL 39 VALUE 'on'.
              05 LINE 30 COL 42 PIC X(21) 
              USING COM-DATE(COM-INDEX + 5).
              05 LINE 32 COL 10 PIC X(50) 
              USING COM-COMMENT(COM-INDEX + 5).
 
-             05 LINE 34 COL 10 VALUE "Posted by:".
+            *>  05 LINE 34 COL 10 VALUE "Posted by:".
              05 LINE 34 COL 22 PIC X(16) 
              USING COM-AUTHOR(COM-INDEX + 6).
-             05 LINE 34 COL 39 VALUE 'on'.
+            *>  05 LINE 34 COL 39 VALUE 'on'.
              05 LINE 34 COL 42 PIC X(21) 
              USING COM-DATE(COM-INDEX + 6).
              05 LINE 36 COL 10 PIC X(50) 
              USING COM-COMMENT(COM-INDEX + 6).
 
-             05 LINE 38 COL 10 VALUE "Posted by:".
+            *>  05 LINE 38 COL 10 VALUE "Posted by:".
              05 LINE 38 COL 22 PIC X(16) 
              USING COM-AUTHOR(COM-INDEX + 7).
-             05 LINE 38 COL 39 VALUE 'on'.
+            *>  05 LINE 38 COL 39 VALUE 'on'.
              05 LINE 38 COL 42 PIC X(21) 
              USING COM-DATE(COM-INDEX + 7).
              05 LINE 40 COL 10 PIC X(50) 
              USING COM-COMMENT(COM-INDEX + 7).
 
-             05 LINE 42 COL 10 VALUE "Posted by:".
+            *>  05 LINE 42 COL 10 VALUE "Posted by:".
              05 LINE 42 COL 22 PIC X(16) 
              USING COM-AUTHOR(COM-INDEX + 8).
-             05 LINE 42 COL 39 VALUE 'on'.
+            *>  05 LINE 42 COL 39 VALUE 'on'.
              05 LINE 42 COL 42 PIC X(21) 
              USING COM-DATE(COM-INDEX + 8).
              05 LINE 44 COL 10 PIC X(50) 
              USING COM-COMMENT(COM-INDEX + 8).
 
-             05 LINE 46 COL 10 VALUE "Posted by:".
+            *>  05 LINE 46 COL 10 VALUE "Posted by:".
              05 LINE 46 COL 22 PIC X(16) 
              USING COM-AUTHOR(COM-INDEX + 9).
-             05 LINE 46 COL 39 VALUE 'on'.
+            *>  05 LINE 46 COL 39 VALUE 'on'.
              05 LINE 46 COL 42 PIC X(21) 
              USING COM-DATE(COM-INDEX + 9).
              05 LINE 48 COL 10 PIC X(50) 
@@ -1081,11 +1081,16 @@
            PERFORM 0280-CURRENT-TIME.
            CALL 'num-comments' USING NUM-COMMENTS.
            CALL 'get-comment' USING COMMENT-TABLE MSG-SELECT.
+
+           IF COM-INDEX < 10
+             MOVE 1 TO COM-INDEX
+           END-IF
+           .
            
            INITIALIZE COM-SCRN-CHOICE.
            DISPLAY COMMENT-SCREEN.
            ACCEPT COM-SCRN-CHOICE-FIELD.
-           
+       
            IF COM-SCRN-CHOICE-FIELD = 'N' OR 'n' THEN
              ADD 10 TO COM-INDEX
              IF COM-COMMENT(COM-INDEX) = SPACES
@@ -1098,13 +1103,8 @@
            .
 
            IF COM-SCRN-CHOICE-FIELD = 'P' OR 'p' THEN
-            SUBTRACT 10 FROM COM-INDEX
-             IF COM-INDEX < 1
-               MOVE 1 TO COM-INDEX
-               PERFORM 0400-COMMENT-SCREEN
-             ELSE 
-               PERFORM 0400-COMMENT-SCREEN
-             END-IF
+             SUBTRACT 10 FROM COM-INDEX
+             PERFORM 0400-COMMENT-SCREEN
            END-IF
            .
 

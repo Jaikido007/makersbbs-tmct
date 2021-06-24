@@ -97,6 +97,7 @@
            
           *> vv Reset file end flag for future calls vv
            SUBTRACT 1 FROM WS-FILE-END.
+           MOVE 0 TO COUNTER.
 
 
 
