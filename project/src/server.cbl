@@ -133,6 +133,25 @@
              05 WS-TITLE               PIC X(50).
              05 WS-CONTENT             PIC X(300).
              05 WS-USERNAME            PIC X(16).
+
+      **********************************
+      *----Comment System Variables----*
+      **********************************
+
+           01 NUM-COMMENTS PIC 9999.
+
+           01 COMMENT-TABLE.
+               05 COM-ENTRY OCCURS 1 TO 9999 TIMES 
+               DEPENDING ON NUM-COMMENTS.
+                  *>  10 TEMP-ID PIC 999.
+                   10 COM-AUTHOR PIC X(16).
+                   10 COM-DATE PIC X(21).
+                   10 COM-COMMENT PIC X(50).
+
+           01 COM-INDEX PIC 9999 VALUE 1.
+
+           01 COM-SCRN-CHOICE PIC X.
+
       **************
       *----Time----*
       **************
@@ -552,6 +571,110 @@
                USING WS-HIGH-SCORE-CHOICE.
 
 
+      ************************************
+      *----COMMENTS SCREEN SECTION-------*
+      ************************************
+
+           01 COMMENT-SCREEN
+           BACKGROUND-COLOR IS 1.
+             05 BLANK SCREEN.
+             05 LINE 1 COL 10 VALUE "Comments for:".
+             05 LINE 2 COL 10 PIC X(50) USING LIST-TITLE(MSG-SELECT).
+
+             05 LINE 10 COL 10 VALUE "Posted by:".
+             05 LINE 10 COL 22 PIC X(16) USING COM-AUTHOR(COM-INDEX).
+             05 LINE 10 COL 39 VALUE 'on'.
+             05 LINE 10 COL 42 PIC X(21) USING COM-DATE(COM-INDEX).
+             05 LINE 12 COL 10 PIC X(50) USING COM-COMMENT(COM-INDEX).
+
+             05 LINE 14 COL 10 VALUE "Posted by:".
+             05 LINE 14 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 1).
+             05 LINE 14 COL 39 VALUE 'on'.
+             05 LINE 14 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 1).
+             05 LINE 16 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 1).
+
+             05 LINE 18 COL 10 VALUE "Posted by:".
+             05 LINE 18 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 2).
+             05 LINE 18 COL 39 VALUE 'on'.
+             05 LINE 18 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 2).
+             05 LINE 20 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 2).
+
+             05 LINE 22 COL 10 VALUE "Posted by:".
+             05 LINE 22 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 3).
+             05 LINE 22 COL 39 VALUE 'on'.
+             05 LINE 22 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 3).
+             05 LINE 24 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 3).
+
+             05 LINE 26 COL 10 VALUE "Posted by:".
+             05 LINE 26 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 4).
+             05 LINE 26 COL 39 VALUE 'on'.
+             05 LINE 26 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 4).
+             05 LINE 28 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 4).
+
+             05 LINE 30 COL 10 VALUE "Posted by:".
+             05 LINE 30 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 5).
+             05 LINE 30 COL 39 VALUE 'on'.
+             05 LINE 30 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 5).
+             05 LINE 32 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 5).
+
+             05 LINE 34 COL 10 VALUE "Posted by:".
+             05 LINE 34 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 6).
+             05 LINE 34 COL 39 VALUE 'on'.
+             05 LINE 34 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 6).
+             05 LINE 36 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 6).
+
+             05 LINE 38 COL 10 VALUE "Posted by:".
+             05 LINE 38 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 7).
+             05 LINE 38 COL 39 VALUE 'on'.
+             05 LINE 38 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 7).
+             05 LINE 40 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 7).
+
+             05 LINE 42 COL 10 VALUE "Posted by:".
+             05 LINE 42 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 8).
+             05 LINE 42 COL 39 VALUE 'on'.
+             05 LINE 42 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 8).
+             05 LINE 44 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 8).
+
+             05 LINE 46 COL 10 VALUE "Posted by:".
+             05 LINE 46 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 9).
+             05 LINE 46 COL 39 VALUE 'on'.
+             05 LINE 46 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 9).
+             05 LINE 48 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 9).
+
+             05 LINE 50 COL 10 VALUE 'Next page (N)'.
+             05 LINE 50 COL 25 VALUE "Previous page (P)".
+             05 LINE 50 COL 44 VALUE "Go back (B)".
+             05 LINE 50 COL 10 VALUE "Choice:".
+             05 COM-SCRN-CHOICE-FIELD LINE 51 COL 18 PIC X USING
+               COM-SCRN-CHOICE.     
+             
        PROCEDURE DIVISION.
       ************************************
       *----LOGIN / SIGN-IN/UP SECTION----*
@@ -735,6 +858,11 @@
            ELSE IF MSG-VIEW-CHOICE =   "q" OR "Q" THEN
               STOP RUN  
            END-IF.
+
+           IF MSG-VIEW-CHOICE = 'C' OR 'c'
+             PERFORM 0400-COMMENT-SCREEN
+           END-IF 
+           .
            
            PERFORM 0140-MESSAGE-VIEW. 
 
@@ -949,6 +1077,44 @@
        0280-CURRENT-TIME.
            MOVE FUNCTION CURRENT-DATE TO WS-TIME.
 
+       0400-COMMENT-SCREEN.
+           PERFORM 0280-CURRENT-TIME.
+           CALL 'num-comments' USING NUM-COMMENTS.
+           CALL 'get-comment' USING COMMENT-TABLE MSG-SELECT.
+           
+           INITIALIZE COM-SCRN-CHOICE.
+           DISPLAY COMMENT-SCREEN.
+           ACCEPT COM-SCRN-CHOICE-FIELD.
+           
+           IF COM-SCRN-CHOICE-FIELD = 'N' OR 'n' THEN
+             ADD 10 TO COM-INDEX
+             IF COM-COMMENT(COM-INDEX) = SPACES
+               SUBTRACT 10 FROM COM-INDEX
+               PERFORM 0400-COMMENT-SCREEN
+             ELSE
+               PERFORM 0400-COMMENT-SCREEN
+             END-IF
+           END-IF
+           .
+
+           IF COM-SCRN-CHOICE-FIELD = 'P' OR 'p' THEN
+            SUBTRACT 10 FROM COM-INDEX
+             IF COM-INDEX < 1
+               MOVE 1 TO COM-INDEX
+               PERFORM 0400-COMMENT-SCREEN
+             ELSE 
+               PERFORM 0400-COMMENT-SCREEN
+             END-IF
+           END-IF
+           .
+
+           IF COM-SCRN-CHOICE-FIELD = 'B' OR 'b' THEN
+             PERFORM 0140-MESSAGE-VIEW
+           END-IF
+           .
+
+           PERFORM 0400-COMMENT-SCREEN.
+           
       *******************
       *----PONG GAME----*
       *******************   

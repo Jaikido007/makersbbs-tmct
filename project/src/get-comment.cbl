@@ -60,14 +60,12 @@
 
           *>  --------------------------------------------------------
 
-          *> TAKE MESSAGE-ID FROM SERVER AND SUBTRACT FROM # OF LINES.
-           COMPUTE ID-FIND = MESSAGE-LINES - MSG-SELECT.
+          *>  Original index method = 
+          *> number of messages - flipped index number + 1 to get the
+          *> original pre flipped index.
+          *> Example: 26(msglines) - 25(flipped indx) + 1 = 2.
 
-          *> THEN TAKE THE STORED NUMBER FROM THE # OF LINES TO FIND
-          *>  THE ORIGINAL INDEX OF THAT ENTRY.
-           COMPUTE ID-FIND = MESSAGE-LINES - ID-FIND.
-
-          *> GET ALL MATCHING IDs AND PUT THEM ALL IN A TABLE TO EXPORT:
+           COMPUTE ID-FIND = MESSAGE-LINES - MSG-SELECT + 1.
            
            
            
