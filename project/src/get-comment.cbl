@@ -22,7 +22,8 @@
            01 MATCHED-COMMENTS PIC 999 VALUE 0.
            01 ID-FIND PIC 999.
 
-           01 WS-TABLE-UPPER-LIMIT PIC 9999.
+           01 COM-INDEX PIC 9999 VALUE 1.
+           01 WIPE PIC X(87) VALUE SPACES.
 
            01 TEMP-TABLE.
                05 WS-ENTRY OCCURS 1 TO 9999 TIMES 
@@ -44,6 +45,8 @@
     
            01 MSG-SELECT PIC 999.
 
+          *>  01 MATCHED-ENTRIES PIC 9(4).
+
        PROCEDURE DIVISION USING FINAL-TABLE, MSG-SELECT.
            
            CALL 'number-of-file-lines' USING MESSAGE-LINES.
@@ -60,14 +63,26 @@
 
           *>  --------------------------------------------------------
 
-          *>  Original index method = 
-          *> number of messages - flipped index number + 1 to get the
+          *>  How to find original index:
+          *> Number of messages - flipped index number + 1 to get the
           *> original pre flipped index.
           *> Example: 26(msglines) - 25(flipped indx) + 1 = 2.
 
            COMPUTE ID-FIND = MESSAGE-LINES - MSG-SELECT + 1.
+
+          *>  Wipe the table so no unrequested data is shown:
            
-           
+           PERFORM UNTIL COM-INDEX = NUM-COMMENTS
+             MOVE SPACES TO WS-ENTRY(COM-INDEX)
+             ADD 1 TO COM-INDEX
+           END-PERFORM
+           .
+
+           MOVE TEMP-TABLE TO FINAL-TABLE.
+
+           MOVE 1 TO COM-INDEX.
+
+          *>  STARTING FILE READING AND WRITING REQUESTED DATE TO TABLE:
            
            OPEN INPUT F-COMMENTS-FILE.
 
