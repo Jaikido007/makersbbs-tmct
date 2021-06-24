@@ -13,8 +13,6 @@
              ORGANIZATION IS LINE SEQUENTIAL.
            SELECT F-HIGH-SCORES-FILE ASSIGN TO 'high-scores.dat'
              ORGANIZATION IS LINE SEQUENTIAL.
-           SELECT F-USERS-FILE ASSIGN TO 'users.dat'
-             ORGANIZATION IS LINE SEQUENTIAL.
            
        DATA DIVISION.
            FILE SECTION.
@@ -24,31 +22,35 @@
            01 PLAYER-SCORES.
               05 HIGH-SCORE PIC 99.
               05 PLAYER-NAME PIC X(10).
-           FD F-USERS-FILE.
-           01 USERS.
-              05 USERNAME PIC X(16).
-              05 USER-PASSWORD PIC X(20).   
                       
            WORKING-STORAGE SECTION.
       ****************************************************
       *----Variables related to login and menu screen----*
       ****************************************************
-           01 USER-NAME PIC X(16).
+           01 WS-USERNAME PIC X(16).
            01 WS-PASSWORD PIC X(20).
-           01 NEW-USER-NAME PIC X(16).
-           01 NEW-PASSWORD PIC X(20).
+           01 WS-NEW-USER-NAME PIC X(16).
+           01 WS-NEW-PASSWORD PIC X(20).
            01 LOGIN-CHOICE PIC X.
            01 MENU-CHOICE PIC X.
            01 ERROR-CHOICE PIC X.
            01 CREATE-CHOICE PIC X.
-           01 WS-USERS.
-               05 WS-USER OCCURS 100 TIMES
-               ASCENDING KEY IS WS-UNAME
-               INDEXED BY USER-IDX.
-                   10 WS-UNAME PIC X(16).
-                   10 WS-PWORD PIC X(20).
-           01 WS-FOUND PIC 9.
-           01 WS-IDX UNSIGNED-INT. 
+           01 ACCOUNT-CHOICE PIC X.
+           01 WS-LOGIN-CORRECT PIC 9.
+           01 WS-ERROR-MSG PIC X(40).
+           01 WS-UNAME-UNAVAILABLE PIC 9.
+           01 WS-USERCREDITS PIC 9(3).
+
+      *********************************************
+      *----Variables relating to bank accounts----*
+      *********************************************
+           01 BANK-ACCOUNT-CHOICE PIC X.
+           01 CARD-NO PIC 9(16).
+           01 CARD-EXPIRY PIC 9(4).
+           01 CARD-CSV PIC 9(3).
+           01 WS-CARD-NO PIC 9(16).
+           01 WS-CARD-EXPIRY PIC 9(4).
+           01 WS-CARD-CSV PIC 9(3).
       ********************************************
       *----Variables related to guessing game----*
       ********************************************
@@ -132,7 +134,7 @@
            01 NEW-MESSAGE.
              05 WS-TITLE               PIC X(50).
              05 WS-CONTENT             PIC X(300).
-             05 WS-USERNAME            PIC X(16).
+             05 WS-MSG-AUTHOR            PIC X(16).
 
       **********************************
       *----Comment System Variables----*
@@ -247,11 +249,11 @@
              05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE, BLINK
              HIGHLIGHT, FOREGROUND-COLOR IS 3.
              05 LINE 6 COLUMN 10 VALUE "Enter your username:".
-             05 USER-NAME-FIELD LINE 7 COLUMN 10 PIC X(16)
-                USING USER-NAME.   
-             05 LINE 9 COLUMN 10 VALUE "Enter your password:".
-             05 PASSWORD-FIELD LINE 10 COLUMN 10 PIC X(20)
-                USING WS-PASSWORD.    
+             05 WS-USERNAME-FIELD LINE 7 COLUMN 10 PIC X(16)
+                USING WS-USERNAME.   
+             05 LINE 8 COLUMN 10 VALUE "Enter your password:".
+             05 WS-PASSWORD-FIELD LINE 9 COLUMN 10 PIC X(20)
+                USING WS-PASSWORD.   
 
            01 ERROR-SCREEN
              BACKGROUND-COLOR IS 0.
@@ -261,8 +263,8 @@
              05 LINE 2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.  
              05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE, BLINK
              HIGHLIGHT, FOREGROUND-COLOR IS 3.
-             05 LINE 6 COLUMN 10 VALUE "Incorrect Username or Password".
-             05 LINE 7 COLUMN 10 VALUE "(L) Back to Log-in.".
+             05 LINE 6 COLUMN 10 PIC X(40) USING WS-ERROR-MSG.
+             05 LINE 7 COLUMN 10 VALUE "(L) Log-in.".
              05 LINE 8 COLUMN 10 VALUE "(C) Create an account.".
              05 LINE 10 COLUMN 10 VALUE "Pick: ".
              05 ERROR-CHOICE-FIELD LINE 10 COLUMN 16 PIC X
@@ -277,18 +279,18 @@
              05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE, BLINK
              HIGHLIGHT, FOREGROUND-COLOR IS 3.
              05 LINE 6 COLUMN 10 VALUE "Create your account".
-             05 LINE 8 COLUMN 10 VALUE "Enter a username: ".
-             05 NEW-USER-NAME-FIELD LINE 9 COLUMN 10 PIC X(16)
-                USING NEW-USER-NAME.
-             05 LINE 11 COLUMN 10 VALUE "Enter a password: ".
-             05 LINE 11 COLUMN 29 VALUE "(max 20 characters)".
-             05 NEW-PASSWORD-FIELD LINE 12 COLUMN 10 PIC X(20)
-                USING NEW-PASSWORD.
-             05 LINE 14 COLUMN 10 VALUE "(S) Submit".
-             05 LINE 15 COLUMN 10 VALUE "(Q) Go Back".
+             05 LINE 8 COLUMN 10 VALUE "Enter a username:".
+             05 WS-NEW-USER-NAME-FIELD LINE 8 COLUMN 10 PIC X(16)
+                USING WS-NEW-USER-NAME.
+             05 LINE 10 COLUMN 10 VALUE "Enter a password: ".
+             05 LINE 10 COLUMN 29 VALUE "(max 20 characters)".
+             05 WS-NEW-PASSWORD-FIELD LINE 11 COLUMN 10 PIC X(20)
+                USING WS-NEW-PASSWORD.
+             05 LINE 12 COLUMN 10 VALUE "(S) Submit".
+             05 LINE 13 COLUMN 10 VALUE "(Q) Go Back".
              05 LINE 17 COLUMN 10 VALUE "Pick: ".
              05 CREATE-CHOICE-FIELD LINE 17 COLUMN 16 PIC X
-                USING CREATE-CHOICE.        
+                USING CREATE-CHOICE.       
 
            01 MENU-SCREEN
              BACKGROUND-COLOR IS 0.
@@ -299,7 +301,7 @@
              05 LINE  2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.  
              05 LINE  4 COL 10 VALUE "MAKERS BBS" UNDERLINE.
              05 LINE  6 COL 10 VALUE "Hi, ".
-             05 LINE  6 COL 14 PIC X(16) USING USER-NAME.
+             05 LINE  6 COL 14 PIC X(16) USING WS-USERNAME.
              05 LINE  8 COL 10 VALUE "Welcome to COBOL The Barbarian's s
       -      "tate oF the art Bulletin Board.".  
              05 LINE  9 COL 10 VALUE "Feel free to:".
@@ -322,7 +324,44 @@
                 REVERSE-VIDEO, HIGHLIGHT.  
              05 LINE 23 COL 24 VALUE "Pick: ".
              05 MENU-CHOICE-FIELD LINE 23 COL 30 PIC X
-                USING MENU-CHOICE.    
+                USING MENU-CHOICE.
+
+           01 USER-ACCOUNT-SCREEN
+             BACKGROUND-COLOR IS 0.
+             05 BLANK SCREEN.
+             05 LINE  2 COL 2 PIC X(2) USING WS-FORMATTED-HOUR.
+             05 LINE  2 COL 4 VALUE ":".
+             05 LINE  2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.
+             05 LINE  4 COL 10 VALUE "MAKERS BBS" UNDERLINE.
+             05 LINE  6 COL 10 VALUE "Hi, ".
+             05 LINE  6 COL 14 PIC X(16) USING WS-USERNAME.
+             05 LINE  8 COL 10 VALUE "Available Credits: ".
+             05 LINE  8 COL 30 PIC 9(3) USING WS-USERCREDITS.
+             05 ACCOUNT-CHOICE-FIELD LINE 23 COL 30 PIC X
+                USING ACCOUNT-CHOICE.
+
+           01 BANK-DETAILS-SCREEN
+             BACKGROUND-COLOR IS 0.
+             05 BLANK SCREEN.
+             05 LINE  2 COL 2 PIC X(2) USING WS-FORMATTED-HOUR.
+             05 LINE  2 COL 4 VALUE ":".
+             05 LINE  2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.
+             05 LINE 6 COLUMN 10 VALUE "ADD A BANK ACCOUNT".
+             05 LINE 8 COLUMN 10 VALUE "Enter Card No:".
+             05 CARD-NO-FIELD LINE 8 COLUMN 10 PIC 9(16)
+                USING CARD-NO.
+             05 LINE 10 COLUMN 10 VALUE "Enter Expiry Date: ".
+             05 CARD-EXPIRY-FIELD LINE 11 COLUMN 10 PIC 9(4)
+                USING CARD-EXPIRY.
+             05 LINE 12 COLUMN 10 VALUE "Enter Expiry Date: ".
+             05 CARD-CSV-FIELD LINE 13 COLUMN 10 PIC 9(3)
+                USING CARD-CSV.   
+
+             05 LINE 15 COLUMN 10 VALUE "(S) Submit".
+             05 LINE 16 COLUMN 10 VALUE "(Q) Go Back".
+             05 LINE 17 COLUMN 10 VALUE "Pick: ".
+             05 BANK-ACCOUNT-CHOICE-FIELD LINE 17 COLUMN 16 PIC X
+                USING BANK-ACCOUNT-CHOICE.       
            
            01 MSG-MENU-SCREEN
              BACKGROUND-COLOR IS 0.
@@ -679,7 +718,7 @@
       ************************************
       *----LOGIN / SIGN-IN/UP SECTION----*
       ************************************
-       0110-DISPLAY-LOGIN.
+        0110-DISPLAY-LOGIN.
            PERFORM 0200-TIME-AND-DATE.
            INITIALIZE LOGIN-CHOICE. 
            DISPLAY LOGIN-SCREEN.
@@ -691,69 +730,63 @@
            ELSE IF LOGIN-CHOICE = "q" OR "Q" THEN 
                STOP RUN
            ELSE 
-               PERFORM 0110-DISPLAY-LOGIN
+               PERFORM 0120-DISPLAY-MENU
            END-IF.
 
        0111-SIGN-IN.
-           SET COUNTER TO 0.
-           OPEN INPUT F-USERS-FILE.
-           MOVE 0 TO WS-FILE-IS-ENDED.
-           PERFORM UNTIL WS-FILE-IS-ENDED = 1
-               READ F-USERS-FILE
-                   NOT AT END
-                       ADD 1 TO COUNTER
-                       MOVE USERNAME TO WS-UNAME(COUNTER)
-                       MOVE USER-PASSWORD TO WS-PWORD(COUNTER)
-                   AT END 
-                       MOVE 1 TO WS-FILE-IS-ENDED
-               END-READ 
-           END-PERFORM.
-
-           CLOSE F-USERS-FILE.
-           INITIALIZE USER-NAME.
+           INITIALIZE WS-USERNAME.
            INITIALIZE WS-PASSWORD.
            DISPLAY SIGN-IN-SCREEN.
+           ACCEPT WS-USERNAME-FIELD.
+           ACCEPT WS-PASSWORD-FIELD.
+           
+           CALL 'sign-in' USING WS-USERNAME, WS-PASSWORD, 
+           WS-LOGIN-CORRECT.
 
-           ACCEPT USER-NAME-FIELD.
-           ACCEPT PASSWORD-FIELD.
-           MOVE 0 TO WS-FOUND.
-           MOVE 1 TO WS-IDX.
-           ADD 1 TO COUNTER.
-           PERFORM UNTIL WS-IDX = COUNTER
-               IF USER-NAME = WS-UNAME(WS-IDX) AND 
-               WS-PASSWORD = WS-PWORD(WS-IDX) THEN
-                   MOVE 1 TO WS-FOUND 
-               END-IF
-               ADD 1 TO WS-IDX 
-           END-PERFORM.
-
-           IF WS-FOUND = 1 THEN
+           IF WS-LOGIN-CORRECT = 1 THEN
                PERFORM 0120-DISPLAY-MENU 
            ELSE 
-               PERFORM 0113-ERROR-PAGE 
+               MOVE "Incorrect Username or Password" TO WS-ERROR-MSG
+                   PERFORM 0114-ERROR-PAGE 
            END-IF. 
 
        0112-SIGN-UP.
-           INITIALIZE NEW-USER-NAME.
-           INITIALIZE NEW-PASSWORD.
+           INITIALIZE WS-NEW-USER-NAME.
+           INITIALIZE WS-NEW-PASSWORD.
            INITIALIZE CREATE-CHOICE
            DISPLAY CREATE-AN-ACCOUNT-SCREEN.
-           ACCEPT NEW-USER-NAME-FIELD.
-           ACCEPT NEW-PASSWORD-FIELD.
+           ACCEPT WS-NEW-USER-NAME-FIELD.
+           ACCEPT WS-NEW-PASSWORD-FIELD.
            ACCEPT CREATE-CHOICE-FIELD.
+           
            IF CREATE-CHOICE = "q" OR "Q" THEN 
-               PERFORM 0110-DISPLAY-LOGIN
-           ELSE IF CREATE-CHOICE = "s" THEN 
-               OPEN EXTEND F-USERS-FILE
-               MOVE NEW-USER-NAME TO USERNAME
-               MOVE NEW-PASSWORD TO USER-PASSWORD
-               WRITE USERS
-               END-WRITE               
-           END-IF.
-           CLOSE F-USERS-FILE.
-           PERFORM 0111-SIGN-IN.
+               PERFORM 0110-DISPLAY-LOGIN   
+           ELSE IF CREATE-CHOICE = "s" THEN
+               PERFORM 0113-SIGN-UP-CHECK
+           END-IF.       
 
-       0113-ERROR-PAGE.
+       0113-SIGN-UP-CHECK.
+           
+           IF WS-NEW-USER-NAME = " "
+               MOVE "Invalid Username Try Another" TO WS-ERROR-MSG
+               PERFORM 0114-ERROR-PAGE
+           ELSE IF WS-NEW-PASSWORD = " "
+               MOVE "Invalid Password Try Another" TO WS-ERROR-MSG
+               PERFORM 0114-ERROR-PAGE
+           END-IF.    
+           
+           CALL 'sign-up-check' USING WS-NEW-USER-NAME 
+               WS-UNAME-UNAVAILABLE.
+
+           IF WS-UNAME-UNAVAILABLE = 1 THEN
+               MOVE "Username Taken" TO WS-ERROR-MSG
+               PERFORM 0114-ERROR-PAGE
+           ELSE
+               CALL 'sign-up' USING WS-NEW-USER-NAME WS-NEW-PASSWORD
+               PERFORM 0111-SIGN-IN
+           END-IF.
+
+       0114-ERROR-PAGE.
            INITIALIZE ERROR-CHOICE.
            DISPLAY ERROR-SCREEN.
            ACCEPT ERROR-CHOICE-FIELD.
@@ -762,7 +795,7 @@
            ELSE IF ERROR-CHOICE = "c" OR "C" THEN 
                PERFORM 0112-SIGN-UP 
            ELSE 
-               PERFORM 0113-ERROR-PAGE 
+               PERFORM 0114-ERROR-PAGE 
            END-IF.
       **************************************************     
       *----DISPLAY MENU COMES AFTER SUCCESFUL LOGIN----*
@@ -772,6 +805,7 @@
            INITIALIZE MENU-CHOICE.
            DISPLAY MENU-SCREEN.
            ACCEPT MENU-CHOICE-FIELD.
+
            IF MENU-CHOICE =        "q" or "Q" THEN
              STOP RUN
            ELSE IF MENU-CHOICE =   "l" or "L" THEN
@@ -780,9 +814,55 @@
              PERFORM 0130-MSG-MENU
            ELSE IF MENU-CHOICE =   "f" or "F" THEN
              PERFORM 0160-GAMES-MENU
+           ELSE IF MENU-CHOICE =   "a" or "A" THEN
+             PERFORM 0122-USER-ACCOUNT-MENU
            END-IF.
 
-           PERFORM 0120-DISPLAY-MENU.
+       0122-USER-ACCOUNT-MENU.
+           PERFORM 0200-TIME-AND-DATE.
+           CALL 'find-account' USING WS-USERNAME, WS-USERCREDITS.
+           INITIALIZE ACCOUNT-CHOICE.
+           DISPLAY USER-ACCOUNT-SCREEN.
+           ACCEPT ACCOUNT-CHOICE-FIELD.
+
+           IF ACCOUNT-CHOICE = "q" or "Q" THEN
+               STOP RUN
+           ELSE IF ACCOUNT-CHOICE = "b" or "B" THEN
+               PERFORM 0125-BANK-DETAILS   
+           END-IF.
+
+      *******************************   
+      *----BANK DETAILS SECTIONS----*
+      *******************************
+           
+       0125-BANK-DETAILS.    
+           PERFORM 0200-TIME-AND-DATE.
+           INITIALIZE CARD-NO.
+           INITIALIZE CARD-EXPIRY.
+           INITIALIZE CARD-CSV.
+           INITIALIZE BANK-ACCOUNT-CHOICE.
+           DISPLAY BANK-DETAILS-SCREEN.
+
+           ACCEPT CARD-NO-FIELD.
+           ACCEPT CARD-EXPIRY-FIELD.
+           ACCEPT CARD-CSV-FIELD.
+           ACCEPT BANK-ACCOUNT-CHOICE-FIELD.
+
+           IF BANK-ACCOUNT-CHOICE = "s" or "S" then
+               PERFORM 0127-UPDATE-BANK-DETAILS
+           ELSE IF BANK-ACCOUNT-CHOICE = "q" or "Q" THEN
+               STOP RUN
+           END-IF.  
+
+       0127-UPDATE-BANK-DETAILS.
+           MOVE CARD-NO TO WS-CARD-NO.
+           MOVE CARD-EXPIRY TO WS-CARD-EXPIRY.
+           MOVE CARD-CSV TO WS-CARD-CSV.
+
+           CALL 'bank-details' USING WS-USERNAME, WS-CARD-NO,
+           WS-CARD-EXPIRY, WS-CARD-CSV.
+           
+           PERFORM 0122-USER-ACCOUNT-MENU.    
       ************************************************
       *----MESSAGE SECTION FOR READ/WRITE/COMMENT----*
       ************************************************
@@ -898,7 +978,7 @@
 
            IF MSG-WRITE-CHOICE-FIELD = "s" OR "S" THEN 
               MOVE WS-CONTENT-DISPLAY TO WS-CONTENT
-              MOVE USER-NAME TO WS-USERNAME
+              MOVE WS-USERNAME TO WS-MSG-AUTHOR
 
                 IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
                   CALL 'post-message' USING NEW-MESSAGE
@@ -1015,7 +1095,7 @@
            DISPLAY WORD-GUESSING-WINNING-SCREEN.
            OPEN EXTEND F-HIGH-SCORES-FILE
                MOVE WS-HIGH-SCORE TO HIGH-SCORE
-               MOVE USER-NAME TO PLAYER-NAME
+               MOVE WS-USERNAME TO PLAYER-NAME
                WRITE PLAYER-SCORES 
                END-WRITE.
            CLOSE F-HIGH-SCORES-FILE.

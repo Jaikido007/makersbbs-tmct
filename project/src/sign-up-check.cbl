@@ -11,7 +11,12 @@
            FD F-USERS-FILE.
            01 USERS.
               05 USERNAME PIC X(16).
-              05 USER-PASSWORD PIC X(20).     
+              05 USER-PASSWORD PIC X(20).
+              05 USER-CREDITS PIC 9(3).
+              05 USER-LEVEL PIC X(3).
+              05 CARD-NO PIC 9(16).
+              05 CARD-EXPIRY PIC 9(4).
+              05 CARD-CSV PIC 9(3).   
        
        WORKING-STORAGE SECTION.
            01 WS-USERS.

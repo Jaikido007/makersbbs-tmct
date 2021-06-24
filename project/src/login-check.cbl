@@ -27,6 +27,6 @@
                   LS-CHECK-PASSWORD = LS-PWORD(LS-IDX) THEN
                    MOVE 1 TO LS-FOUND 
                END-IF
-               ADD 1 TO LS-IDX 
+               ADD 1 TO LS-IDX
            END-PERFORM.
        

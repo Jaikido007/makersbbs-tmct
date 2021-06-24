@@ -1,5 +1,5 @@
        IDENTIFICATION DIVISION.
-       PROGRAM-ID. sign-in.
+       PROGRAM-ID. find-account.
        ENVIRONMENT DIVISION.
        INPUT-OUTPUT SECTION.
        FILE-CONTROL.
@@ -19,51 +19,32 @@
               05 CARD-CSV PIC 9(3).    
        
        WORKING-STORAGE SECTION.
-           01 WS-USERS.
-               05 WS-USER OCCURS 100 TIMES
-               ASCENDING KEY IS WS-UNAME
-               INDEXED BY USER-IDX.
-                   10 WS-UNAME PIC X(16).
-                   10 WS-PWORD PIC X(20).
            01 WS-FOUND PIC 9.
            01 WS-IDX UNSIGNED-INT.
            01 WS-FILE-IS-ENDED PIC 9.
            01 COUNTER UNSIGNED-INT.
            01 WS-CHECK-USERNAME PIC X(16).
-           01 WS-CHECK-PASSWORD PIC X(20).
+           01 WS-CHECK-CREDITS PIC 9(3).
        LINKAGE SECTION.
            01 LS-USERNAME PIC X(16).
-           01 LS-PASSWORD PIC X(20).
-           01 LS-LOGIN-CORRECT PIC 9.     
+           01 LS-USERCREDITS PIC 9(3).     
        
-       PROCEDURE DIVISION USING LS-USERNAME, LS-PASSWORD, 
-           LS-LOGIN-CORRECT.
+       PROCEDURE DIVISION USING LS-USERNAME, LS-USERCREDITS.
 
            SET WS-FILE-IS-ENDED TO 0.
-           SET WS-IDX TO 0.
            SET COUNTER TO 0.
 
            OPEN INPUT F-USERS-FILE.
            PERFORM UNTIL WS-FILE-IS-ENDED = 1
                READ F-USERS-FILE
                    NOT AT END
-                       ADD 1 TO COUNTER
-                       MOVE USERNAME TO WS-UNAME(COUNTER)
-                       MOVE USER-PASSWORD TO WS-PWORD(COUNTER)
+                       IF USERNAME = LS-USERNAME
+                       MOVE USER-CREDITS TO LS-USERCREDITS
                    AT END 
                        MOVE 1 TO WS-FILE-IS-ENDED
                END-READ 
            END-PERFORM.
            CLOSE F-USERS-FILE.
-
-           MOVE LS-USERNAME TO WS-CHECK-USERNAME.
-           MOVE LS-PASSWORD TO WS-CHECK-PASSWORD.
-
-           CALL 'login-check' USING WS-USERS WS-CHECK-USERNAME 
-           WS-CHECK-PASSWORD WS-FOUND WS-IDX COUNTER.
-
-
-           MOVE WS-FOUND TO LS-LOGIN-CORRECT. 
        
 
        
