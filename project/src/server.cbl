@@ -13,6 +13,8 @@
              ORGANIZATION IS LINE SEQUENTIAL.
            SELECT F-HIGH-SCORES-FILE ASSIGN TO 'high-scores.dat'
              ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT F-USERS-FILE ASSIGN TO 'users.dat'
+             ORGANIZATION IS LINE SEQUENTIAL.
            
        DATA DIVISION.
            FILE SECTION.
@@ -21,23 +23,32 @@
            FD F-HIGH-SCORES-FILE.
            01 PLAYER-SCORES.
               05 HIGH-SCORE PIC 99.
-              05 PLAYER-NAME PIC X(10).  
+              05 PLAYER-NAME PIC X(10).
+           FD F-USERS-FILE.
+           01 USERS.
+              05 USERNAME PIC X(16).
+              05 USER-PASSWORD PIC X(20).   
                       
            WORKING-STORAGE SECTION.
       ****************************************************
       *----Variables related to login and menu screen----*
       ****************************************************
-           01 WS-USERNAME PIC X(16).
+           01 USER-NAME PIC X(16).
            01 WS-PASSWORD PIC X(20).
-           01 WS-NEW-USER-NAME PIC X(16).
-           01 WS-NEW-PASSWORD PIC X(20).
+           01 NEW-USER-NAME PIC X(16).
+           01 NEW-PASSWORD PIC X(20).
            01 LOGIN-CHOICE PIC X.
            01 MENU-CHOICE PIC X.
            01 ERROR-CHOICE PIC X.
            01 CREATE-CHOICE PIC X.
-           01 WS-LOGIN-CORRECT PIC 9.
-           01 WS-ERROR-MSG PIC X(40).
-           01 WS-UNAME-UNAVAILABLE PIC 9.
+           01 WS-USERS.
+               05 WS-USER OCCURS 100 TIMES
+               ASCENDING KEY IS WS-UNAME
+               INDEXED BY USER-IDX.
+                   10 WS-UNAME PIC X(16).
+                   10 WS-PWORD PIC X(20).
+           01 WS-FOUND PIC 9.
+           01 WS-IDX UNSIGNED-INT. 
       ********************************************
       *----Variables related to guessing game----*
       ********************************************
@@ -121,7 +132,26 @@
            01 NEW-MESSAGE.
              05 WS-TITLE               PIC X(50).
              05 WS-CONTENT             PIC X(300).
-             05 WS-MSG-AUTHOR          PIC X(16).
+             05 WS-USERNAME            PIC X(16).
+
+      **********************************
+      *----Comment System Variables----*
+      **********************************
+
+           01 NUM-COMMENTS PIC 9999.
+
+           01 COMMENT-TABLE.
+               05 COM-ENTRY OCCURS 1 TO 9999 TIMES 
+               DEPENDING ON NUM-COMMENTS.
+                  *>  10 TEMP-ID PIC 999.
+                   10 COM-AUTHOR PIC X(16).
+                   10 COM-DATE PIC X(21).
+                   10 COM-COMMENT PIC X(50).
+
+           01 COM-INDEX PIC 9999 VALUE 1.
+
+           01 COM-SCRN-CHOICE PIC X.
+
       **************
       *----Time----*
       **************
@@ -142,9 +172,7 @@
            01 LOGIN-SCREEN
                BACKGROUND-COLOR IS 1.
                05 BLANK SCREEN.
-      ****************
-      *----Header----*
-      ****************
+           *>upper border
                05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -152,9 +180,7 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-      ****************
-      *----Footer----*
-      ****************
+           *>bottom border
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -164,9 +190,7 @@
                05 LINE 45 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-      ***********************************
-      *----FriendFace logo ascii art----*
-      *********************************** 
+           *> general code
                05 LINE 14 COL 34 VALUE " ________________________"
                    FOREGROUND-COLOR IS 7.
                05 LINE 15 COL 35 VALUE "|FFFFFFFFFFFFFFFFFFFFFF|"
@@ -193,9 +217,7 @@
                    FOREGROUND-COLOR IS 7.
                05 LINE 26 COL 34 VALUE " ------------------------"
                    FOREGROUND-COLOR IS 7.
-      ***********************************
-      *----FriendFace text ascii art----*
-      ***********************************   
+          
                05 LINE 31 COL 23 VALUE "______    _                ______
       -        "_" FOREGROUND-COLOR IS 7.
                05 LINE 32 COL 23 VALUE "|  ___|  (_)              | |  __
@@ -208,9 +230,10 @@
       -        "(_| | (_|  __/" FOREGROUND-COLOR IS 7.
                05 LINE 36 COL 23 VALUE "\_| |_|  |_|\___|_| |_|\__,_\_| \
       -        "__,_|\___\___|" FOREGROUND-COLOR IS 7.
-      **************************
-      *----Pick positioning----*
-      **************************
+
+               
+
+
                05 LINE 42 COLUMN 6 VALUE "Pick: ".
                05 LOGIN-CHOICE-FIELD LINE 42 COLUMN 12 PIC X
                   USING LOGIN-CHOICE.
@@ -221,13 +244,13 @@
              05 LINE 2 COL 2 PIC X(2) USING WS-FORMATTED-HOUR.
              05 LINE 2 COL 4 VALUE ":".
              05 LINE 2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.  
-             05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE
+             05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE, BLINK
              HIGHLIGHT, FOREGROUND-COLOR IS 3.
              05 LINE 6 COLUMN 10 VALUE "Enter your username:".
-             05 WS-USERNAME-FIELD LINE 7 COLUMN 10 PIC X(16)
-                USING WS-USERNAME.   
+             05 USER-NAME-FIELD LINE 7 COLUMN 10 PIC X(16)
+                USING USER-NAME.   
              05 LINE 9 COLUMN 10 VALUE "Enter your password:".
-             05 WS-PASSWORD-FIELD LINE 10 COLUMN 10 PIC X(20)
+             05 PASSWORD-FIELD LINE 10 COLUMN 10 PIC X(20)
                 USING WS-PASSWORD.    
 
            01 ERROR-SCREEN
@@ -236,9 +259,9 @@
              05 LINE 2 COL 2 PIC X(2) USING WS-FORMATTED-HOUR.
              05 LINE 2 COL 4 VALUE ":".
              05 LINE 2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.  
-             05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE
+             05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE, BLINK
              HIGHLIGHT, FOREGROUND-COLOR IS 3.
-             05 LINE 6 COLUMN 10 PIC X(40) USING WS-ERROR-MSG.
+             05 LINE 6 COLUMN 10 VALUE "Incorrect Username or Password".
              05 LINE 7 COLUMN 10 VALUE "(L) Back to Log-in.".
              05 LINE 8 COLUMN 10 VALUE "(C) Create an account.".
              05 LINE 10 COLUMN 10 VALUE "Pick: ".
@@ -251,16 +274,16 @@
              05 LINE 2 COL 2 PIC X(2) USING WS-FORMATTED-HOUR.
              05 LINE 2 COL 4 VALUE ":".
              05 LINE 2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.  
-             05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE
+             05 LINE 4 COL 12 VALUE "MAKERS BBS" UNDERLINE, BLINK
              HIGHLIGHT, FOREGROUND-COLOR IS 3.
              05 LINE 6 COLUMN 10 VALUE "Create your account".
              05 LINE 8 COLUMN 10 VALUE "Enter a username: ".
-             05 WS-NEW-USER-NAME-FIELD LINE 9 COLUMN 10 PIC X(16)
-                USING WS-NEW-USER-NAME.
+             05 NEW-USER-NAME-FIELD LINE 9 COLUMN 10 PIC X(16)
+                USING NEW-USER-NAME.
              05 LINE 11 COLUMN 10 VALUE "Enter a password: ".
              05 LINE 11 COLUMN 29 VALUE "(max 20 characters)".
-             05 WS-NEW-PASSWORD-FIELD LINE 12 COLUMN 10 PIC X(20)
-                USING WS-NEW-PASSWORD.
+             05 NEW-PASSWORD-FIELD LINE 12 COLUMN 10 PIC X(20)
+                USING NEW-PASSWORD.
              05 LINE 14 COLUMN 10 VALUE "(S) Submit".
              05 LINE 15 COLUMN 10 VALUE "(Q) Go Back".
              05 LINE 17 COLUMN 10 VALUE "Pick: ".
@@ -276,7 +299,7 @@
              05 LINE  2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.  
              05 LINE  4 COL 10 VALUE "MAKERS BBS" UNDERLINE.
              05 LINE  6 COL 10 VALUE "Hi, ".
-             05 LINE  6 COL 14 PIC X(16) USING WS-USERNAME.
+             05 LINE  6 COL 14 PIC X(16) USING USER-NAME.
              05 LINE  8 COL 10 VALUE "Welcome to COBOL The Barbarian's s
       -      "tate oF the art Bulletin Board.".  
              05 LINE  9 COL 10 VALUE "Feel free to:".
@@ -313,7 +336,7 @@
       -      "---------------------" FOREGROUND-COLOR IS 3.
 
              05 LINE 9 COL 10 VALUE "*********************BULLETIN BOARD
-      -      "*********************" HIGHLIGHT, FOREGROUND-COLOR 
+      -      "*********************" BLINK, HIGHLIGHT, FOREGROUND-COLOR 
              IS 2.
              05 LINE 10 COL 10 VALUE "-----------------------------------
       -      "---------------------" FOREGROUND-COLOR IS 3.
@@ -374,7 +397,7 @@
       -      "---------------------" FOREGROUND-COLOR IS 3.
 
              05 LINE 9 COL 10 VALUE "*********************BULLETIN BOARD
-      -      "*********************" HIGHLIGHT, FOREGROUND-COLOR 
+      -      "*********************" BLINK, HIGHLIGHT, FOREGROUND-COLOR 
              IS 2.
              05 LINE 10 COL 10 VALUE "-----------------------------------
       -      "---------------------" FOREGROUND-COLOR IS 3.
@@ -422,7 +445,7 @@
       -      "---------------------" FOREGROUND-COLOR IS 3.
 
              05 LINE 9 COL 10 VALUE "*********************BULLETIN BOARD
-      -      "*********************" HIGHLIGHT, FOREGROUND-COLOR 
+      -      "*********************" BLINK, HIGHLIGHT, FOREGROUND-COLOR 
              IS 2.
              05 LINE 10 COL 10 VALUE "----------------------------------
       -      "---------------------" FOREGROUND-COLOR IS 3.
@@ -472,81 +495,69 @@
        01 WORD-GUESSING-SCREEN
                BACKGROUND-COLOR IS 0.
              05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Thank you Turtles!".
-             05 LINE 2 COLUMN 37 VALUE "Word Guessing Game".
-             05 LINE 14 COLUMN 10 VALUE "Guess this word: ".
-             05 LINE 16 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 18 COLUMN 10 VALUE "Guesses left: ".
-             05 LINE 18 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
-             05 LINE 20 COLUMN 10 VALUE "( ) Enter a letter to guess".
-             05 LINE 21 COLUMN 10 VALUE "(!) Quit game".
-             05 LINE 22 COLUMN 10 VALUE "Pick: ".
+             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
+             05 LINE 18 COLUMN 10 VALUE "Guess this word: ".
+             05 LINE 20 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 22 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 22 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 24 COLUMN 10 VALUE "( ) Enter a letter to guess".
+             05 LINE 25 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 26 COLUMN 10 VALUE "Pick: ".
    
            01 IN-GAME-SCREEN
            BACKGROUND-COLOR IS 0.
              05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Thank you Turtles!".
-             05 LINE 2 COLUMN 37 VALUE "Word Guessing Game".
-             05 LINE 14 COLUMN 10 VALUE "Guess this word: ".
-             05 LINE 16 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 18 COLUMN 10 VALUE "Guesses left: ".
-             05 LINE 18 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
-             05 LINE 20 COLUMN 10 VALUE "( ) Enter a letter to guess".
-             05 LINE 21 COLUMN 10 VALUE "(!) Quit game".
-             05 LINE 22 COLUMN 10 VALUE "Pick: ".
-             05 WS-GUESS-CHOICE-FIELD LINE 22 COLUMN 16 PIC X
+             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
+             05 LINE 34 COLUMN 10 VALUE "Guess this word: ".
+             05 LINE 36 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 38 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 38 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 40 COLUMN 10 VALUE "( ) Enter a letter to guess".
+             05 LINE 41 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 42 COLUMN 10 VALUE "Pick: ".
+             05 WS-GUESS-CHOICE-FIELD LINE 42 COLUMN 16 PIC X
                USING WS-GUESS-CHOICE.
 
            01 WORD-GUESSING-LOSE-SCREEN
              BACKGROUND-COLOR IS 4.
              05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Thank you Turtles!".
-             05 LINE 2 COLUMN 37 VALUE "Word Guessing Game".
-             05 LINE 14 COLUMN 10 VALUE "You lost!".
-             05 LINE 16 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 18 COLUMN 10 VALUE "Guesses left: ".
-             05 LINE 18 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
-             05 LINE 19 COLUMN 10 VALUE "(p) Play again".
-             05 LINE 20 COLUMN 10 VALUE "(h) See high scores".
-             05 LINE 21 COLUMN 10 VALUE "(!) Quit game".
-             05 LINE 22 COLUMN 10 VALUE "Pick: ".
-             05 WS-GUESSING-CHOICE-LOSE-FIELD LINE 22 COLUMN 16 PIC X
+             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
+             05 LINE 34 COLUMN 10 VALUE "You lost!".
+             05 LINE 36 COLUMN 10 PIC X(20) USING WS-WORD.
+             05 LINE 38 COLUMN 10 VALUE "Guesses left: ".
+             05 LINE 38 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 39 COLUMN 10 VALUE "(p) Play again".
+             05 LINE 40 COLUMN 10 VALUE "(h) See high scores".
+             05 LINE 41 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 42 COLUMN 10 VALUE "Pick: ".
+             05 WS-GUESSING-CHOICE-LOSE-FIELD LINE 42 COLUMN 16 PIC X
                USING WS-GUESSING-LOSING-CHOICE.
 
            01 WORD-GUESSING-WINNING-SCREEN
              BACKGROUND-COLOR IS 2.
              05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Thank you Turtles!"
-               FOREGROUND-COLOR IS 0.
-             05 LINE 2 COLUMN 37 VALUE "Word Guessing Game"
-               FOREGROUND-COLOR IS 0.
-             05 LINE 14 COLUMN 10 VALUE "You guessed the word!"
-               FOREGROUND-COLOR IS 0.
-             05 LINE 16 COLUMN 10 PIC X(20) USING WS-ANSWERWORD
-               FOREGROUND-COLOR IS 0.
-             05 LINE 18 COLUMN 10 PIC 99 USING WS-GUESSES-LEFT
-               FOREGROUND-COLOR IS 0.
-             05 LINE 20 COLUMN 10 VALUE "You scored: "
-               FOREGROUND-COLOR IS 0.
-             05 LINE 20 COLUMN 22 PIC 99 USING WS-HIGH-SCORE
-               FOREGROUND-COLOR IS 0.
-             05 LINE 22 COLUMN 10 VALUE "(p) Play Again"
-               FOREGROUND-COLOR IS 0.
-             05 LINE 23 COLUMN 10 VALUE "(h) See High Scores"
-               FOREGROUND-COLOR IS 0.
-             05 LINE 24 COLUMN 10 VALUE "(!) Quit game"
-               FOREGROUND-COLOR IS 0.
-             05 LINE 25 COLUMN 10 VALUE "Pick: "
-               FOREGROUND-COLOR IS 0.
-             05 WS-GUESSING-CHOICE-WINNING-FIELD LINE 25 COLUMN 16 PIC X
-               USING WS-GUESSING-WINNING-CHOICE
-               FOREGROUND-COLOR IS 0.
+             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
+             05 LINE 34 COLUMN 10 VALUE "You guessed the word!".
+             05 LINE 36 COLUMN 10 PIC X(20) USING WS-ANSWERWORD.
+             05 LINE 38 COLUMN 10 PIC 99 USING WS-GUESSES-LEFT.
+             05 LINE 40 COLUMN 10 VALUE "You scored: ".
+             05 LINE 40 COLUMN 22 PIC 99 USING WS-HIGH-SCORE.
+             05 LINE 42 COLUMN 10 VALUE "(p) Play Again".
+             05 LINE 43 COLUMN 10 VALUE "(h) See High Scores".
+             05 LINE 44 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE 45 COLUMN 10 VALUE "Pick: ".
+             05 WS-GUESSING-CHOICE-WINNING-FIELD LINE 45 COLUMN 16 PIC X
+               USING WS-GUESSING-WINNING-CHOICE.
 
            01 HIGH-SCORE-SCREEN
            BACKGROUND-COLOR IS 2.
              05 BLANK SCREEN.
-             05 LINE 2 COLUMN 10 VALUE "Thank you Turtles!".
-             05 LINE 2 COLUMN 37 VALUE "Word Guessing Game".
+             05 LINE 2 COLUMN 10 VALUE "Teenage Mutant Ninja Cobol".
+             05 LINE 2 COLUMN 37 VALUE "Turtles Guessing Game".
              05 LINE 34 COLUMN 10 VALUE "High Scores:".
              05 LINE 36 COLUMN 10 PIC XX USING WS-SCORE(1).
              05 LINE 36 COLUMN 14 PIC X(10) USING WS-NAME(1).
@@ -560,6 +571,110 @@
                USING WS-HIGH-SCORE-CHOICE.
 
 
+      ************************************
+      *----COMMENTS SCREEN SECTION-------*
+      ************************************
+
+           01 COMMENT-SCREEN
+           BACKGROUND-COLOR IS 1.
+             05 BLANK SCREEN.
+             05 LINE 1 COL 10 VALUE "Comments for:".
+             05 LINE 2 COL 10 PIC X(50) USING LIST-TITLE(MSG-SELECT).
+
+            *>  05 LINE 10 COL 10 VALUE "Posted by:".
+             05 LINE 10 COL 22 PIC X(16) USING COM-AUTHOR(COM-INDEX).
+            *>  05 LINE 10 COL 39 VALUE 'on'.
+             05 LINE 10 COL 42 PIC X(21) USING COM-DATE(COM-INDEX).
+             05 LINE 12 COL 10 PIC X(50) USING COM-COMMENT(COM-INDEX).
+
+            *>  05 LINE 14 COL 10 VALUE "Posted by:".
+             05 LINE 14 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 1).
+            *>  05 LINE 14 COL 39 VALUE 'on'.
+             05 LINE 14 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 1).
+             05 LINE 16 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 1).
+
+            *>  05 LINE 18 COL 10 VALUE "Posted by:".
+             05 LINE 18 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 2).
+            *>  05 LINE 18 COL 39 VALUE 'on'.
+             05 LINE 18 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 2).
+             05 LINE 20 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 2).
+
+            *>  05 LINE 22 COL 10 VALUE "Posted by:".
+             05 LINE 22 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 3).
+            *>  05 LINE 22 COL 39 VALUE 'on'.
+             05 LINE 22 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 3).
+             05 LINE 24 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 3).
+
+            *>  05 LINE 26 COL 10 VALUE "Posted by:".
+             05 LINE 26 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 4).
+            *>  05 LINE 26 COL 39 VALUE 'on'.
+             05 LINE 26 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 4).
+             05 LINE 28 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 4).
+
+            *>  05 LINE 30 COL 10 VALUE "Posted by:".
+             05 LINE 30 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 5).
+            *>  05 LINE 30 COL 39 VALUE 'on'.
+             05 LINE 30 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 5).
+             05 LINE 32 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 5).
+
+            *>  05 LINE 34 COL 10 VALUE "Posted by:".
+             05 LINE 34 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 6).
+            *>  05 LINE 34 COL 39 VALUE 'on'.
+             05 LINE 34 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 6).
+             05 LINE 36 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 6).
+
+            *>  05 LINE 38 COL 10 VALUE "Posted by:".
+             05 LINE 38 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 7).
+            *>  05 LINE 38 COL 39 VALUE 'on'.
+             05 LINE 38 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 7).
+             05 LINE 40 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 7).
+
+            *>  05 LINE 42 COL 10 VALUE "Posted by:".
+             05 LINE 42 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 8).
+            *>  05 LINE 42 COL 39 VALUE 'on'.
+             05 LINE 42 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 8).
+             05 LINE 44 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 8).
+
+            *>  05 LINE 46 COL 10 VALUE "Posted by:".
+             05 LINE 46 COL 22 PIC X(16) 
+             USING COM-AUTHOR(COM-INDEX + 9).
+            *>  05 LINE 46 COL 39 VALUE 'on'.
+             05 LINE 46 COL 42 PIC X(21) 
+             USING COM-DATE(COM-INDEX + 9).
+             05 LINE 48 COL 10 PIC X(50) 
+             USING COM-COMMENT(COM-INDEX + 9).
+
+             05 LINE 50 COL 10 VALUE 'Next page (N)'.
+             05 LINE 50 COL 25 VALUE "Previous page (P)".
+             05 LINE 50 COL 44 VALUE "Go back (B)".
+             05 LINE 50 COL 10 VALUE "Choice:".
+             05 COM-SCRN-CHOICE-FIELD LINE 51 COL 18 PIC X USING
+               COM-SCRN-CHOICE.     
+             
        PROCEDURE DIVISION.
       ************************************
       *----LOGIN / SIGN-IN/UP SECTION----*
@@ -580,51 +695,65 @@
            END-IF.
 
        0111-SIGN-IN.
-           INITIALIZE WS-USERNAME.
+           SET COUNTER TO 0.
+           OPEN INPUT F-USERS-FILE.
+           MOVE 0 TO WS-FILE-IS-ENDED.
+           PERFORM UNTIL WS-FILE-IS-ENDED = 1
+               READ F-USERS-FILE
+                   NOT AT END
+                       ADD 1 TO COUNTER
+                       MOVE USERNAME TO WS-UNAME(COUNTER)
+                       MOVE USER-PASSWORD TO WS-PWORD(COUNTER)
+                   AT END 
+                       MOVE 1 TO WS-FILE-IS-ENDED
+               END-READ 
+           END-PERFORM.
+
+           CLOSE F-USERS-FILE.
+           INITIALIZE USER-NAME.
            INITIALIZE WS-PASSWORD.
            DISPLAY SIGN-IN-SCREEN.
-           ACCEPT WS-USERNAME-FIELD.
-           ACCEPT WS-PASSWORD-FIELD.
-           MOVE 0 TO WS-LOGIN-CORRECT.
 
-           CALL 'sign-in' USING WS-USERNAME, WS-PASSWORD, 
-           WS-LOGIN-CORRECT.
+           ACCEPT USER-NAME-FIELD.
+           ACCEPT PASSWORD-FIELD.
+           MOVE 0 TO WS-FOUND.
+           MOVE 1 TO WS-IDX.
+           ADD 1 TO COUNTER.
+           PERFORM UNTIL WS-IDX = COUNTER
+               IF USER-NAME = WS-UNAME(WS-IDX) AND 
+               WS-PASSWORD = WS-PWORD(WS-IDX) THEN
+                   MOVE 1 TO WS-FOUND 
+               END-IF
+               ADD 1 TO WS-IDX 
+           END-PERFORM.
 
-           IF WS-LOGIN-CORRECT = 1 THEN
+           IF WS-FOUND = 1 THEN
                PERFORM 0120-DISPLAY-MENU 
            ELSE 
-               MOVE "Incorrect Username or Password" TO WS-ERROR-MSG
-               PERFORM 0114-ERROR-PAGE  
+               PERFORM 0113-ERROR-PAGE 
            END-IF. 
 
        0112-SIGN-UP.
-           INITIALIZE WS-NEW-USER-NAME.
-           INITIALIZE WS-NEW-PASSWORD.
+           INITIALIZE NEW-USER-NAME.
+           INITIALIZE NEW-PASSWORD.
            INITIALIZE CREATE-CHOICE
            DISPLAY CREATE-AN-ACCOUNT-SCREEN.
-           ACCEPT WS-NEW-USER-NAME-FIELD.
-           ACCEPT WS-NEW-PASSWORD-FIELD.
+           ACCEPT NEW-USER-NAME-FIELD.
+           ACCEPT NEW-PASSWORD-FIELD.
            ACCEPT CREATE-CHOICE-FIELD.
-           
            IF CREATE-CHOICE = "q" OR "Q" THEN 
-               PERFORM 0110-DISPLAY-LOGIN   
-           ELSE IF CREATE-CHOICE = "s" THEN
-               PERFORM 0113-SIGN-UP-CHECK
+               PERFORM 0110-DISPLAY-LOGIN
+           ELSE IF CREATE-CHOICE = "s" THEN 
+               OPEN EXTEND F-USERS-FILE
+               MOVE NEW-USER-NAME TO USERNAME
+               MOVE NEW-PASSWORD TO USER-PASSWORD
+               WRITE USERS
+               END-WRITE               
            END-IF.
+           CLOSE F-USERS-FILE.
+           PERFORM 0111-SIGN-IN.
 
-       0113-SIGN-UP-CHECK.
-           CALL 'sign-up-check' USING WS-NEW-USER-NAME 
-               WS-UNAME-UNAVAILABLE.
-
-           IF WS-UNAME-UNAVAILABLE = 1 THEN
-               MOVE "Username Taken" TO WS-ERROR-MSG
-               PERFORM 0114-ERROR-PAGE
-           ELSE
-               CALL 'sign-up' USING WS-NEW-USER-NAME WS-NEW-PASSWORD
-               PERFORM 0111-SIGN-IN
-           END-IF.
-
-       0114-ERROR-PAGE.
+       0113-ERROR-PAGE.
            INITIALIZE ERROR-CHOICE.
            DISPLAY ERROR-SCREEN.
            ACCEPT ERROR-CHOICE-FIELD.
@@ -633,7 +762,7 @@
            ELSE IF ERROR-CHOICE = "c" OR "C" THEN 
                PERFORM 0112-SIGN-UP 
            ELSE 
-               PERFORM 0114-ERROR-PAGE 
+               PERFORM 0113-ERROR-PAGE 
            END-IF.
       **************************************************     
       *----DISPLAY MENU COMES AFTER SUCCESFUL LOGIN----*
@@ -729,6 +858,11 @@
            ELSE IF MSG-VIEW-CHOICE =   "q" OR "Q" THEN
               STOP RUN  
            END-IF.
+
+           IF MSG-VIEW-CHOICE = 'C' OR 'c'
+             PERFORM 0400-COMMENT-SCREEN
+           END-IF 
+           .
            
            PERFORM 0140-MESSAGE-VIEW. 
 
@@ -764,7 +898,7 @@
 
            IF MSG-WRITE-CHOICE-FIELD = "s" OR "S" THEN 
               MOVE WS-CONTENT-DISPLAY TO WS-CONTENT
-              MOVE WS-USERNAME TO WS-MSG-AUTHOR
+              MOVE USER-NAME TO WS-USERNAME
 
                 IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
                   CALL 'post-message' USING NEW-MESSAGE
@@ -881,7 +1015,7 @@
            DISPLAY WORD-GUESSING-WINNING-SCREEN.
            OPEN EXTEND F-HIGH-SCORES-FILE
                MOVE WS-HIGH-SCORE TO HIGH-SCORE
-               MOVE WS-USERNAME TO PLAYER-NAME
+               MOVE USER-NAME TO PLAYER-NAME
                WRITE PLAYER-SCORES 
                END-WRITE.
            CLOSE F-HIGH-SCORES-FILE.
@@ -943,6 +1077,44 @@
        0280-CURRENT-TIME.
            MOVE FUNCTION CURRENT-DATE TO WS-TIME.
 
+       0400-COMMENT-SCREEN.
+           PERFORM 0280-CURRENT-TIME.
+           CALL 'num-comments' USING NUM-COMMENTS.
+           CALL 'get-comment' USING COMMENT-TABLE MSG-SELECT.
+
+           IF COM-INDEX < 10
+             MOVE 1 TO COM-INDEX
+           END-IF
+           .
+           
+           INITIALIZE COM-SCRN-CHOICE.
+           DISPLAY COMMENT-SCREEN.
+           ACCEPT COM-SCRN-CHOICE-FIELD.
+       
+           IF COM-SCRN-CHOICE-FIELD = 'N' OR 'n' THEN
+             ADD 10 TO COM-INDEX
+             IF COM-COMMENT(COM-INDEX) = SPACES
+               SUBTRACT 10 FROM COM-INDEX
+               PERFORM 0400-COMMENT-SCREEN
+             ELSE
+               PERFORM 0400-COMMENT-SCREEN
+             END-IF
+           END-IF
+           .
+
+           IF COM-SCRN-CHOICE-FIELD = 'P' OR 'p' THEN
+             SUBTRACT 10 FROM COM-INDEX
+             PERFORM 0400-COMMENT-SCREEN
+           END-IF
+           .
+
+           IF COM-SCRN-CHOICE-FIELD = 'B' OR 'b' THEN
+             PERFORM 0140-MESSAGE-VIEW
+           END-IF
+           .
+
+           PERFORM 0400-COMMENT-SCREEN.
+           
       *******************
       *----PONG GAME----*
       *******************   
