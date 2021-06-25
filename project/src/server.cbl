@@ -195,10 +195,10 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
               *>    LOGIN FOOTER
               05 LINE 43 COL 1 VALUE "                                 
-      -    "                                                           "
+      -    "                                                          "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 44 COL 1 VALUE "     (L) Log-in     (C) Create an
-      -    "account     (Q) Quit                                "                                 
+      -    "account     (Q) Quit                                       "                                 
                 FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 45 COL 1 VALUE "                                 
       -    "                                                           "
@@ -270,7 +270,7 @@
       -    "      (c)FriendFace                                        "                                 
                 FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 45 COL 1 VALUE "                  Join FriendFace                               
-      -    " as a VIP member to unlock all its features!              "
+      -    " as a VIP member to unlock all its features!               "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
@@ -490,16 +490,16 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    BANK DETAILS FOOTER
              05 LINE 43 COL 1 VALUE "                                 
-      -    "                                                           "
+      -    "                                                         "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 44 COL 1 VALUE "     (S) Submit     (D) Discard  
-      -    "   (G) Go back     (Q) Quit                                "                                 
-                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE 45 COL 1 VALUE "                                 
-      -    "                                                           "
-               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE 46 COL 1 VALUE "                                 
-      -    "                                                           "
+      -    "   (G) Go back     (Q) Quit                              "                                 
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 45 COL 1 VALUE "                                 
+      -    "                                                         "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 46 COL 1 VALUE "                                 
+      -    "                                                         "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO. 
            *>    BANK DETAILS BODY
              05 LINE 6 COLUMN 10 VALUE "ADD A BANK CARD".
@@ -534,16 +534,16 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    CREDIT STORE FOOTER
              05 LINE 43 COL 1 VALUE "                                 
-      -    "                                                           "
+      -    "                                                         "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 44 COL 1 VALUE "     (1) 100 Credits     (2) 200 Cr  
-      -    "edits     (3) 300 Credits                                  "                                 
+      -    "edits     (3) 300 Credits                                "                                 
                 FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 45 COL 1 VALUE "     (G) Go back         (Q) Quit                                 
-      -    "                                                           "
+      -    "                                                         "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE 46 COL 1 VALUE "                                 
-      -    "                                                           "
+             05 LINE 46 COL 1 VALUE "                                 
+      -    "                                                         "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO. 
         *>    CREDIT STORE BODY
              05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
@@ -570,7 +570,7 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    MENU FOOTER
              05 LINE 43 COL 1 VALUE "                                 
-      -    "                                                           "
+      -    "                                                         "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 44 COL 1 VALUE "     (M) Messages     (F) Fun & g
       -    "ames     (C) Credit store     (A) Account details          "                                 
@@ -629,80 +629,64 @@
          *>    MSG MENU BODY
              05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
 
-             05 LINE 8 COL 1 VALUE "
-      -      "BULLETIN BOARD                                   "  
+             05 LINE 4 COL 38 VALUE "BULLETIN BOARD"                                   "  
+             FOREGROUND-COLOR IS 7, UNDERLINE.
+             05 LINE 7 COL 36 VALUE "SPONSORED MESSAGES"                                       "  
              FOREGROUND-COLOR IS 7.
-
-             05 LINE 10 COL 8 VALUE "                                   
+             05 LINE  9 COL 8 VALUE "                                   
       -    "                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 10 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 10 COL 10 VALUE "                                   
+      -    "                                        "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 10 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
              05 LINE 11 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 11 COL 10 PIC XXX     USING LIST-ID(ID-NUM)
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 11 COL 13 VALUE "  "
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 11 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM)
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 11 COL 64 VALUE "                    "
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 11 COL 10 VALUE "                                   
+      -    "                                        "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
              05 LINE 11 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
              05 LINE 12 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 12 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 1)
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 12 COL 13 VALUE "  "
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 12 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 1)
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 12 COL 64 VALUE "                    "
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 12 COL 10 VALUE "                                   
+      -    "                                        "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
              05 LINE 12 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
              05 LINE 13 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 13 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 2)
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 13 COL 13 VALUE "  "
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 13 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 2)
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 13 COL 64 VALUE "                    "
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 13 COL 10 VALUE "                                   
+      -    "                                        "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
              05 LINE 13 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
              05 LINE 14 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 14 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 3)
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 14 COL 13 VALUE "  "
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 14 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 3)
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 14 COL 64 VALUE "                    "
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 14 COL 10 VALUE "                                   
+      -    "                                        "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
              05 LINE 14 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 15 COL 8 VALUE "  "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 15 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 4)
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 15 COL 13 VALUE "  "
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 15 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 4)
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 15 COL 64 VALUE "                    "
-             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 15 COL 84 VALUE "  "
+
+             05 LINE 15 COL 8 VALUE "                                   
+      -    "                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 16 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 16 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 5)
+             05 LINE 16 COL 10 PIC XXX     USING LIST-ID(ID-NUM)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 16 COL 13 VALUE "  "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 16 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 5)
+             05 LINE 16 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 16 COL 64 VALUE "                    "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
@@ -710,11 +694,11 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 17 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 17 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 6)
+             05 LINE 17 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 1)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 17 COL 13 VALUE "  "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 17 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 6)
+             05 LINE 17 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 1)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 17 COL 64 VALUE "                    "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
@@ -722,11 +706,11 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 18 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 18 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 7)
+             05 LINE 18 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 2)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 18 COL 13 VALUE "  "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 18 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 7)
+             05 LINE 18 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 2)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 18 COL 64 VALUE "                    "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
@@ -734,11 +718,11 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 19 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 19 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 8)
+             05 LINE 19 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 3)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 19 COL 13 VALUE "  "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 19 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 8)
+             05 LINE 19 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 3)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 19 COL 64 VALUE "                    "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
@@ -746,22 +730,81 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 20 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 20 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 9)
+             05 LINE 20 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 4)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 20 COL 13 VALUE "  "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 20 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 9)
+             05 LINE 20 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 4)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 20 COL 64 VALUE "                    "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 20 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 21 COL 8 VALUE "                                   
+             05 LINE 21 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 21 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 5)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 21 COL 13 VALUE "  "
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 21 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 5)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 21 COL 64 VALUE "                    "
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 21 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 22 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 22 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 6)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 22 COL 13 VALUE "  "
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 22 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 6)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 22 COL 64 VALUE "                    "
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 22 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 23 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 23 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 7)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 23 COL 13 VALUE "  "
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 23 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 7)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 23 COL 64 VALUE "                    "
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 23 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 24 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 24 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 8)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 24 COL 13 VALUE "  "
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 24 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 8)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 24 COL 64 VALUE "                    "
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 24 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 25 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 25 COL 10 PIC XXX     USING LIST-ID(ID-NUM + 9)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 25 COL 13 VALUE "  "
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 25 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 9)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 25 COL 64 VALUE "                    "
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 25 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 26 COL 8 VALUE "                                   
       -    "                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
-             05 LINE 23 COL 1 VALUE "
-      -      "RECENT MESSAGES                                   " 
+             05 LINE 28 COL 38 VALUE "RECENT MESSAGES"                                   " 
              FOREGROUND-COLOR IS 7.
         *>    MSG MENU OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
@@ -843,7 +886,7 @@
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 44 COL 1 VALUE "     (P) Post message     (D) Dis
-      -    "card message     (S) Sponsore message     (Q) Quit                                "                                 
+      -    "card message     (S) Sponsor message     (Q) Quit          "                                 
                 FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 45 COL 1 VALUE "                                 
       -    "                                                           "
@@ -1293,14 +1336,16 @@
 
        0109-ERROR-PAGE.
            PERFORM 0200-TIME-AND-DATE.
-           PERFORM 0250-CREDIT-TOTAL.
+           PERFORM 0132-CREDIT-TOTAL.
            INITIALIZE ERROR-CHOICE.
            DISPLAY ERROR-SCREEN.
            ACCEPT ERROR-CHOICE-FIELD.
            IF ERROR-CHOICE = "l" OR "L" THEN 
                PERFORM 0101-SIGN-IN
            ELSE IF ERROR-CHOICE = "c" OR "C" THEN 
-               PERFORM 0102-SIGN-UP 
+               PERFORM 0102-SIGN-UP
+           ELSE IF ERROR-CHOICE = "q" OR "Q" THEN 
+               STOP RUN
            ELSE 
                PERFORM 0109-ERROR-PAGE 
            END-IF.
@@ -1309,7 +1354,7 @@
       ******************************************************************
        0110-DISPLAY-MENU.
            PERFORM 0200-TIME-AND-DATE.
-           PERFORM 0250-CREDIT-TOTAL.
+           PERFORM 0132-CREDIT-TOTAL.
            INITIALIZE MENU-CHOICE.
            DISPLAY MENU-SCREEN.
            ACCEPT MENU-CHOICE-FIELD.
@@ -1319,20 +1364,20 @@
            ELSE IF MENU-CHOICE =   "l" or "L" THEN
              PERFORM 0100-DISPLAY-LOGIN
            ELSE IF MENU-CHOICE =   "m" or "M" THEN
-             PERFORM 0130-MSG-MENU
+             PERFORM 0140-MESSAGE-MENU
            ELSE IF MENU-CHOICE =   "f" or "F" THEN
-             PERFORM 0160-GAMES-MENU
+             PERFORM 0400-GAMES-MENU
            ELSE IF MENU-CHOICE =   "a" or "A" THEN
              PERFORM 0111-USER-ACCOUNT-MENU
            ELSE IF MENU-CHOICE =   "c" or "C" THEN
-               PERFORM 0128-CREDIT-STORE 
+               PERFORM 0130-CREDIT-STORE 
            END-IF.
 
            PERFORM 0110-DISPLAY-MENU.
 
        0111-USER-ACCOUNT-MENU.
            PERFORM 0200-TIME-AND-DATE.
-           PERFORM 0250-CREDIT-TOTAL.
+           PERFORM 0132-CREDIT-TOTAL.
            INITIALIZE ACCOUNT-CHOICE.
            DISPLAY USER-ACCOUNT-SCREEN.
            ACCEPT ACCOUNT-CHOICE-FIELD.
@@ -1342,11 +1387,11 @@
            ELSE IF ACCOUNT-CHOICE = "b" or "B" THEN
                PERFORM 0120-BANK-DETAILS  
            ELSE IF ACCOUNT-CHOICE = "g" or "G" THEN
-               PERFORM 0128-CREDIT-STORE  
+               PERFORM 0130-CREDIT-STORE  
            ELSE IF ACCOUNT-CHOICE = "c" or "C" THEN
-               PERFORM 0128-CREDIT-STORE
+               PERFORM 0130-CREDIT-STORE
            ELSE IF ACCOUNT-CHOICE = "v" or "V" THEN
-               PERFORM 0320-VIP-ACCOUNT    
+               PERFORM 0135-VIP-ACCOUNT    
            END-IF.
 
            PERFORM 0111-USER-ACCOUNT-MENU.
@@ -1356,7 +1401,7 @@
       ******************************************************************
        0120-BANK-DETAILS.    
            PERFORM 0200-TIME-AND-DATE.
-           PERFORM 0250-CREDIT-TOTAL.
+           PERFORM 0132-CREDIT-TOTAL.
            INITIALIZE CARD-NO.
            INITIALIZE CARD-EXPIRY.
            INITIALIZE CARD-CVV.
@@ -1389,13 +1434,13 @@
            PERFORM 0111-USER-ACCOUNT-MENU.
 
       ******************************************************************   
-      *****************----CREDIT STORE SECTION----*********************
+      **********************----CREDITS SECTION----*********************
       ******************************************************************
-       0128-CREDIT-STORE.
+       0130-CREDIT-STORE.
            MOVE 0 TO WS-UPDATE-CREDITS.
            
            PERFORM 0200-TIME-AND-DATE.
-           PERFORM 0250-CREDIT-TOTAL.
+           PERFORM 0132-CREDIT-TOTAL.
            
            INITIALIZE CREDIT-STORE-CHOICE.
            DISPLAY CREDIT-STORE-SCREEN.
@@ -1405,31 +1450,65 @@
            IF CREDIT-STORE-CHOICE = "1" THEN
                MOVE 100 TO WS-UPDATE-CREDITS
                MOVE 10 TO WS-STORE-CHARGE
-               PERFORM 0129-ADD-CREDITS
+               PERFORM 0131-ADD-CREDITS
+       
            ELSE IF CREDIT-STORE-CHOICE = "2" THEN
                MOVE 200 TO WS-UPDATE-CREDITS
                MOVE 20 TO WS-STORE-CHARGE
-               PERFORM 0129-ADD-CREDITS
+               PERFORM 0131-ADD-CREDITS
+       
            ELSE IF CREDIT-STORE-CHOICE = "3" THEN
                MOVE 300 TO WS-UPDATE-CREDITS
                MOVE 30 TO WS-STORE-CHARGE 
-               PERFORM 0129-ADD-CREDITS
+               PERFORM 0131-ADD-CREDITS
+
+           ELSE IF CREDIT-STORE-CHOICE = "3" THEN
+               MOVE 300 TO WS-UPDATE-CREDITS
+               MOVE 30 TO WS-STORE-CHARGE 
+               PERFORM 0131-ADD-CREDITS
+       
            ELSE IF CREDIT-STORE-CHOICE = "g" OR "G" THEN
-              PERFORM 0128-CREDIT-STORE  
+              PERFORM 0110-DISPLAY-MENU  
            ELSE IF CREDIT-STORE-CHOICE = "q" OR "Q" THEN
               STOP RUN  
            END-IF.
        
-       0129-ADD-CREDITS.
+       0131-ADD-CREDITS.
            CALL "add-credits" USING WS-USERNAME, WS-UPDATE-CREDITS.
            
            PERFORM 0300-TRANSACTIONS.
 
+       0132-CREDIT-TOTAL.
+           CALL 'find-credits' USING WS-USERNAME, WS-USERCREDITS.
+
+       0133-CHECK-CREDIT-BALANCE.
+           MOVE "N" TO WS-BALANCE-AVAILABLE.
+           PERFORM 0132-CREDIT-TOTAL.
+
+           IF WS-UPDATE-CREDITS <= WS-USERCREDITS
+               MOVE "Y" TO WS-BALANCE-AVAILABLE
+           END-IF.
+
+       0135-VIP-ACCOUNT.
+           MOVE 0 TO WS-UPDATE-CREDITS.
+           MOVE 500 TO WS-UPDATE-CREDITS.
+
+           PERFORM 0133-CHECK-CREDIT-BALANCE.
+           
+           IF WS-BALANCE-AVAILABLE = "Y" THEN
+               CALL "subtract-credits" USING WS-USERNAME, 
+               WS-UPDATE-CREDITS
+               CALL "account-status" USING WS-USERNAME
+           ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
+               MOVE "Insufficent Credits" TO WS-ERROR-MSG
+               PERFORM 0109-ERROR-PAGE
+           END-IF. 
+
       ******************************************************************
-      *********-----MESSAGE SECTION FOR READ/WRITE/COMMENT----**********
+      *******************-----MESSAGE SECTION----***********************
       ******************************************************************
-       0130-MSG-MENU.
-           PERFORM 0250-CREDIT-TOTAL.
+       0140-MESSAGE-MENU.
+           PERFORM 0132-CREDIT-TOTAL.
            PERFORM 0200-TIME-AND-DATE.
            CALL "number-of-file-lines" USING NUM-FILE-LINES.
            CALL "get-list-page-alt" USING NUM-FILE-LINES WS-LIST-TABLE.
@@ -1440,7 +1519,7 @@
            MOVE MSG-MENU-CHOICE TO MSG-SELECT.
          
            IF MSG-SELECT > 0 THEN
-             PERFORM 0140-MESSAGE-VIEW
+             PERFORM 0141-MESSAGE-VIEW
            END-IF. 
            IF MSG-MENU-CHOICE =        "g" OR "G" THEN
                PERFORM 0110-DISPLAY-MENU
@@ -1448,9 +1527,9 @@
              COMPUTE ID-NUM = ID-NUM + 10
                IF ID-NUM IS GREATER THAN OR EQUAL TO NUM-FILE-LINES
                  COMPUTE ID-NUM = ID-NUM - 10
-                 PERFORM 0130-MSG-MENU
+                 PERFORM 0140-MESSAGE-MENU
                ELSE
-                   PERFORM 0130-MSG-MENU
+                   PERFORM 0140-MESSAGE-MENU
                END-IF               
                
            ELSE IF MSG-MENU-CHOICE =       "p" OR "P" THEN
@@ -1458,22 +1537,22 @@
                
                IF ID-NUM IS LESS THAN 10
                    MOVE 1 TO ID-NUM
-                    PERFORM 0130-MSG-MENU
+                    PERFORM 0140-MESSAGE-MENU
                ELSE
-                    PERFORM 0130-MSG-MENU
+                    PERFORM 0140-MESSAGE-MENU
                END-IF
            ELSE IF MSG-MENU-CHOICE =       "w" OR "W"
-             PERFORM 0150-MESSAGE-WRITE
+             PERFORM 0142-MESSAGE-WRITE
               
            ELSE IF MSG-MENU-CHOICE =       "q" OR "Q" THEN
               STOP RUN  
            END-IF.
 
-           PERFORM 0130-MSG-MENU.
+           PERFORM 0140-MESSAGE-MENU.
 
-       0140-MESSAGE-VIEW. 
+       0141-MESSAGE-VIEW. 
            PERFORM 0200-TIME-AND-DATE.  
-           PERFORM 0250-CREDIT-TOTAL.
+           PERFORM 0132-CREDIT-TOTAL.
            CALL "number-of-file-lines" USING NUM-FILE-LINES.
            CALL "get-list-page-alt" USING NUM-FILE-LINES WS-LIST-TABLE.
            *> CALL "id-sort" USING WS-LIST-TABLE. <*        
@@ -1486,33 +1565,33 @@
              COMPUTE MSG-SELECT = MSG-SELECT + 1
                IF MSG-SELECT IS GREATER THAN OR EQUAL TO NUM-FILE-LINES
                  COMPUTE MSG-SELECT = MSG-SELECT - 1
-                 PERFORM 0140-MESSAGE-VIEW
+                 PERFORM 0141-MESSAGE-VIEW
                ELSE
-                   PERFORM 0140-MESSAGE-VIEW
+                   PERFORM 0141-MESSAGE-VIEW
                END-IF                
            ELSE IF MSG-VIEW-CHOICE =   "p" OR "P" THEN
              COMPUTE MSG-SELECT = MSG-SELECT - 1
                IF MSG-SELECT IS LESS THAN 1
                  COMPUTE MSG-SELECT = MSG-SELECT + 1
                ELSE
-                   PERFORM 0140-MESSAGE-VIEW
+                   PERFORM 0141-MESSAGE-VIEW
                END-IF 
            ELSE IF MSG-VIEW-CHOICE =   "g" OR "G" THEN
-               PERFORM 0130-MSG-MENU
+               PERFORM 0140-MESSAGE-MENU
            ELSE IF MSG-VIEW-CHOICE =   "q" OR "Q" THEN
               STOP RUN  
            END-IF.
 
            IF MSG-VIEW-CHOICE = "c" OR "C"
-             PERFORM 0151-COMMENT-SCREEN
+             PERFORM 0143-COMMENT-SCREEN
            END-IF 
            .
            
-           PERFORM 0140-MESSAGE-VIEW. 
+           PERFORM 0141-MESSAGE-VIEW. 
 
-       0150-MESSAGE-WRITE.
+       0142-MESSAGE-WRITE.
            PERFORM 0200-TIME-AND-DATE.
-           PERFORM 0250-CREDIT-TOTAL.
+           PERFORM 0132-CREDIT-TOTAL.
            INITIALIZE WS-TITLE.
            INITIALIZE LS-PART-1.
            INITIALIZE LS-PART-2.
@@ -1538,7 +1617,7 @@
            END-PERFORM.
 
            IF MSG-WRITE-CHOICE-FIELD = "d" OR "D" THEN
-               PERFORM 0130-MSG-MENU
+               PERFORM 0140-MESSAGE-MENU
            END-IF.
 
            IF MSG-WRITE-CHOICE-FIELD = "p" OR "P" THEN 
@@ -1547,7 +1626,7 @@
 
                 IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
                   CALL "post-message" USING NEW-MESSAGE
-                  PERFORM 0130-MSG-MENU
+                  PERFORM 0140-MESSAGE-MENU
                 END-IF    
            END-IF.
 
@@ -1557,23 +1636,21 @@
 
                 IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
                   CALL "post-message" USING NEW-MESSAGE
-                  PERFORM 0130-MSG-MENU
+                  PERFORM 0140-MESSAGE-MENU
                 END-IF    
            END-IF.
 
-
            PERFORM 0110-DISPLAY-MENU.
 
-       0151-COMMENT-SCREEN.
-           PERFORM 0280-CURRENT-TIME.
-           PERFORM 0250-CREDIT-TOTAL.
+       0143-COMMENT-SCREEN.
+           PERFORM 0201-CURRENT-DATE.
+           PERFORM 0132-CREDIT-TOTAL.
            CALL "num-comments" USING NUM-COMMENTS.
            CALL "get-comment" USING COMMENT-TABLE MSG-SELECT.
 
            IF COM-INDEX < 5
              MOVE 1 TO COM-INDEX
-           END-IF
-           .
+           END-IF.
            
            INITIALIZE COM-SCRN-CHOICE.
            DISPLAY COMMENT-SCREEN.
@@ -1583,45 +1660,24 @@
              ADD 5 TO COM-INDEX
              IF COM-COMMENT(COM-INDEX) = SPACES
                SUBTRACT 5 FROM COM-INDEX
-               PERFORM 0151-COMMENT-SCREEN
+               PERFORM 0143-COMMENT-SCREEN
              ELSE
-               PERFORM 0151-COMMENT-SCREEN
+               PERFORM 0143-COMMENT-SCREEN
              END-IF
-           END-IF
-           .
+           END-IF.
 
            IF COM-SCRN-CHOICE-FIELD = "p" OR "P" THEN
              SUBTRACT 5 FROM COM-INDEX
-             PERFORM 0151-COMMENT-SCREEN
-           END-IF
-           .
-
-           IF COM-SCRN-CHOICE-FIELD = "g" OR "G" THEN
-             PERFORM 0140-MESSAGE-VIEW
-           ELSE IF COM-SCRN-CHOICE-FIELD = "q" OR "Q" THEN
-             STOP RUN
-           END-IF
-           .
-
-           PERFORM 0151-COMMENT-SCREEN.
-      ******************************************************************
-      ***************-----FUN AND GAMES SECTION----*********************
-      ******************************************************************
-       0160-GAMES-MENU.
-           PERFORM 0200-TIME-AND-DATE.
-           PERFORM 0250-CREDIT-TOTAL.
-           INITIALIZE GAMES-MENU-CHOICE.
-           DISPLAY GAMES-MENU-SCREEN.
-           ACCEPT GAMES-MENU-CHOICE-FIELD
-           IF GAMES-MENU-CHOICE =      "q" or "Q" THEN
-               STOP RUN
-           ELSE IF GAMES-MENU-CHOICE = "g" or "G" THEN
-               PERFORM 0110-DISPLAY-MENU   
-           ELSE IF GAMES-MENU-CHOICE = "w" or "W" THEN
-               PERFORM 0210-DISPLAY-GUESSING-GAME 
+             PERFORM 0143-COMMENT-SCREEN
            END-IF.
 
-           PERFORM 0160-GAMES-MENU.
+           IF COM-SCRN-CHOICE-FIELD = "g" OR "G" THEN
+             PERFORM 0141-MESSAGE-VIEW
+           ELSE IF COM-SCRN-CHOICE-FIELD = "q" OR "Q" THEN
+             STOP RUN
+           END-IF.
+
+           PERFORM 0143-COMMENT-SCREEN.
       ******************************************************************
       ******************-----TIME/DATE SECTION----**********************
       ******************************************************************
@@ -1634,12 +1690,43 @@
            MOVE WS-DATETIME(11:2) TO WS-FORMATTED-MINS.
            MOVE WS-DATETIME(13:2) TO WS-FORMATTED-SEC.
            MOVE WS-DATETIME(15:2) TO WS-FORMATTED-MS.
+
+       0201-CURRENT-DATE.
+           MOVE FUNCTION CURRENT-DATE TO WS-TIME.
+      ******************************************************************
+      ******************----TRANSACTION LOG SECTION----*****************
+      ******************************************************************
+       0300-TRANSACTIONS.
+           PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0132-CREDIT-TOTAL.
+           CALL 'transactions' USING WS-FORMATTED-DT, WS-USERNAME,
+           WS-STORE-CHARGE.
+           PERFORM 0111-USER-ACCOUNT-MENU.
+      ******************************************************************
+      ***************-----FUN AND GAMES SECTION----*********************
+      ******************************************************************
+       0400-GAMES-MENU.
+           PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0132-CREDIT-TOTAL.
+           INITIALIZE GAMES-MENU-CHOICE.
+           DISPLAY GAMES-MENU-SCREEN.
+           ACCEPT GAMES-MENU-CHOICE-FIELD
+           IF GAMES-MENU-CHOICE =      "q" or "Q" THEN
+               STOP RUN
+           ELSE IF GAMES-MENU-CHOICE = "g" or "G" THEN
+               PERFORM 0110-DISPLAY-MENU   
+           ELSE IF GAMES-MENU-CHOICE = "w" or "W" THEN
+               PERFORM 0410-DISPLAY-GUESSING-GAME 
+           END-IF.
+
+           PERFORM 0400-GAMES-MENU.
+      
       ******************************************************************
       ****************----WORD GUESSING GAME SECTION----****************
       ******************************************************************
-       0210-DISPLAY-GUESSING-GAME.
+       0410-DISPLAY-GUESSING-GAME.
            PERFORM 0200-TIME-AND-DATE.
-           PERFORM 0250-CREDIT-TOTAL.
+           PERFORM 0132-CREDIT-TOTAL.
            MOVE 15 TO WS-GUESSES-LEFT.
            SET WORD-IDX TO 0.
            OPEN INPUT F-WORD-FILE.
@@ -1666,21 +1753,21 @@
              END-IF
              ADD 1 TO COUNTER
            END-PERFORM.
-           PERFORM 0220-IN-GAME-SCREEN.
+           PERFORM 0411-IN_GAME-SCREEN.
           
-       0220-IN-GAME-SCREEN.
+       0411-IN_GAME-SCREEN.
            PERFORM 0200-TIME-AND-DATE.
-           PERFORM 0250-CREDIT-TOTAL.
+           PERFORM 0132-CREDIT-TOTAL.
            INITIALIZE WS-GUESS-CHOICE.
            DISPLAY IN-GAME-SCREEN.
            ACCEPT WS-GUESS-CHOICE-FIELD.
            IF WS-GUESS-CHOICE = "!" THEN 
                PERFORM 0110-DISPLAY-MENU
            ELSE
-               PERFORM 0230-CHECK-GUESS
+               PERFORM 0412-CHECK-GUESS
            END-IF.
            
-       0230-CHECK-GUESS.
+       0412-CHECK-GUESS.
            MOVE 1 TO COUNTER.
            PERFORM UNTIL COUNTER = 20
                  IF WS-GUESS-CHOICE = WS-ANSWERWORD(COUNTER:1) THEN
@@ -1699,17 +1786,17 @@
            END-PERFORM.
              IF WS-LETTERS-LEFT = 0
               THEN 
-              PERFORM 0240-WINNING-SCREEN
+              PERFORM 0413-WINNING-SCREEN
              ELSE IF WS-GUESSES-LEFT = 0
               THEN 
-              PERFORM 0250-LOSING-SCREEN
+              PERFORM 0414-LOSING-SCREEN
              ELSE
-              PERFORM 0220-IN-GAME-SCREEN
+              PERFORM 0411-IN_GAME-SCREEN
              END-IF.
            
-       0240-WINNING-SCREEN.
+       0413-WINNING-SCREEN.
            PERFORM 0200-TIME-AND-DATE.
-           PERFORM 0250-CREDIT-TOTAL.
+           PERFORM 0132-CREDIT-TOTAL.
            INITIALIZE WS-GUESSING-WINNING-CHOICE.
            COMPUTE WS-HIGH-SCORE = WS-GUESSES-LEFT * WS-GUESSES-LEFT + 5
            .
@@ -1722,32 +1809,47 @@
            CLOSE F-HIGH-SCORES-FILE.
            ACCEPT WS-GUESSING-WINNING-CHOICE-FIELD.
            IF WS-GUESSING-WINNING-CHOICE = "p" OR "P"
-               THEN PERFORM 0210-DISPLAY-GUESSING-GAME
+               THEN PERFORM 0410-DISPLAY-GUESSING-GAME
            ELSE IF WS-GUESSING-WINNING-CHOICE = "h" OR "H"
-             THEN PERFORM 0260-HIGH-SCORE-TABLE
+             THEN PERFORM 0416-HIGH-SCORE-TABLE
            ELSE IF WS-GUESSING-WINNING-CHOICE = "!" OR "q" OR "Q"
              THEN PERFORM 0110-DISPLAY-MENU
            ELSE
-             PERFORM 0240-WINNING-SCREEN
+             PERFORM 0413-WINNING-SCREEN
            END-IF.
 
-       0250-LOSING-SCREEN.
-           PERFORM 0280-CURRENT-TIME.
-           PERFORM 0250-CREDIT-TOTAL.
+       0414-LOSING-SCREEN.
+           PERFORM 0201-CURRENT-DATE.
+           PERFORM 0132-CREDIT-TOTAL.
            INITIALIZE WS-GUESSING-LOSING-CHOICE.
            DISPLAY WORD-GUESSING-LOSE-SCREEN.
            ACCEPT WS-GUESSING-LOSING-CHOICE-FIELD.
            IF WS-GUESSING-LOSING-CHOICE = "p" OR "P"
-               THEN PERFORM 0210-DISPLAY-GUESSING-GAME
+               THEN PERFORM 0410-DISPLAY-GUESSING-GAME
            ELSE IF WS-GUESSING-LOSING-CHOICE = "h" OR "H"
-             THEN PERFORM 0260-HIGH-SCORE-TABLE
+             THEN PERFORM 0416-HIGH-SCORE-TABLE
            ELSE IF WS-GUESSING-LOSING-CHOICE = "!" OR "q" OR "Q"
              THEN PERFORM 0110-DISPLAY-MENU
            ELSE
-             PERFORM 0250-LOSING-SCREEN
+             PERFORM 0414-LOSING-SCREEN
+           END-IF.
+           
+       0415-HIGH-SCORE-SCREEN.
+           PERFORM 0201-CURRENT-DATE.
+           PERFORM 0132-CREDIT-TOTAL.
+           INITIALIZE WS-HIGH-SCORE-CHOICE.
+           SORT WS-TABLE-HIGH-SCORE ON DESCENDING WS-SCORE.
+           DISPLAY HIGH-SCORE-SCREEN.
+           ACCEPT WS-HIGH-SCORE-CHOICE-FIELD.
+           IF WS-HIGH-SCORE-CHOICE = "g" OR "G"
+             PERFORM 0110-DISPLAY-MENU
+           ELSE IF WS-HIGH-SCORE-CHOICE = "q" OR "Q"
+             STOP RUN
+           ELSE 
+               PERFORM 0415-HIGH-SCORE-SCREEN
            END-IF.
 
-       0260-HIGH-SCORE-TABLE.
+       0416-HIGH-SCORE-TABLE.
            SET COUNTER TO 0.
            OPEN INPUT F-HIGH-SCORES-FILE.
            MOVE 0 TO WS-FILE-IS-ENDED.
@@ -1762,65 +1864,12 @@
                END-READ 
            END-PERFORM.
            CLOSE F-HIGH-SCORES-FILE.
-           PERFORM 0270-HIGH-SCORE-SCREEN.
-           
-       0270-HIGH-SCORE-SCREEN.
-           PERFORM 0280-CURRENT-TIME.
-           PERFORM 0250-CREDIT-TOTAL.
-           INITIALIZE WS-HIGH-SCORE-CHOICE.
-           SORT WS-TABLE-HIGH-SCORE ON DESCENDING WS-SCORE.
-           DISPLAY HIGH-SCORE-SCREEN.
-           ACCEPT WS-HIGH-SCORE-CHOICE-FIELD.
-           IF WS-HIGH-SCORE-CHOICE = "g" OR "G"
-             PERFORM 0110-DISPLAY-MENU
-           ELSE IF WS-HIGH-SCORE-CHOICE = "q" OR "Q"
-             STOP RUN
-           ELSE 
-               PERFORM 0270-HIGH-SCORE-SCREEN
-           END-IF.
+           PERFORM 0415-HIGH-SCORE-SCREEN.
+      
 
-       0280-CURRENT-TIME.
-           MOVE FUNCTION CURRENT-DATE TO WS-TIME.
-      ******************************************************************
-      **************-----COMMENTS ON MESSAGES SECTION-----**************
-      ******************************************************************
-       
-       0250-CREDIT-TOTAL.
-           CALL 'find-credits' USING WS-USERNAME, WS-USERCREDITS.
+          
 
-      ******************************************************************
-      ******************----TRANSACTION LOG SECTION----*****************
-      ******************************************************************
-       0300-TRANSACTIONS.
-           PERFORM 0200-TIME-AND-DATE.
-           PERFORM 0250-CREDIT-TOTAL.
-           CALL 'transactions' USING WS-FORMATTED-DT, WS-USERNAME,
-           WS-STORE-CHARGE.
-           PERFORM 0111-USER-ACCOUNT-MENU.
-
-       0320-VIP-ACCOUNT.
-           MOVE 0 TO WS-UPDATE-CREDITS.
-           MOVE 500 TO WS-UPDATE-CREDITS.
-
-           PERFORM 0330-CHECK-CREDIT-BALANCE.
-           
-           IF WS-BALANCE-AVAILABLE = "Y" THEN
-               CALL "subtract-credits" USING WS-USERNAME, 
-               WS-UPDATE-CREDITS
-               CALL "account-status" USING WS-USERNAME
-           ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
-               MOVE "Insufficent Credits" TO WS-ERROR-MSG
-               PERFORM 0109-ERROR-PAGE
-           END-IF.    
-
-
-       0330-CHECK-CREDIT-BALANCE.
-           MOVE "N" TO WS-BALANCE-AVAILABLE.
-           PERFORM 0250-CREDIT-TOTAL.
-
-           IF WS-UPDATE-CREDITS <= WS-USERCREDITS
-               MOVE "Y" TO WS-BALANCE-AVAILABLE
-           END-IF.    
+         
 
            
        
