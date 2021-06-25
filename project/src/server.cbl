@@ -51,9 +51,9 @@
            01 WS-CARD-NO PIC 9(16).
            01 WS-CARD-EXPIRY PIC 9(4).
            01 WS-CARD-CVV PIC 9(3).
-      ********************************************
-      *----Variables relating to credit store----*
-      ********************************************
+      ******************************************************************
+      **************----VARIABLES RELATING TO CREDIT STORE----**********
+      ******************************************************************
            01 CREDIT-STORE-CHOICE PIC X.
            01 WS-UPDATE-CREDITS PIC 9(3). 
            01 WS-STORE-CHARGE PIC 9(2).
@@ -1221,22 +1221,22 @@
       ******************************************************************
       *-----**************LOGIN / SIGN-IN/UP SECTION-----***************
       ******************************************************************
-        0110-DISPLAY-LOGIN.
+       0100-DISPLAY-LOGIN.
            PERFORM 0200-TIME-AND-DATE.
            INITIALIZE LOGIN-CHOICE. 
            DISPLAY LOGIN-SCREEN.
            ACCEPT LOGIN-CHOICE-FIELD.
            IF LOGIN-CHOICE = "l" OR "L" THEN 
-               PERFORM 0111-SIGN-IN 
+               PERFORM 0101-SIGN-IN 
            ELSE IF LOGIN-CHOICE = "c" OR "C" THEN 
-               PERFORM 0112-SIGN-UP
+               PERFORM 0102-SIGN-UP
            ELSE IF LOGIN-CHOICE = "q" OR "Q" THEN 
                STOP RUN
            ELSE 
                PERFORM 0120-DISPLAY-MENU
            END-IF.
 
-       0111-SIGN-IN.
+       0101-SIGN-IN.
            PERFORM 0200-TIME-AND-DATE.
            INITIALIZE WS-USERNAME.
            INITIALIZE WS-PASSWORD.
@@ -1251,10 +1251,10 @@
                PERFORM 0120-DISPLAY-MENU 
            ELSE 
                MOVE "Incorrect Username or Password" TO WS-ERROR-MSG
-                   PERFORM 0114-ERROR-PAGE 
+                   PERFORM 0109-ERROR-PAGE 
            END-IF. 
 
-       0112-SIGN-UP.
+       0102-SIGN-UP.
            PERFORM 0200-TIME-AND-DATE.
            INITIALIZE WS-NEW-USER-NAME.
            INITIALIZE WS-NEW-PASSWORD.
@@ -1265,19 +1265,19 @@
            ACCEPT CREATE-CHOICE-FIELD.
            
            IF CREATE-CHOICE = "q" OR "Q" THEN 
-               PERFORM 0110-DISPLAY-LOGIN   
+               PERFORM 0100-DISPLAY-LOGIN   
            ELSE IF CREATE-CHOICE = "s" OR "S" THEN
-               PERFORM 0113-SIGN-UP-CHECK
+               PERFORM 0103-SIGN-UP-CHECK
            END-IF.       
 
-       0113-SIGN-UP-CHECK.
+       0103-SIGN-UP-CHECK.
            
            IF WS-NEW-USER-NAME = " "
                MOVE "Invalid Username Try Another" TO WS-ERROR-MSG
-               PERFORM 0114-ERROR-PAGE
+               PERFORM 0109-ERROR-PAGE
            ELSE IF WS-NEW-PASSWORD = " "
                MOVE "Invalid Password Try Another" TO WS-ERROR-MSG
-               PERFORM 0114-ERROR-PAGE
+               PERFORM 0109-ERROR-PAGE
            END-IF.    
            
            CALL "sign-up-check" USING WS-NEW-USER-NAME 
@@ -1285,24 +1285,24 @@
 
            IF WS-UNAME-UNAVAILABLE = 1 THEN
                MOVE "Username Taken" TO WS-ERROR-MSG
-               PERFORM 0114-ERROR-PAGE
+               PERFORM 0109-ERROR-PAGE
            ELSE
                CALL "sign-up" USING WS-NEW-USER-NAME WS-NEW-PASSWORD
-               PERFORM 0111-SIGN-IN
+               PERFORM 0101-SIGN-IN
            END-IF.
 
-       0114-ERROR-PAGE.
+       0109-ERROR-PAGE.
            PERFORM 0200-TIME-AND-DATE.
            PERFORM 0250-CREDIT-TOTAL.
            INITIALIZE ERROR-CHOICE.
            DISPLAY ERROR-SCREEN.
            ACCEPT ERROR-CHOICE-FIELD.
            IF ERROR-CHOICE = "l" OR "L" THEN 
-               PERFORM 0111-SIGN-IN
+               PERFORM 0101-SIGN-IN
            ELSE IF ERROR-CHOICE = "c" OR "C" THEN 
-               PERFORM 0112-SIGN-UP 
+               PERFORM 0102-SIGN-UP 
            ELSE 
-               PERFORM 0114-ERROR-PAGE 
+               PERFORM 0109-ERROR-PAGE 
            END-IF.
       ****************************************************************** 
       ********-----DISPLAY MENU COMES AFTER SUCCESFUL LOGIN----*********
@@ -1317,7 +1317,7 @@
            IF MENU-CHOICE =        "q" or "Q" THEN
              STOP RUN
            ELSE IF MENU-CHOICE =   "l" or "L" THEN
-             PERFORM 0110-DISPLAY-LOGIN
+             PERFORM 0100-DISPLAY-LOGIN
            ELSE IF MENU-CHOICE =   "m" or "M" THEN
              PERFORM 0130-MSG-MENU
            ELSE IF MENU-CHOICE =   "f" or "F" THEN
@@ -1800,7 +1800,7 @@
                CALL "account-status" USING WS-USERNAME
            ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
                MOVE "Insufficent Credits" TO WS-ERROR-MSG
-               PERFORM 0114-ERROR-PAGE
+               PERFORM 0109-ERROR-PAGE
            END-IF.    
 
 
