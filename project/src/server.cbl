@@ -56,7 +56,8 @@
       ********************************************
            01 CREDIT-STORE-CHOICE PIC X.
            01 WS-UPDATE-CREDITS PIC 9(3). 
-           01 WS-STORE-CHARGE PIC 9(2).      
+           01 WS-STORE-CHARGE PIC 9(2).
+           01 WS-BALANCE-AVAILABLE PIC X.      
       ******************************************************************
       ***********-----VARIABLES RELATED TO GUESSING GAME-----***********
       ******************************************************************
@@ -1790,7 +1791,26 @@
        0320-VIP-ACCOUNT.
            MOVE 0 TO WS-UPDATE-CREDITS.
            MOVE 500 TO WS-UPDATE-CREDITS.
-           CALL "subtract-credits" USING WS-USERNAME, WS-UPDATE-CREDITS.
-           CALL "account-status" USING WS-USERNAME.
+
+           PERFORM 0330-CHECK-CREDIT-BALANCE.
+           
+           IF WS-BALANCE-AVAILABLE = "Y" THEN
+               CALL "subtract-credits" USING WS-USERNAME, 
+               WS-UPDATE-CREDITS
+               CALL "account-status" USING WS-USERNAME
+           ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
+               MOVE "Insufficent Credits" TO WS-ERROR-MSG
+               PERFORM 0114-ERROR-PAGE
+           END-IF.    
+
+
+       0330-CHECK-CREDIT-BALANCE.
+           MOVE "N" TO WS-BALANCE-AVAILABLE.
+           PERFORM 0250-CREDIT-TOTAL.
+
+           IF WS-UPDATE-CREDITS <= WS-USERCREDITS
+               MOVE "Y" TO WS-BALANCE-AVAILABLE
+           END-IF.    
+
            
        
