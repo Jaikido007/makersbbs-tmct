@@ -1,9 +1,9 @@
        IDENTIFICATION DIVISION.
-       PROGRAM-ID. bank-details.
+       PROGRAM-ID. add-credits.
        ENVIRONMENT DIVISION.
        INPUT-OUTPUT SECTION.
        FILE-CONTROL.
-           SELECT F-USERS-FILE ASSIGN TO "users.dat"
+           SELECT F-USERS-FILE ASSIGN TO 'users.dat'
              ORGANIZATION IS SEQUENTIAL.
        
        DATA DIVISION.
@@ -21,12 +21,13 @@
 
        WORKING-STORAGE SECTION.
            01 FINISHED PIC X VALUE "N".
-           01 CUST-EXISTS PIC X.
+           01 WS-USERS-CREDITS PIC 9(3).
 
            01 WS-USERS.
               05 WS-USERNAME PIC X(16).
               05 WS-USER-PASSWORD PIC X(20).
               05 WS-USER-CREDITS PIC 9(3).
+              05 WS-USER-LEVEL PIC X(3).
               05 WS-CARD-NO PIC 9(16).
               05 WS-CARD-EXPIRY PIC 9(4).
               05 WS-CARD-CVV PIC 9(3).
@@ -34,13 +35,10 @@
     
        LINKAGE SECTION.
            01 LS-USERNAME PIC X(16).
-           01 LS-CARD-NO PIC 9(16).
-           01 LS-CARD-EXPIRY PIC 99/99.
-           01 LS-CARD-CVV PIC 9(3).       
+           01 LS-UPDATE-CREDITS PIC 9(3).       
        
-       PROCEDURE DIVISION USING LS-USERNAME, LS-CARD-NO, LS-CARD-EXPIRY,
-           LS-CARD-CVV.
-           
+       PROCEDURE DIVISION USING LS-USERNAME, LS-UPDATE-CREDITS.
+           DISPLAY "*START OF PROCEDURE*".
            OPEN I-O F-USERS-FILE.
            PERFORM UNTIL FINISHED = "Y"
                READ F-USERS-FILE INTO WS-USERS
@@ -53,13 +51,20 @@
            GOBACK.  
 
        UPDATE-PROCESS.
+           DISPLAY "*START OF UPDATE PROCESS*".
            IF WS-USERNAME = LS-USERNAME THEN
-               MOVE LS-CARD-NO TO CARD-NO
-               MOVE LS-CARD-EXPIRY TO CARD-EXPIRY
-               MOVE LS-CARD-CVV TO CARD-CVV
+               MOVE USER-CREDITS TO WS-USERS-CREDITS
+               DISPLAY WS-USERS-CREDITS
+               ADD LS-UPDATE-CREDITS TO WS-USERS-CREDITS
+               DISPLAY LS-UPDATE-CREDITS
+               DISPLAY WS-USERS-CREDITS
+               MOVE WS-USERS-CREDITS TO USER-CREDITS
+               DISPLAY USER-CREDITS
                REWRITE USERS
                END-REWRITE
+           DISPLAY "*END OF UPDATE PROCESS*" 
            END-IF.
+
            
        
        

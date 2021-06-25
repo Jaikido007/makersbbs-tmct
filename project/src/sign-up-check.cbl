@@ -16,7 +16,7 @@
               05 USER-LEVEL PIC X(3).
               05 CARD-NO PIC 9(16).
               05 CARD-EXPIRY PIC 9(4).
-              05 CARD-CSV PIC 9(3).   
+              05 CARD-CVV PIC 9(3).   
        
        WORKING-STORAGE SECTION.
            01 WS-USERS.

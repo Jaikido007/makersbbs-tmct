@@ -51,6 +51,12 @@
            01 WS-CARD-NO PIC 9(16).
            01 WS-CARD-EXPIRY PIC 9(4).
            01 WS-CARD-CVV PIC 9(3).
+      ********************************************
+      *----Variables relating to credit store----*
+      ********************************************
+           01 CREDIT-STORE-CHOICE PIC X.
+           01 WS-UPDATE-CREDITS PIC 9(3). 
+           01 WS-STORE-CHARGE PIC 9(2).      
       ******************************************************************
       ***********-----VARIABLES RELATED TO GUESSING GAME-----***********
       ******************************************************************
@@ -500,8 +506,18 @@
         *>    BANK DETAILS OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
              05 BANK-ACCOUNT-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
-                USING BANK-ACCOUNT-CHOICE.  
-           
+                USING BANK-ACCOUNT-CHOICE.
+
+           01 CREDIT-STORE-SCREEN
+             BACKGROUND-COLOR IS 0.
+             05 BLANK SCREEN.
+             05 LINE 2 COL 2 PIC X(2) USING WS-FORMATTED-HOUR.
+             05 LINE 2 COL 4 VALUE ":".
+             05 LINE 2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.
+             05 LINE 6 COLUMN 10 VALUE "WELCOME TO THE CREDIT STORE".
+             05 LINE 8 COLUMN 10 VALUE "Pick:".
+             05 CREDIT-STORE-CHOICE-FIELD LINE 8 COLUMN 10 PIC X
+                USING CREDIT-STORE-CHOICE.        
 
            01 MENU-SCREEN
              BACKGROUND-COLOR IS 1.
@@ -1320,7 +1336,44 @@
            CALL "bank-details" USING WS-USERNAME, WS-CARD-NO,
            WS-CARD-EXPIRY, WS-CARD-CVV.
            
-           PERFORM 0122-USER-ACCOUNT-MENU.    
+           PERFORM 0122-USER-ACCOUNT-MENU.
+
+      *******************************   
+      *----CREDIT STORE SECTIONS----*
+      *******************************
+       0128-CREDIT-STORE.
+           MOVE 0 TO WS-UPDATE-CREDITS.
+           
+           PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0250-CREDIT-TOTAL.
+           
+           INITIALIZE CREDIT-STORE-CHOICE.
+           DISPLAY CREDIT-STORE-SCREEN.
+
+           ACCEPT CREDIT-STORE-CHOICE-FIELD.
+
+           
+           IF CREDIT-STORE-CHOICE = "1" THEN
+               MOVE 100 TO WS-UPDATE-CREDITS
+               MOVE 10 TO WS-STORE-CHARGE
+               PERFORM 0129-ADD-CREDITS
+           ELSE IF CREDIT-STORE-CHOICE = "2" THEN
+               MOVE 200 TO WS-UPDATE-CREDITS
+               MOVE 20 TO WS-STORE-CHARGE
+               PERFORM 0129-ADD-CREDITS
+           ELSE IF CREDIT-STORE-CHOICE = "3" THEN
+               MOVE 300 TO WS-UPDATE-CREDITS
+               MOVE 30 TO WS-STORE-CHARGE 
+               PERFORM 0129-ADD-CREDITS  
+           ELSE IF CREDIT-STORE-CHOICE = "g" OR "G" THEN
+              STOP RUN  
+           END-IF.
+       
+       0129-ADD-CREDITS.
+           CALL 'add-credits' USING WS-USERNAME, WS-UPDATE-CREDITS.
+           
+           PERFORM 0300-TRANSACTIONS.
+
       ******************************************************************
       *********-----MESSAGE SECTION FOR READ/WRITE/COMMENT----**********
       ******************************************************************
@@ -1660,5 +1713,17 @@
       **************-----COMMENTS ON MESSAGES SECTION-----**************
       ******************************************************************
        
+       0250-CREDIT-TOTAL.
+           CALL 'find-credits' USING WS-USERNAME, WS-USERCREDITS.
+
+      *************************••••••••
+      *----TRANSACTION LOG SECTION----*
+      *************************
+       0300-TRANSACTIONS.
+           PERFORM 0200-TIME-AND-DATE.
+           CALL 'transactions' USING WS-FORMATTED-DT, WS-USERNAME,
+           WS-STORE-CHARGE.
+
+           PERFORM 0122-USER-ACCOUNT-MENU.
            
        
