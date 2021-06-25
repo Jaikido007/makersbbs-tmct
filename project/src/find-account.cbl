@@ -3,7 +3,7 @@
        ENVIRONMENT DIVISION.
        INPUT-OUTPUT SECTION.
        FILE-CONTROL.
-           SELECT F-USERS-FILE ASSIGN TO 'users.dat'
+           SELECT F-USERS-FILE ASSIGN TO "users.dat"
              ORGANIZATION IS LINE SEQUENTIAL.
        
        DATA DIVISION.

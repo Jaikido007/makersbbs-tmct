@@ -3,7 +3,7 @@
        ENVIRONMENT DIVISION.
        INPUT-OUTPUT SECTION.
        FILE-CONTROL.
-           SELECT F-USERS-FILE ASSIGN TO 'users.dat'
+           SELECT F-USERS-FILE ASSIGN TO "users.dat"
              ORGANIZATION IS SEQUENTIAL.
        
        DATA DIVISION.
@@ -35,7 +35,7 @@
        LINKAGE SECTION.
            01 LS-USERNAME PIC X(16).
            01 LS-CARD-NO PIC 9(16).
-           01 LS-CARD-EXPIRY PIC 9(4).
+           01 LS-CARD-EXPIRY PIC 99/99.
            01 LS-CARD-CSV PIC 9(3).       
        
        PROCEDURE DIVISION USING LS-USERNAME, LS-CARD-NO, LS-CARD-EXPIRY,
