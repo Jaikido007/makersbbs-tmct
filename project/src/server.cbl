@@ -842,8 +842,8 @@
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE 44 COL 1 VALUE "     (S) Submit message     (D) D
-      -    "iscard message     (Q) Quit                                "                                 
+               05 LINE 44 COL 1 VALUE "     (P) Post message     (D) Dis
+      -    "card message     (S) Sponsore message     (Q) Quit                                "                                 
                 FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 45 COL 1 VALUE "                                 
       -    "                                                           "
@@ -1531,7 +1531,7 @@
            ACCEPT MSG-WRITE-CHOICE-FIELD.
 
            PERFORM UNTIL MSG-WRITE-CHOICE-FIELD = "d" OR "D" OR "s"
-             OR "S"
+             OR "S" OR "p" OR "P"
 
              ACCEPT MSG-WRITE-CHOICE-FIELD
 
@@ -1539,6 +1539,16 @@
 
            IF MSG-WRITE-CHOICE-FIELD = "d" OR "D" THEN
                PERFORM 0130-MSG-MENU
+           END-IF.
+
+           IF MSG-WRITE-CHOICE-FIELD = "p" OR "P" THEN 
+              MOVE WS-CONTENT-DISPLAY TO WS-CONTENT
+              MOVE WS-USERNAME TO WS-MSG-AUTHOR
+
+                IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
+                  CALL "post-message" USING NEW-MESSAGE
+                  PERFORM 0130-MSG-MENU
+                END-IF    
            END-IF.
 
            IF MSG-WRITE-CHOICE-FIELD = "s" OR "S" THEN 
@@ -1550,6 +1560,7 @@
                   PERFORM 0130-MSG-MENU
                 END-IF    
            END-IF.
+
 
            PERFORM 0110-DISPLAY-MENU.
 
