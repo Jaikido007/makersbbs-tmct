@@ -164,11 +164,15 @@
                05 WS-HOURS-MINS.
                    10 WS-HOURS PIC X(2).
                    10 WS-MINS PIC X(2).
+             
+      ******************************************************************
            
            LINKAGE SECTION.
            01 LS-COUNTER UNSIGNED-INT.
            01 LS-NUM UNSIGNED-INT.
-           01 LS-MESSAGE PIC X(60).  
+           01 LS-MESSAGE PIC X(60). 
+
+      ****************************************************************** 
 
            SCREEN SECTION.
            01 LOGIN-SCREEN
@@ -186,8 +190,8 @@
               05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE 44 COL 1 VALUE "     (L) Go to Log-in     (C) Cre
-      -    "ate an account     (Q) Quit                                "                                 
+               05 LINE 44 COL 1 VALUE "     (L) Log-in     (C) Create an
+      -    "account     (Q) Quit                                "                                 
                 FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 45 COL 1 VALUE "                                 
       -    "                                                           "
@@ -572,7 +576,7 @@
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
          *>    MSG MENU BODY
-             05 LINE  4 COL 10 VALUE "WELCOME TO FRIENDFACE" UNDERLINE.
+             05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
 
              05 LINE 8 COL 1 VALUE "
       -      "BULLETIN BOARD                                   "  
@@ -1159,7 +1163,8 @@
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 WS-HIGH-SCORE-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
                   USING WS-HIGH-SCORE-CHOICE.
-       
+
+      ************************END OF SCREEN SECTION********************* 
            
        PROCEDURE DIVISION.
       ******************************************************************
