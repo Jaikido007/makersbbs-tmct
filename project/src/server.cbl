@@ -1343,7 +1343,9 @@
            ELSE IF ACCOUNT-CHOICE = "g" or "G" THEN
                PERFORM 0128-CREDIT-STORE  
            ELSE IF ACCOUNT-CHOICE = "c" or "C" THEN
-               PERFORM 0128-CREDIT-STORE 
+               PERFORM 0128-CREDIT-STORE
+           ELSE IF ACCOUNT-CHOICE = "v" or "V" THEN
+               PERFORM 0320-VIP-ACCOUNT    
            END-IF.
 
            PERFORM 0122-USER-ACCOUNT-MENU.
@@ -1784,5 +1786,11 @@
            CALL 'transactions' USING WS-FORMATTED-DT, WS-USERNAME,
            WS-STORE-CHARGE.
            PERFORM 0122-USER-ACCOUNT-MENU.
+
+       0320-VIP-ACCOUNT.
+           MOVE 0 TO WS-UPDATE-CREDITS.
+           MOVE 500 TO WS-UPDATE-CREDITS.
+           CALL "subtract-credits" USING WS-USERNAME, WS-UPDATE-CREDITS.
+           CALL "account-status" USING WS-USERNAME.
            
        
