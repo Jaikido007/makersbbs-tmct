@@ -311,16 +311,18 @@
                 USING WS-PASSWORD.       
 
            01 ERROR-SCREEN
-               BACKGROUND-COLOR IS 1.
-               05 BLANK SCREEN.
+             BACKGROUND-COLOR IS 1.
+             05 BLANK SCREEN.
         *>    ERROR HEADER
-               05 LINE 1 COL 1  VALUE "   :                              
+             05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
-               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
-               FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-               05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
-               FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
+             FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
+             FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 90 USING WS-USERCREDITS
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    ERROR FOOTER
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
@@ -439,13 +441,17 @@
              BACKGROUND-COLOR IS 1.
              05 BLANK SCREEN.
         *>    USER ACCOUNT HEADER
-               05 LINE 1 COL 1  VALUE "   :                              
-      -    "                                                           "
-               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
-               FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-               05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
-               FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 1  VALUE "   :                              
+      -    "                                                         "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
+             FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
+             FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 81 VALUE "CREDITS: "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 1 COL 90 USING WS-USERCREDITS
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    USER ACCOUNT FOOTER
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
@@ -479,6 +485,8 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 90 USING WS-USERCREDITS
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    BANK DETAILS FOOTER
              05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
@@ -509,14 +517,39 @@
                 USING BANK-ACCOUNT-CHOICE.
 
            01 CREDIT-STORE-SCREEN
-             BACKGROUND-COLOR IS 0.
+             BACKGROUND-COLOR IS 1.
              05 BLANK SCREEN.
-             05 LINE 2 COL 2 PIC X(2) USING WS-FORMATTED-HOUR.
-             05 LINE 2 COL 4 VALUE ":".
-             05 LINE 2 COL 5 PIC X(2) USING WS-FORMATTED-MINS.
+        *>    CREDIT STORE HEADER
+             05 LINE 1 COL 1  VALUE "   :                              
+      -    "                                                         "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
+             FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
+             FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 81 VALUE "CREDITS: "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 1 COL 90 USING WS-USERCREDITS
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+        *>    CREDIT STORE FOOTER
+             05 LINE 43 COL 1 VALUE "                                 
+      -    "                                                           "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 44 COL 1 VALUE "     (1) 100 Credits     (2) 200 Cr  
+      -    "edits     (3) 300 Credits                                  "                                 
+                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 45 COL 1 VALUE "     (G) Go back         (Q) Quit                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 46 COL 1 VALUE "                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO. 
+        *>    CREDIT STORE BODY
+             05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
              05 LINE 6 COLUMN 10 VALUE "WELCOME TO THE CREDIT STORE".
-             05 LINE 8 COLUMN 10 VALUE "Pick:".
-             05 CREDIT-STORE-CHOICE-FIELD LINE 8 COLUMN 10 PIC X
+        *>    CREDIT STORE OPTION POSITIONING
+               05 LINE 42 COLUMN 6 VALUE "Option: ".
+             05 CREDIT-STORE-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
                 USING CREDIT-STORE-CHOICE.        
 
            01 MENU-SCREEN
@@ -543,10 +576,10 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 45 COL 1 VALUE "     (L) Logout       (Q) Quit                                 
       -    "                                                           "
-               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
-               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    MENU BODY
              05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
              05 LINE  6 COL 10 VALUE "Hi, ".
@@ -1289,7 +1322,11 @@
              PERFORM 0160-GAMES-MENU
            ELSE IF MENU-CHOICE =   "a" or "A" THEN
              PERFORM 0122-USER-ACCOUNT-MENU
+           ELSE IF MENU-CHOICE =   "c" or "C" THEN
+               PERFORM 0128-CREDIT-STORE 
            END-IF.
+
+           PERFORM 0120-DISPLAY-MENU.
 
        0122-USER-ACCOUNT-MENU.
            PERFORM 0200-TIME-AND-DATE.
@@ -1298,15 +1335,17 @@
            DISPLAY USER-ACCOUNT-SCREEN.
            ACCEPT ACCOUNT-CHOICE-FIELD.
 
-           IF ACCOUNT-CHOICE = "q" or "Q" THEN
+           IF ACCOUNT-CHOICE =     "q" or "Q" THEN
                STOP RUN
            ELSE IF ACCOUNT-CHOICE = "b" or "B" THEN
                PERFORM 0125-BANK-DETAILS  
            ELSE IF ACCOUNT-CHOICE = "g" or "G" THEN
-               PERFORM 0120-DISPLAY-MENU  
+               PERFORM 0128-CREDIT-STORE  
            ELSE IF ACCOUNT-CHOICE = "c" or "C" THEN
                PERFORM 0128-CREDIT-STORE 
            END-IF.
+
+           PERFORM 0122-USER-ACCOUNT-MENU.
 
       ******************************************************************   
       ********************----BANK DETAILS SECTIONS----*****************
@@ -1346,9 +1385,9 @@
            
            PERFORM 0122-USER-ACCOUNT-MENU.
 
-      *******************************   
-      *----CREDIT STORE SECTIONS----*
-      *******************************
+      ******************************************************************   
+      *****************----CREDIT STORE SECTION----*********************
+      ******************************************************************
        0128-CREDIT-STORE.
            MOVE 0 TO WS-UPDATE-CREDITS.
            
@@ -1359,7 +1398,6 @@
            DISPLAY CREDIT-STORE-SCREEN.
 
            ACCEPT CREDIT-STORE-CHOICE-FIELD.
-
            
            IF CREDIT-STORE-CHOICE = "1" THEN
                MOVE 100 TO WS-UPDATE-CREDITS
@@ -1372,7 +1410,9 @@
            ELSE IF CREDIT-STORE-CHOICE = "3" THEN
                MOVE 300 TO WS-UPDATE-CREDITS
                MOVE 30 TO WS-STORE-CHARGE 
-               PERFORM 0129-ADD-CREDITS  
+               PERFORM 0129-ADD-CREDITS
+           ELSE IF CREDIT-STORE-CHOICE = "g" OR "G" THEN
+              PERFORM 0128-CREDIT-STORE  
            ELSE IF CREDIT-STORE-CHOICE = "q" OR "Q" THEN
               STOP RUN  
            END-IF.
@@ -1734,14 +1774,14 @@
        0250-CREDIT-TOTAL.
            CALL 'find-credits' USING WS-USERNAME, WS-USERCREDITS.
 
-      *************************••••••••
-      *----TRANSACTION LOG SECTION----*
-      *************************
+      ******************************************************************
+      ******************----TRANSACTION LOG SECTION----*****************
+      ******************************************************************
        0300-TRANSACTIONS.
            PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0250-CREDIT-TOTAL.
            CALL 'transactions' USING WS-FORMATTED-DT, WS-USERNAME,
            WS-STORE-CHARGE.
-
            PERFORM 0122-USER-ACCOUNT-MENU.
            
        

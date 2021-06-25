@@ -40,7 +40,7 @@
        
        PROCEDURE DIVISION USING LS-USERNAME, LS-CARD-NO, LS-CARD-EXPIRY,
            LS-CARD-CVV.
-           
+           MOVE "N" TO FINISHED.
            OPEN I-O F-USERS-FILE.
            PERFORM UNTIL FINISHED = "Y"
                READ F-USERS-FILE INTO WS-USERS
