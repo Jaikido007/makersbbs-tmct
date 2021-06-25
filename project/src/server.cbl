@@ -1233,7 +1233,7 @@
            ELSE IF LOGIN-CHOICE = "q" OR "Q" THEN 
                STOP RUN
            ELSE 
-               PERFORM 0120-DISPLAY-MENU
+               PERFORM 0110-DISPLAY-MENU
            END-IF.
 
        0101-SIGN-IN.
@@ -1248,7 +1248,7 @@
            WS-LOGIN-CORRECT.
 
            IF WS-LOGIN-CORRECT = 1 THEN
-               PERFORM 0120-DISPLAY-MENU 
+               PERFORM 0110-DISPLAY-MENU 
            ELSE 
                MOVE "Incorrect Username or Password" TO WS-ERROR-MSG
                    PERFORM 0109-ERROR-PAGE 
@@ -1307,7 +1307,7 @@
       ****************************************************************** 
       ********-----DISPLAY MENU COMES AFTER SUCCESFUL LOGIN----*********
       ******************************************************************
-       0120-DISPLAY-MENU.
+       0110-DISPLAY-MENU.
            PERFORM 0200-TIME-AND-DATE.
            PERFORM 0250-CREDIT-TOTAL.
            INITIALIZE MENU-CHOICE.
@@ -1323,14 +1323,14 @@
            ELSE IF MENU-CHOICE =   "f" or "F" THEN
              PERFORM 0160-GAMES-MENU
            ELSE IF MENU-CHOICE =   "a" or "A" THEN
-             PERFORM 0122-USER-ACCOUNT-MENU
+             PERFORM 0111-USER-ACCOUNT-MENU
            ELSE IF MENU-CHOICE =   "c" or "C" THEN
                PERFORM 0128-CREDIT-STORE 
            END-IF.
 
-           PERFORM 0120-DISPLAY-MENU.
+           PERFORM 0110-DISPLAY-MENU.
 
-       0122-USER-ACCOUNT-MENU.
+       0111-USER-ACCOUNT-MENU.
            PERFORM 0200-TIME-AND-DATE.
            PERFORM 0250-CREDIT-TOTAL.
            INITIALIZE ACCOUNT-CHOICE.
@@ -1340,7 +1340,7 @@
            IF ACCOUNT-CHOICE =     "q" or "Q" THEN
                STOP RUN
            ELSE IF ACCOUNT-CHOICE = "b" or "B" THEN
-               PERFORM 0125-BANK-DETAILS  
+               PERFORM 0120-BANK-DETAILS  
            ELSE IF ACCOUNT-CHOICE = "g" or "G" THEN
                PERFORM 0128-CREDIT-STORE  
            ELSE IF ACCOUNT-CHOICE = "c" or "C" THEN
@@ -1349,13 +1349,12 @@
                PERFORM 0320-VIP-ACCOUNT    
            END-IF.
 
-           PERFORM 0122-USER-ACCOUNT-MENU.
+           PERFORM 0111-USER-ACCOUNT-MENU.
 
       ******************************************************************   
       ********************----BANK DETAILS SECTIONS----*****************
       ******************************************************************
-           
-       0125-BANK-DETAILS.    
+       0120-BANK-DETAILS.    
            PERFORM 0200-TIME-AND-DATE.
            PERFORM 0250-CREDIT-TOTAL.
            INITIALIZE CARD-NO.
@@ -1370,16 +1369,16 @@
            ACCEPT BANK-ACCOUNT-CHOICE-FIELD.
 
            IF BANK-ACCOUNT-CHOICE = "s" or "S" then
-               PERFORM 0127-UPDATE-BANK-DETAILS
+               PERFORM 0121-UPDATE-BANK-DETAILS
            ELSE IF BANK-ACCOUNT-CHOICE = "d" or "D" then
-               PERFORM 0125-BANK-DETAILS
+               PERFORM 0120-BANK-DETAILS
            ELSE IF BANK-ACCOUNT-CHOICE = "q" or "Q" THEN
                STOP RUN
            ELSE IF BANK-ACCOUNT-CHOICE = "g" or "G" THEN
-               PERFORM 0122-USER-ACCOUNT-MENU
+               PERFORM 0111-USER-ACCOUNT-MENU
            END-IF.  
 
-       0127-UPDATE-BANK-DETAILS.
+       0121-UPDATE-BANK-DETAILS.
            MOVE CARD-NO TO WS-CARD-NO.
            MOVE CARD-EXPIRY TO WS-CARD-EXPIRY.
            MOVE CARD-CVV TO WS-CARD-CVV.
@@ -1387,7 +1386,7 @@
            CALL "bank-details" USING WS-USERNAME, WS-CARD-NO,
            WS-CARD-EXPIRY, WS-CARD-CVV.
            
-           PERFORM 0122-USER-ACCOUNT-MENU.
+           PERFORM 0111-USER-ACCOUNT-MENU.
 
       ******************************************************************   
       *****************----CREDIT STORE SECTION----*********************
@@ -1444,7 +1443,7 @@
              PERFORM 0140-MESSAGE-VIEW
            END-IF. 
            IF MSG-MENU-CHOICE =        "g" OR "G" THEN
-               PERFORM 0120-DISPLAY-MENU
+               PERFORM 0110-DISPLAY-MENU
            ELSE IF MSG-MENU-CHOICE =   "n" OR "N" THEN
              COMPUTE ID-NUM = ID-NUM + 10
                IF ID-NUM IS GREATER THAN OR EQUAL TO NUM-FILE-LINES
@@ -1552,7 +1551,7 @@
                 END-IF    
            END-IF.
 
-           PERFORM 0120-DISPLAY-MENU.
+           PERFORM 0110-DISPLAY-MENU.
 
        0151-COMMENT-SCREEN.
            PERFORM 0280-CURRENT-TIME.
@@ -1606,7 +1605,7 @@
            IF GAMES-MENU-CHOICE =      "q" or "Q" THEN
                STOP RUN
            ELSE IF GAMES-MENU-CHOICE = "g" or "G" THEN
-               PERFORM 0120-DISPLAY-MENU   
+               PERFORM 0110-DISPLAY-MENU   
            ELSE IF GAMES-MENU-CHOICE = "w" or "W" THEN
                PERFORM 0210-DISPLAY-GUESSING-GAME 
            END-IF.
@@ -1665,7 +1664,7 @@
            DISPLAY IN-GAME-SCREEN.
            ACCEPT WS-GUESS-CHOICE-FIELD.
            IF WS-GUESS-CHOICE = "!" THEN 
-               PERFORM 0120-DISPLAY-MENU
+               PERFORM 0110-DISPLAY-MENU
            ELSE
                PERFORM 0230-CHECK-GUESS
            END-IF.
@@ -1716,7 +1715,7 @@
            ELSE IF WS-GUESSING-WINNING-CHOICE = "h" OR "H"
              THEN PERFORM 0260-HIGH-SCORE-TABLE
            ELSE IF WS-GUESSING-WINNING-CHOICE = "!" OR "q" OR "Q"
-             THEN PERFORM 0120-DISPLAY-MENU
+             THEN PERFORM 0110-DISPLAY-MENU
            ELSE
              PERFORM 0240-WINNING-SCREEN
            END-IF.
@@ -1732,7 +1731,7 @@
            ELSE IF WS-GUESSING-LOSING-CHOICE = "h" OR "H"
              THEN PERFORM 0260-HIGH-SCORE-TABLE
            ELSE IF WS-GUESSING-LOSING-CHOICE = "!" OR "q" OR "Q"
-             THEN PERFORM 0120-DISPLAY-MENU
+             THEN PERFORM 0110-DISPLAY-MENU
            ELSE
              PERFORM 0250-LOSING-SCREEN
            END-IF.
@@ -1762,7 +1761,7 @@
            DISPLAY HIGH-SCORE-SCREEN.
            ACCEPT WS-HIGH-SCORE-CHOICE-FIELD.
            IF WS-HIGH-SCORE-CHOICE = "g" OR "G"
-             PERFORM 0120-DISPLAY-MENU
+             PERFORM 0110-DISPLAY-MENU
            ELSE IF WS-HIGH-SCORE-CHOICE = "q" OR "Q"
              STOP RUN
            ELSE 
@@ -1786,7 +1785,7 @@
            PERFORM 0250-CREDIT-TOTAL.
            CALL 'transactions' USING WS-FORMATTED-DT, WS-USERNAME,
            WS-STORE-CHARGE.
-           PERFORM 0122-USER-ACCOUNT-MENU.
+           PERFORM 0111-USER-ACCOUNT-MENU.
 
        0320-VIP-ACCOUNT.
            MOVE 0 TO WS-UPDATE-CREDITS.
