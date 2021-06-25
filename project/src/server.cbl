@@ -1202,6 +1202,7 @@
            END-IF.
 
        0111-SIGN-IN.
+           PERFORM 0200-TIME-AND-DATE.
            INITIALIZE WS-USERNAME.
            INITIALIZE WS-PASSWORD.
            DISPLAY SIGN-IN-SCREEN.
@@ -1219,6 +1220,7 @@
            END-IF. 
 
        0112-SIGN-UP.
+           PERFORM 0200-TIME-AND-DATE.
            INITIALIZE WS-NEW-USER-NAME.
            INITIALIZE WS-NEW-PASSWORD.
            INITIALIZE CREATE-CHOICE
@@ -1255,6 +1257,8 @@
            END-IF.
 
        0114-ERROR-PAGE.
+           PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0250-CREDIT-TOTAL.
            INITIALIZE ERROR-CHOICE.
            DISPLAY ERROR-SCREEN.
            ACCEPT ERROR-CHOICE-FIELD.
@@ -1270,6 +1274,7 @@
       ******************************************************************
        0120-DISPLAY-MENU.
            PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0250-CREDIT-TOTAL.
            INITIALIZE MENU-CHOICE.
            DISPLAY MENU-SCREEN.
            ACCEPT MENU-CHOICE-FIELD.
@@ -1288,7 +1293,7 @@
 
        0122-USER-ACCOUNT-MENU.
            PERFORM 0200-TIME-AND-DATE.
-           CALL "find-account" USING WS-USERNAME, WS-USERCREDITS.
+           PERFORM 0250-CREDIT-TOTAL.
            INITIALIZE ACCOUNT-CHOICE.
            DISPLAY USER-ACCOUNT-SCREEN.
            ACCEPT ACCOUNT-CHOICE-FIELD.
@@ -1299,6 +1304,8 @@
                PERFORM 0125-BANK-DETAILS  
            ELSE IF ACCOUNT-CHOICE = "g" or "G" THEN
                PERFORM 0120-DISPLAY-MENU  
+           ELSE IF ACCOUNT-CHOICE = "c" or "C" THEN
+               PERFORM 0128-CREDIT-STORE 
            END-IF.
 
       ******************************************************************   
@@ -1307,6 +1314,7 @@
            
        0125-BANK-DETAILS.    
            PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0250-CREDIT-TOTAL.
            INITIALIZE CARD-NO.
            INITIALIZE CARD-EXPIRY.
            INITIALIZE CARD-CVV.
@@ -1365,12 +1373,12 @@
                MOVE 300 TO WS-UPDATE-CREDITS
                MOVE 30 TO WS-STORE-CHARGE 
                PERFORM 0129-ADD-CREDITS  
-           ELSE IF CREDIT-STORE-CHOICE = "g" OR "G" THEN
+           ELSE IF CREDIT-STORE-CHOICE = "q" OR "Q" THEN
               STOP RUN  
            END-IF.
        
        0129-ADD-CREDITS.
-           CALL 'add-credits' USING WS-USERNAME, WS-UPDATE-CREDITS.
+           CALL "add-credits" USING WS-USERNAME, WS-UPDATE-CREDITS.
            
            PERFORM 0300-TRANSACTIONS.
 
@@ -1378,6 +1386,7 @@
       *********-----MESSAGE SECTION FOR READ/WRITE/COMMENT----**********
       ******************************************************************
        0130-MSG-MENU.
+           PERFORM 0250-CREDIT-TOTAL.
            PERFORM 0200-TIME-AND-DATE.
            CALL "number-of-file-lines" USING NUM-FILE-LINES.
            CALL "get-list-page-alt" USING NUM-FILE-LINES WS-LIST-TABLE.
@@ -1421,6 +1430,7 @@
 
        0140-MESSAGE-VIEW. 
            PERFORM 0200-TIME-AND-DATE.  
+           PERFORM 0250-CREDIT-TOTAL.
            CALL "number-of-file-lines" USING NUM-FILE-LINES.
            CALL "get-list-page-alt" USING NUM-FILE-LINES WS-LIST-TABLE.
            *> CALL "id-sort" USING WS-LIST-TABLE. <*        
@@ -1459,6 +1469,7 @@
 
        0150-MESSAGE-WRITE.
            PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0250-CREDIT-TOTAL.
            INITIALIZE WS-TITLE.
            INITIALIZE LS-PART-1.
            INITIALIZE LS-PART-2.
@@ -1501,6 +1512,7 @@
 
        0151-COMMENT-SCREEN.
            PERFORM 0280-CURRENT-TIME.
+           PERFORM 0250-CREDIT-TOTAL.
            CALL "num-comments" USING NUM-COMMENTS.
            CALL "get-comment" USING COMMENT-TABLE MSG-SELECT.
 
@@ -1543,6 +1555,7 @@
       ******************************************************************
        0160-GAMES-MENU.
            PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0250-CREDIT-TOTAL.
            INITIALIZE GAMES-MENU-CHOICE.
            DISPLAY GAMES-MENU-SCREEN.
            ACCEPT GAMES-MENU-CHOICE-FIELD
@@ -1572,6 +1585,7 @@
       ******************************************************************
        0210-DISPLAY-GUESSING-GAME.
            PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0250-CREDIT-TOTAL.
            MOVE 15 TO WS-GUESSES-LEFT.
            SET WORD-IDX TO 0.
            OPEN INPUT F-WORD-FILE.
@@ -1602,6 +1616,7 @@
           
        0220-IN-GAME-SCREEN.
            PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0250-CREDIT-TOTAL.
            INITIALIZE WS-GUESS-CHOICE.
            DISPLAY IN-GAME-SCREEN.
            ACCEPT WS-GUESS-CHOICE-FIELD.
@@ -1640,6 +1655,7 @@
            
        0240-WINNING-SCREEN.
            PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0250-CREDIT-TOTAL.
            INITIALIZE WS-GUESSING-WINNING-CHOICE.
            COMPUTE WS-HIGH-SCORE = WS-GUESSES-LEFT * WS-GUESSES-LEFT + 5
            .
@@ -1662,7 +1678,8 @@
            END-IF.
 
        0250-LOSING-SCREEN.
-           PERFORM 0280-CURRENT-TIME
+           PERFORM 0280-CURRENT-TIME.
+           PERFORM 0250-CREDIT-TOTAL.
            INITIALIZE WS-GUESSING-LOSING-CHOICE.
            DISPLAY WORD-GUESSING-LOSE-SCREEN.
            ACCEPT WS-GUESSING-LOSING-CHOICE-FIELD.
@@ -1694,7 +1711,8 @@
            PERFORM 0270-HIGH-SCORE-SCREEN.
            
        0270-HIGH-SCORE-SCREEN.
-           PERFORM 0280-CURRENT-TIME
+           PERFORM 0280-CURRENT-TIME.
+           PERFORM 0250-CREDIT-TOTAL.
            INITIALIZE WS-HIGH-SCORE-CHOICE.
            SORT WS-TABLE-HIGH-SCORE ON DESCENDING WS-SCORE.
            DISPLAY HIGH-SCORE-SCREEN.
