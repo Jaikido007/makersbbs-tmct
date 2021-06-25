@@ -233,17 +233,17 @@
                05 LINE 26 COL 34 VALUE " ------------------------"
                    FOREGROUND-COLOR IS 7.
         *>    FRIENDFACE TEXT ASCII ART  
-               05 LINE 31 COL 23 VALUE "______    _                ______
+               05 LINE 31 COL 25 VALUE "______    _                ______
       -        "_" FOREGROUND-COLOR IS 7.
-               05 LINE 32 COL 23 VALUE "|  ___|  (_)              | |  __
+               05 LINE 32 COL 25 VALUE "|  ___|  (_)              | |  __
       -        "_| " FOREGROUND-COLOR IS 7.
-               05 LINE 33 COL 23 VALUE "| |_ _ __ _  ___ _ __   __| | |_ 
+               05 LINE 33 COL 25 VALUE "| |_ _ __ _  ___ _ __   __| | |_ 
       -        "__ _  ___ ___" FOREGROUND-COLOR IS 7.
-               05 LINE 34 COL 23 VALUE "|  _| '__| |/ _ \ '_ \ / _` |  _/
+               05 LINE 34 COL 25 VALUE "|  _| '__| |/ _ \ '_ \ / _` |  _/
       -        " _` |/ __/ _ \" FOREGROUND-COLOR IS 7.
-               05 LINE 35 COL 23 VALUE "| | | |  | |  __/ | | | (_| | || 
+               05 LINE 35 COL 25 VALUE "| | | |  | |  __/ | | | (_| | || 
       -        "(_| | (_|  __/" FOREGROUND-COLOR IS 7.
-               05 LINE 36 COL 23 VALUE "\_| |_|  |_|\___|_| |_|\__,_\_| \
+               05 LINE 36 COL 25 VALUE "\_| |_|  |_|\___|_| |_|\__,_\_| \
       -        "__,_|\___\___|" FOREGROUND-COLOR IS 7.
               *>    LOGIN OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
@@ -581,6 +581,7 @@
       -    "                                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    MENU BODY
+           
              05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
              05 LINE  6 COL 10 VALUE "Hi, ".
              05 LINE  6 COL 14 PIC X(16) USING WS-USERNAME.
@@ -1264,7 +1265,7 @@
            
            IF CREATE-CHOICE = "q" OR "Q" THEN 
                PERFORM 0110-DISPLAY-LOGIN   
-           ELSE IF CREATE-CHOICE = "s" THEN
+           ELSE IF CREATE-CHOICE = "s" OR "S" THEN
                PERFORM 0113-SIGN-UP-CHECK
            END-IF.       
 
