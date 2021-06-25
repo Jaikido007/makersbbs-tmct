@@ -25,7 +25,7 @@
                       
            WORKING-STORAGE SECTION.
       ******************************************************************
-      *-----VARIABLES RELATED TO LOGIN & MENU SCREEN-----***************
+      *******-----VARIABLES RELATED TO LOGIN & MENU SCREEN-----*********
       ******************************************************************
            01 WS-USERNAME PIC X(16).
            01 WS-PASSWORD PIC X(20).
@@ -42,7 +42,7 @@
            01 WS-USERCREDITS PIC 9(3).
 
       ******************************************************************
-      *-----VARIABLES RELATED TO BANK ACCOUNTS-----********************
+      ***********-----VARIABLES RELATED TO BANK ACCOUNTS-----***********
       ******************************************************************
            01 BANK-ACCOUNT-CHOICE PIC X.
            01 CARD-NO PIC 9(16).
@@ -52,7 +52,7 @@
            01 WS-CARD-EXPIRY PIC 9(4).
            01 WS-CARD-CVV PIC 9(3).
       ******************************************************************
-      *-----VARIABLES RELATED TO GUESSING GAME-----*********************
+      ***********-----VARIABLES RELATED TO GUESSING GAME-----***********
       ******************************************************************
            01 WS-ANSWERWORD PIC X(20).
            01 RANDOMNUMBER PIC 99.
@@ -64,7 +64,7 @@
                    10 WS-GUESSING-WORDS-WORD PIC X(20).
            01 WS-GUESS-CHOICE PIC X.
       ******************************************************************
-      *-----VARIABLES RELATED TO HIGH SCORE SCREEN----******************
+      *********-----VARIABLES RELATED TO HIGH SCORE SCREEN----**********
       ******************************************************************
            01 WS-HIGH-SCORE-CHOICE PIC X.
            01 WS-HIGH-SCORE PIC 99.
@@ -75,12 +75,12 @@
                   10 WS-SCORE PIC 99.
                   10 WS-NAME PIC X(10).
       ******************************************************************
-      *-----VARIABLES RELATED TO CHECKING GUESSES-----******************
+      ********-----VARIABLES RELATED TO CHECKING GUESSES-----***********
       ****************************************************************** 
            01 WS-LETTERS-LEFT PIC 99.
            01 WS-GUESSES-LEFT PIC 99.          
       ******************************************************************
-      *-----VARIABLES RELATED TO WINNING & LOSING-----******************
+      **********-----VARIABLES RELATED TO WINNING & LOSING-----*********
       ******************************************************************
            01 WS-GUESSING-LOSING-CHOICE PIC X.
            01 WS-GUESSING-WINNING-CHOICE PIC X.
@@ -137,7 +137,7 @@
              05 WS-MSG-AUTHOR            PIC X(16).
 
       ******************************************************************
-      *-----COMMENT SYSTEM VARIABLES-----*******************************
+      ******************-----COMMENT SYSTEM VARIABLES-----**************
       ******************************************************************
 
            01 NUM-COMMENTS PIC 9999.
@@ -155,7 +155,7 @@
            01 COM-SCRN-CHOICE PIC X.
 
       ******************************************************************
-      *-----TIME VARIABLES**********************************************
+      ***********************-----TIME VARIABLES----********************
       ******************************************************************
            01 WS-TIME.
                05 WS-YEAR PIC X(4).
@@ -222,9 +222,7 @@
                    FOREGROUND-COLOR IS 7.
                05 LINE 26 COL 34 VALUE " ------------------------"
                    FOREGROUND-COLOR IS 7.
-      ***********************************
-      *----FriendFace text ascii art----*
-      ***********************************   
+        *>    FRIENDFACE TEXT ASCII ART  
                05 LINE 31 COL 23 VALUE "______    _                ______
       -        "_" FOREGROUND-COLOR IS 7.
                05 LINE 32 COL 23 VALUE "|  ___|  (_)              | |  __
@@ -237,9 +235,7 @@
       -        "(_| | (_|  __/" FOREGROUND-COLOR IS 7.
                05 LINE 36 COL 23 VALUE "\_| |_|  |_|\___|_| |_|\__,_\_| \
       -        "__,_|\___\___|" FOREGROUND-COLOR IS 7.
-      ********************************
-      *----LOGIN PICK POSITIONING----*
-      ********************************
+              *>    LOGIN OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 LOGIN-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
                   USING LOGIN-CHOICE.
@@ -255,9 +251,7 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-      ************************
-      *----SIGN IN FOOTER----*
-      ************************
+        *>    SIGN IN FOOTER
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -269,13 +263,8 @@
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
-               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-      **********************
-      *----SIGN IN MAIN----*
-      **********************
-      ***********************************
-      *----FRIENDFACE LOGO ASCII ART----*
-      *********************************** 
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.     
+        *>    FRIENDFACE LOGO ASCII ART
                05 LINE 14 COL 34 VALUE " ________________________"
                    FOREGROUND-COLOR IS 7.
                05 LINE 15 COL 35 VALUE "|FFFFFFFFFFFFFFFFFFFFFF|"
@@ -302,14 +291,14 @@
                    FOREGROUND-COLOR IS 7.
                05 LINE 26 COL 34 VALUE " ------------------------"
                    FOREGROUND-COLOR IS 7.
+        *>    SIGN IN BODY
              05 LINE 30 COLUMN 37 VALUE "Enter your username:".
              05 WS-USERNAME-FIELD LINE 32 COLUMN 37 PIC X(16)
                 USING WS-USERNAME. 
              05 LINE 32 COLUMN 53 VALUE "____".
              05 LINE 34 COLUMN 37 VALUE "Enter your password:".
              05 WS-PASSWORD-FIELD LINE 36 COLUMN 37 PIC X(20)
-                USING WS-PASSWORD. 
-      
+                USING WS-PASSWORD.       
 
            01 ERROR-SCREEN
                BACKGROUND-COLOR IS 1.
@@ -337,9 +326,7 @@
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
                 05 LINE 30 COLUMN 32 PIC X(40) USING WS-ERROR-MSG.
-      ***********************************
-      *----FRIENDFACE LOGO ASCII ART----*
-      *********************************** 
+        *>    FRIENDFACE LOGO ASCII ART
                05 LINE 14 COL 34 VALUE " ________________________"
                    FOREGROUND-COLOR IS 7.
                05 LINE 15 COL 35 VALUE "|FFFFFFFFFFFFFFFFFFFFFF|"
@@ -366,9 +353,7 @@
                    FOREGROUND-COLOR IS 7.
                05 LINE 26 COL 34 VALUE " ------------------------"
                    FOREGROUND-COLOR IS 7.
-      ********************************
-      *----ERROR PICK POSITIONING----*
-      ********************************
+        *>    ERROR OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 ERROR-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
                   USING ERROR-CHOICE.
@@ -376,9 +361,7 @@
            01 CREATE-AN-ACCOUNT-SCREEN
                BACKGROUND-COLOR IS 01.
                 05 BLANK SCREEN.
-      *******************************
-      *----CREATE ACCOUNT HEADER----*
-      *******************************
+        *>    CREATE ACCOUNT HEADER
                05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -386,9 +369,7 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-      *******************************
-      *----CREATE ACCOUNT FOOTER----*
-      *******************************
+        *>    CREATE ACCOUNT FOOTER
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -401,9 +382,7 @@
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO. 
-      ***********************************
-      *----FRIENDFACE LOGO ASCII ART----*
-      *********************************** 
+        *>    FIRENDFACE LOGO ASCII ART
                05 LINE 14 COL 34 VALUE " ________________________"
                    FOREGROUND-COLOR IS 7.
                05 LINE 15 COL 35 VALUE "|FFFFFFFFFFFFFFFFFFFFFF|"
@@ -441,9 +420,7 @@
              05 WS-NEW-PASSWORD-FIELD LINE 39 COLUMN 38 PIC X(20)
                 USING WS-NEW-PASSWORD.
 
-      ***************************************
-      *----CREATE ACCOUNT PICK POSITIONING----*
-      ***************************************
+        *>    CREATE ACCOUNT OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 CREATE-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
                   USING CREATE-CHOICE. 
@@ -451,9 +428,7 @@
            01 USER-ACCOUNT-SCREEN
              BACKGROUND-COLOR IS 1.
              05 BLANK SCREEN.
-      *****************************
-      *----USER ACCOUNT HEADER----*
-      *****************************
+        *>    USER ACCOUNT HEADER
                05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -461,9 +436,7 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-      *****************************
-      *----USER ACCOUNT FOOTER----*
-      *****************************
+        *>    USER ACCOUNT FOOTER
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -480,9 +453,7 @@
              05 LINE  6 COL 14 PIC X(16) USING WS-USERNAME.
              05 LINE  8 COL 10 VALUE "Available Credits: ".
              05 LINE  8 COL 30 PIC 9(3) USING WS-USERCREDITS.
-      ***************************************
-      *----USER ACCOUNT PICK POSITIONING----*
-      ***************************************
+        *>    USER ACCOUNT OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
              05 ACCOUNT-CHOICE-FIELD LINE 42 COL 14 PIC X
                 USING ACCOUNT-CHOICE.
@@ -490,9 +461,7 @@
            01 BANK-DETAILS-SCREEN
              BACKGROUND-COLOR IS 1.
              05 BLANK SCREEN.
-      *****************************
-      *----BANK DETAILS HEADER----*
-      *****************************
+        *>    BANK DETAILS HEADER
                05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -500,9 +469,7 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-      *****************************
-      *----BANK DETAILS FOOTER----*
-      *****************************
+        *>    BANK DETAILS FOOTER
              05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -515,7 +482,7 @@
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO. 
-           *>    MAIN CODE
+           *>    BANK DETAILS BODY
              05 LINE 6 COLUMN 10 VALUE "ADD A BANK CARD".
              05 LINE 8 COLUMN 10 VALUE "Enter Card Number: ".
              05 CARD-NO-FIELD LINE 10 COLUMN 10 PIC 9(16)
@@ -526,9 +493,7 @@
              05 LINE 16 COLUMN 10 VALUE "Enter CVV Number: ".
              05 CARD-CVV-FIELD LINE 18 COLUMN 10 PIC 9(3)
                 USING CARD-CVV.
-      ***************************************
-      *----BANK DETAILS PICK POSITIONING----*
-      ***************************************
+        *>    BANK DETAILS OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
              05 BANK-ACCOUNT-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
                 USING BANK-ACCOUNT-CHOICE.  
@@ -537,6 +502,7 @@
            01 MENU-SCREEN
              BACKGROUND-COLOR IS 1.
              05 BLANK SCREEN.
+        *>    MENU HEADER
              05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                         "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -548,9 +514,7 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 1 COL 90 USING WS-USERCREDITS
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-      *********************
-      *----MENU FOOTER----*
-      *********************
+        *>    MENU FOOTER
              05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -563,7 +527,7 @@
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-
+        *>    MENU BODY
              05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
              05 LINE  6 COL 10 VALUE "Hi, ".
              05 LINE  6 COL 14 PIC X(16) USING WS-USERNAME.
@@ -578,20 +542,15 @@
              05 LINE 13 COL 26 VALUE "Leave a message of your own.". 
              05 LINE 14 COL 24 VALUE "* " FOREGROUND-COLOR IS 7.
              05 LINE 14 COL 26 VALUE "Most importantly. HAVE FUN!". 
-
-      *******************************
-      *----MENU PICK POSITIONING----*
-      *******************************
-               05 LINE 42 COLUMN 6 VALUE "Pick: ".
-               05 MENU-CHOICE-FIELD LINE 42 COLUMN 12 PIC X
+        *>    MENU OPTION POSITIONING
+               05 LINE 42 COLUMN 6 VALUE "Option: ".
+               05 MENU-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
                   USING MENU-CHOICE.
            
            01 MSG-MENU-SCREEN
              BACKGROUND-COLOR IS 1.
              05 BLANK SCREEN.
-      **********************
-      *----MSG MENU HEADER----*
-      **********************
+        *>    MSG MENU HEADER
                05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -599,9 +558,7 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-      **********************
-      *----MSG MENU FOOTER----*
-      **********************
+        *>    MSG MENU FOOTER
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -614,12 +571,13 @@
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+         *>    MSG MENU BODY
              05 LINE  4 COL 10 VALUE "WELCOME TO FRIENDFACE" UNDERLINE.
 
              05 LINE 8 COL 1 VALUE "
       -      "BULLETIN BOARD                                   "  
              FOREGROUND-COLOR IS 7.
-             
+
              05 LINE 10 COL 8 VALUE "                                   
       -    "                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -750,11 +708,7 @@
              05 LINE 23 COL 1 VALUE "
       -      "RECENT MESSAGES                                   " 
              FOREGROUND-COLOR IS 7.
-           
-
-      ********************************
-      *----LOGIN PICK POSITIONING----*
-      ********************************
+        *>    MSG MENU OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 MSG-MENU-CHOICE-FIELD LINE 42 COLUMN 14 PIC XX
                   USING MSG-MENU-CHOICE.
@@ -762,9 +716,7 @@
            01 MESSAGE-VIEW-SCREEN
                BACKGROUND-COLOR IS 01.
                 05 BLANK SCREEN.
-      *****************************
-      *----MESSAGE VIEW HEADER----*
-      *****************************
+        *>    MESSAGE VIEW HEADER
                05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -772,9 +724,7 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-      *****************************
-      *----MESSAGE VIEW FOOTER----*
-      *****************************
+        *>    MESSAGE VIEW FOOTER
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -787,6 +737,7 @@
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+        *>    MESSAGE VIEW BODY
              05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
       
              05 LINE 8 COL 10 VALUE "-----------------------------------
@@ -816,10 +767,7 @@
       -      "E--------------------" FOREGROUND-COLOR IS 7.
              05 LINE 24 COL 10 VALUE "----------------------------------
       -      "---------------------" FOREGROUND-COLOR IS 7.
-
-      ********************************
-      *----MSG VIEW PICK POSITIONING----*
-      ********************************
+        *>    MESSAGE VIEW OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 MSG-VIEW-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
                   USING MSG-VIEW-CHOICE.
@@ -827,9 +775,7 @@
            01 WRITE-MSG-SCREEN
                BACKGROUND-COLOR IS 01.
                05 BLANK SCREEN.
-      **************************
-      *----WRITE MSG HEADER----*
-      **************************
+        *>    WRITE MESSAGE HEADER
                05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -837,9 +783,7 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-      **************************
-      *----WRITE MSG FOOTER----*
-      **************************
+        *>    WRITE MESSAGE FOOTER
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -852,15 +796,17 @@
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE  4 COL 10 VALUE "MAKERS BBS" UNDERLINE.
-                05 LINE  8 COL 10 VALUE "-------------------------------
-      -      "------------------------" FOREGROUND-COLOR IS 7.
+        *>    WRITE MESSAGE BODY
+             05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
+      
+             05 LINE 8 COL 10 VALUE "-----------------------------------
+      -      "---------------------" FOREGROUND-COLOR IS 7.
 
-               05 LINE 9 COL 10 VALUE "*********************BULLETIN BOA
-      -      "RD*********************" FOREGROUND-COLOR 
+             05 LINE 9 COL 10 VALUE "---------------------BULLETIN BOARD
+      -      "---------------------" FOREGROUND-COLOR 
              IS 7.
-               05 LINE 10 COL 10 VALUE "--------------------------------
-      -      "-----------------------" FOREGROUND-COLOR IS 7.
+             05 LINE 10 COL 10 VALUE "----------------------------------
+      -      "----------------------" FOREGROUND-COLOR IS 7.
 
              05 LINE 12 COL 10 VALUE "TITLE:   ".
              05 WS-TITLE-FIELD LINE 12 COL 18 PIC X(50) USING WS-TITLE.
@@ -871,27 +817,24 @@
              05 LINE-4-FIELD LINE 19 COL 10 PIC X(60)  USING LS-PART-4.
              05 LINE-5-FIELD LINE 20 COL 10 PIC X(60)  USING LS-PART-5. 
 
-             05 LINE 22 COL 10 VALUE "----------------------------------
+                   05 LINE 22 COL 10 VALUE "----------------------------------
       -      "---------------------" FOREGROUND-COLOR IS 7.
-             05 LINE 23 COL 10 VALUE "*********************LEAVE A MESSA
-      -      "GE*******************" FOREGROUND-COLOR IS 7.
+             05 LINE 23 COL 10 VALUE "---------------------LEAVE A MESSA
+      -      "GE-------------------" FOREGROUND-COLOR IS 7.
              05 LINE 24 COL 10 VALUE "----------------------------------
       -      "---------------------" FOREGROUND-COLOR IS 7.
-           
-      ********************************
-      *----WRITE MSG PICK POSITIONING----*
-      ********************************
+        *>    WRITE MESSAGE OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 MSG-WRITE-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
                   USING MSG-WRITE-CHOICE.
-      ************************************
-      *----COMMENTS SCREEN SECTION-------*
-      ************************************
+      ******************************************************************
+      *****************-----COMMENTS SCREEN SECTION--------*************
+      ******************************************************************
 
            01 COMMENT-SCREEN
              BACKGROUND-COLOR IS 1.
              05 BLANK SCREEN.
-             *>    LOGIN HEADER
+        *>    COMMENT SECTION HEADER
              05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -899,7 +842,7 @@
              FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
              05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
              FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-            *>    LOGIN FOOTER
+        *>    COMMENT SECTION FOOTER
             05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -915,7 +858,7 @@
              05 LINE 3 COL 10 VALUE "Comments for the message titled: ".
              05 LINE 3 COL 43 PIC X(50) USING LIST-TITLE(MSG-SELECT)
              FOREGROUND-COLOR IS 2, HIGHLIGHT.
-            *>    MAIN CODE 
+        *>    COMMENT SECTION BODY
              05 LINE 7 COL 10 VALUE "Comment:" UNDERLINE.
              05 LINE 7 COL 72 VALUE "Date posted:" UNDERLINE.
             *>    1st COMMENT
@@ -931,7 +874,7 @@
              FOREGROUND-COLOR IS 2.
              05 LINE 13 COL 10 PIC X(16) 
              USING COM-AUTHOR(COM-INDEX + 1).
-           *>    3rd COMMENT
+             *>    3rd COMMENT
              05 LINE 15 COL 72 PIC X(21) 
              USING COM-DATE(COM-INDEX + 2).
              05 LINE 15 COL 10 PIC X(50) 
@@ -939,7 +882,7 @@
              FOREGROUND-COLOR IS 2.
              05 LINE 16 COL 10 PIC X(16) 
              USING COM-AUTHOR(COM-INDEX + 2).
-           *>    4th COMMENT
+             *>    4th COMMENT
              05 LINE 18 COL 72 PIC X(21) 
              USING COM-DATE(COM-INDEX + 3).
              05 LINE 18 COL 10 PIC X(50) 
@@ -947,7 +890,7 @@
              FOREGROUND-COLOR IS 2.
              05 LINE 19 COL 10 PIC X(16) 
              USING COM-AUTHOR(COM-INDEX + 3).
-           *>    5th COMMENT
+             *>    5th COMMENT
              05 LINE 21 COL 72 PIC X(21) 
              USING COM-DATE(COM-INDEX + 4).
              05 LINE 21 COL 10 PIC X(50) 
@@ -955,17 +898,18 @@
              FOREGROUND-COLOR IS 2.
              05 LINE 22 COL 10 PIC X(16) 
              USING COM-AUTHOR(COM-INDEX + 4).
-
+        *>    COMMENT SECTION OPTION POSITIONING
              05 LINE 42 COLUMN 6 VALUE "Option: ".
              05 COM-SCRN-CHOICE-FIELD LINE 42 COL 14 PIC X USING
-               COM-SCRN-CHOICE.     
+               COM-SCRN-CHOICE.   
+      ******************************************************************
+      *******************-----GAMES MENU SECTION----********************
+      ******************************************************************
                        
            01 GAMES-MENU-SCREEN
                BACKGROUND-COLOR IS 1.
                05 BLANK SCREEN.
-      ***************************
-      *----GAMES MENU HEADER----*
-      ***************************
+        *>    GAMES MENU HEADER
                05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -973,9 +917,7 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-      ***************************
-      *----GAMES MENU FOOTER----*
-      ***************************
+        *>    GAMES MENU FOOTER
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -988,23 +930,15 @@
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-           
-      *************************************
-      *----GAMES MENU PICK POSITIONING----*
-      *************************************
+        *>    GAMES MENU OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 GAMES-MENU-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
-                  USING GAMES-MENU-CHOICE. 
+                  USING GAMES-MENU-CHOICE.
 
-      ******************************************************************
-      *----WORD GUESSING GAME SCREEN SECTION----************************
-      ******************************************************************             
        01 WORD-GUESSING-SCREEN
                BACKGROUND-COLOR IS 1.
                05 BLANK SCREEN.
-      ******************************
-      *----WORD GUESSING HEADER----*
-      ******************************
+        *>    WORD GUESSING GAME HEADER
                05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1012,10 +946,7 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-
-      ***************************
-      *----WORD GUESS FOOTER----*
-      ***************************
+        *>    WORD GUESSING GAME FOOTER
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1028,7 +959,7 @@
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-
+        *>    WORD GUESSING GAME BODY
              05 LINE 2 COLUMN 37 VALUE "Word Guessing Game" UNDERLINE.
              05 LINE 14 COLUMN 10 VALUE "Guess this word: ".
              05 LINE 16 COLUMN 10 PIC X(20) USING WS-WORD.
@@ -1036,17 +967,13 @@
              05 LINE 18 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
              05 LINE 20 COLUMN 10 VALUE "( ) Enter a letter to guess".
              05 LINE 21 COLUMN 10 VALUE "(!) Quit game".
-      *************************************
-      *----GAMES MENU PICK POSITIONING----*
-      *************************************
+        *>    WORD GUESSING GAME OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
    
            01 IN-GAME-SCREEN
                BACKGROUND-COLOR IS 1.
                05 BLANK SCREEN.
-      ************************
-      *----IN GAME HEADER----*
-      ************************
+        *>    IN GAME HEADER 
                05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1054,10 +981,7 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-
-      ************************
-      *----IN GAME FOOTER----*
-      ************************
+         *>    IN GAME FOOTER
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1070,6 +994,7 @@
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+        *>    IN GAME BODY
              05 LINE 3 COLUMN 37 VALUE "Word Guessing Game"
              UNDERLINE, FOREGROUND-COLOR IS 7.
              05 LINE 14 COLUMN 10 VALUE "Guess this word: "
@@ -1080,9 +1005,7 @@
              FOREGROUND-COLOR IS 7.
              05 LINE 18 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT
              FOREGROUND-COLOR IS 7.
-      **********************************
-      *----IN GAME PICK POSITIONING----*
-      **********************************
+        *>    IN GAME OPTION POSITIONING
              05 LINE 42 COLUMN 6 VALUE "Option: ".
              05 WS-GUESS-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
                USING WS-GUESS-CHOICE   FOREGROUND-COLOR IS 0.
@@ -1090,9 +1013,7 @@
            01 WORD-GUESSING-LOSE-SCREEN
              BACKGROUND-COLOR IS 4.
              05 BLANK SCREEN.
-      **************************
-      *----LOSE GAME HEADER----*
-      **************************
+        *>    LOSE GAME HEADER
                05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1100,9 +1021,7 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-      **************************
-      *----LOSE GAME FOOTER----*
-      **************************
+        *>    LOSE GAME FOOTER
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1115,14 +1034,13 @@
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+        *>    LOSE GAME BODY
              05 LINE 2 COLUMN 37 VALUE "Word Guessing Game".
              05 LINE 14 COLUMN 10 VALUE "You lost!".
              05 LINE 16 COLUMN 10 PIC X(20) USING WS-WORD.
              05 LINE 18 COLUMN 10 VALUE "Guesses left: ".
              05 LINE 18 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.      
-      ************************************
-      *----LOSE GAME PICK POSITIONING----*
-      ************************************
+        *>    LOSE GAME OPTION POSITIONING
              05 LINE 42 COLUMN 6 VALUE "Option: "
              FOREGROUND-COLOR IS 7.
              05 WS-GUESSING-LOSING-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
@@ -1131,9 +1049,7 @@
            01 WORD-GUESSING-WINNING-SCREEN
              BACKGROUND-COLOR IS 2.
              05 BLANK SCREEN.
-      *************************
-      *----WIN GAME HEADER----*
-      *************************
+        *>    WIN GAME HEADER
                05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1141,9 +1057,7 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-      *************************
-      *----WIN GAME FOOTER----*
-      *************************
+        *>    WIN GAME FOOTER
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1156,7 +1070,7 @@
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-
+        *>    WIN GAME BODY
              05 LINE 2 COLUMN 37 VALUE "Word Guessing Game" UNDERLINE,
                FOREGROUND-COLOR IS 0.
              05 LINE 14 COLUMN 10 VALUE "You guessed the word!"
@@ -1169,9 +1083,7 @@
                FOREGROUND-COLOR IS 0.
              05 LINE 20 COLUMN 22 PIC 99 USING WS-HIGH-SCORE
                FOREGROUND-COLOR IS 0.
-      ***********************************
-      *----WIN GAME PICK POSITIONING----*
-      ***********************************
+        *>    WIN GAME OPTION POSITIONING
              05 LINE 42 COLUMN 6 VALUE "Option: "
              FOREGROUND-COLOR IS 0.
              05 WS-GUESSING-WINNING-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
@@ -1181,9 +1093,9 @@
            01 HIGH-SCORE-SCREEN
              BACKGROUND-COLOR IS 1.
              05 BLANK SCREEN.
-      ***************************
-      *----HIGH SCORE FOOTER----*
-      ***************************
+        *>    HIGH SCORE HEADER
+
+        *>    HIGH SCORE FOOTER 
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1196,7 +1108,7 @@
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-
+        *>    HIGH SCORE BODY
              05 LINE 2 COLUMN 40 VALUE "Word Guessing Game" UNDERLINE,
              FOREGROUND-COLOR IS 7.
              05 LINE 6 COLUMN 43 VALUE "High Scores:"
@@ -1243,18 +1155,16 @@
              05 LINE 16 COLUMN 56 VALUE "*" FOREGROUND-COLOR IS 7.
              05 LINE 17 COLUMN 40 VALUE "*****************" 
              FOREGROUND-COLOR IS 7.
-      *************************************
-      *----HIGH SCORE PICK POSITIONING----*
-      *************************************
+        *>    HIGH SCORE OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 WS-HIGH-SCORE-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
                   USING WS-HIGH-SCORE-CHOICE.
        
            
        PROCEDURE DIVISION.
-      **************************************
-      *-----LOGIN / SIGN-IN/UP SECTION-----*
-      **************************************
+      ******************************************************************
+      *-----**************LOGIN / SIGN-IN/UP SECTION-----***************
+      ******************************************************************
         0110-DISPLAY-LOGIN.
            PERFORM 0200-TIME-AND-DATE.
            INITIALIZE LOGIN-CHOICE. 
@@ -1334,9 +1244,9 @@
            ELSE 
                PERFORM 0114-ERROR-PAGE 
            END-IF.
-      **************************************************     
-      *----DISPLAY MENU COMES AFTER SUCCESFUL LOGIN----*
-      **************************************************
+      ****************************************************************** 
+      ********-----DISPLAY MENU COMES AFTER SUCCESFUL LOGIN----*********
+      ******************************************************************
        0120-DISPLAY-MENU.
            PERFORM 0200-TIME-AND-DATE.
            INITIALIZE MENU-CHOICE.
@@ -1370,9 +1280,9 @@
                PERFORM 0120-DISPLAY-MENU  
            END-IF.
 
-      *******************************   
-      *----BANK DETAILS SECTIONS----*
-      *******************************
+      ******************************************************************   
+      ********************----BANK DETAILS SECTIONS----*****************
+      ******************************************************************
            
        0125-BANK-DETAILS.    
            PERFORM 0200-TIME-AND-DATE.
@@ -1406,9 +1316,9 @@
            WS-CARD-EXPIRY, WS-CARD-CVV.
            
            PERFORM 0122-USER-ACCOUNT-MENU.    
-      ************************************************
-      *----MESSAGE SECTION FOR READ/WRITE/COMMENT----*
-      ************************************************
+      ******************************************************************
+      *********-----MESSAGE SECTION FOR READ/WRITE/COMMENT----**********
+      ******************************************************************
        0130-MSG-MENU.
            PERFORM 0200-TIME-AND-DATE.
            CALL "number-of-file-lines" USING NUM-FILE-LINES.
@@ -1483,7 +1393,7 @@
            END-IF.
 
            IF MSG-VIEW-CHOICE = "c" OR "C"
-             PERFORM 0400-COMMENT-SCREEN
+             PERFORM 0151-COMMENT-SCREEN
            END-IF 
            .
            
@@ -1530,9 +1440,49 @@
            END-IF.
 
            PERFORM 0120-DISPLAY-MENU.
-      *******************************
-      *----FUN AND GAMES SECTION----*
-      *******************************
+
+       0151-COMMENT-SCREEN.
+           PERFORM 0280-CURRENT-TIME.
+           CALL "num-comments" USING NUM-COMMENTS.
+           CALL "get-comment" USING COMMENT-TABLE MSG-SELECT.
+
+           IF COM-INDEX < 5
+             MOVE 1 TO COM-INDEX
+           END-IF
+           .
+           
+           INITIALIZE COM-SCRN-CHOICE.
+           DISPLAY COMMENT-SCREEN.
+           ACCEPT COM-SCRN-CHOICE-FIELD.
+       
+           IF COM-SCRN-CHOICE-FIELD = "n" OR "N" THEN
+             ADD 5 TO COM-INDEX
+             IF COM-COMMENT(COM-INDEX) = SPACES
+               SUBTRACT 5 FROM COM-INDEX
+               PERFORM 0151-COMMENT-SCREEN
+             ELSE
+               PERFORM 0151-COMMENT-SCREEN
+             END-IF
+           END-IF
+           .
+
+           IF COM-SCRN-CHOICE-FIELD = "p" OR "P" THEN
+             SUBTRACT 5 FROM COM-INDEX
+             PERFORM 0151-COMMENT-SCREEN
+           END-IF
+           .
+
+           IF COM-SCRN-CHOICE-FIELD = "g" OR "G" THEN
+             PERFORM 0140-MESSAGE-VIEW
+           ELSE IF COM-SCRN-CHOICE-FIELD = "q" OR "Q" THEN
+             STOP RUN
+           END-IF
+           .
+
+           PERFORM 0151-COMMENT-SCREEN.
+      ******************************************************************
+      ***************-----FUN AND GAMES SECTION----*********************
+      ******************************************************************
        0160-GAMES-MENU.
            PERFORM 0200-TIME-AND-DATE.
            INITIALIZE GAMES-MENU-CHOICE.
@@ -1547,9 +1497,9 @@
            END-IF.
 
            PERFORM 0160-GAMES-MENU.
-      ***************************
-      *----TIME/DATE SECTION----*
-      ***************************
+      ******************************************************************
+      ******************-----TIME/DATE SECTION----**********************
+      ******************************************************************
        0200-TIME-AND-DATE.
            MOVE FUNCTION CURRENT-DATE TO WS-DATETIME. 
            MOVE WS-DATETIME(1:4)  TO WS-FORMATTED-YEAR.
@@ -1559,9 +1509,9 @@
            MOVE WS-DATETIME(11:2) TO WS-FORMATTED-MINS.
            MOVE WS-DATETIME(13:2) TO WS-FORMATTED-SEC.
            MOVE WS-DATETIME(15:2) TO WS-FORMATTED-MS.
-      ************************************
-      *----WORD GUESSING GAME SECTION----*
-      ************************************
+      ******************************************************************
+      ****************----WORD GUESSING GAME SECTION----****************
+      ******************************************************************
        0210-DISPLAY-GUESSING-GAME.
            PERFORM 0200-TIME-AND-DATE.
            MOVE 15 TO WS-GUESSES-LEFT.
@@ -1701,47 +1651,9 @@
 
        0280-CURRENT-TIME.
            MOVE FUNCTION CURRENT-DATE TO WS-TIME.
-      ****************************************
-      *-----COMMENTS ON MESSAGES SECTION-----*
-      ****************************************
-       0400-COMMENT-SCREEN.
-           PERFORM 0280-CURRENT-TIME.
-           CALL "num-comments" USING NUM-COMMENTS.
-           CALL "get-comment" USING COMMENT-TABLE MSG-SELECT.
-
-           IF COM-INDEX < 5
-             MOVE 1 TO COM-INDEX
-           END-IF
-           .
-           
-           INITIALIZE COM-SCRN-CHOICE.
-           DISPLAY COMMENT-SCREEN.
-           ACCEPT COM-SCRN-CHOICE-FIELD.
+      ******************************************************************
+      **************-----COMMENTS ON MESSAGES SECTION-----**************
+      ******************************************************************
        
-           IF COM-SCRN-CHOICE-FIELD = "n" OR "N" THEN
-             ADD 5 TO COM-INDEX
-             IF COM-COMMENT(COM-INDEX) = SPACES
-               SUBTRACT 5 FROM COM-INDEX
-               PERFORM 0400-COMMENT-SCREEN
-             ELSE
-               PERFORM 0400-COMMENT-SCREEN
-             END-IF
-           END-IF
-           .
-
-           IF COM-SCRN-CHOICE-FIELD = "p" OR "P" THEN
-             SUBTRACT 5 FROM COM-INDEX
-             PERFORM 0400-COMMENT-SCREEN
-           END-IF
-           .
-
-           IF COM-SCRN-CHOICE-FIELD = "g" OR "G" THEN
-             PERFORM 0140-MESSAGE-VIEW
-           ELSE IF COM-SCRN-CHOICE-FIELD = "q" OR "Q" THEN
-             STOP RUN
-           END-IF
-           .
-
-           PERFORM 0400-COMMENT-SCREEN.
            
        
