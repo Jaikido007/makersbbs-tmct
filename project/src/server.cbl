@@ -174,6 +174,7 @@
                01 WS-COLOR-WHITE       PIC 9(1) VALUE 7.
                01 WS-COLOR-CYAN        PIC 9(1) VALUE 3.
                01 WS-COLOR-RED         PIC 9(1) VALUE 4.
+               01 WS-BG-COLOR          PIC 9(1) VALUE 1.
                01 WS-FG-CELL           PIC 9(1).
                01 WS-FG                PIC 9(1).
                01 WS-BG                PIC 9(1).
@@ -200,6 +201,7 @@
       ******************-----COMMENT SYSTEM VARIABLES-----**************
       ******************************************************************
            01 NUM-COMMENTS PIC 9999.
+           01 COMMENT-WRITE-CHOICE PIC X.
            01 COMMENT-TABLE.
                05 COM-ENTRY OCCURS 1 TO 9999 TIMES 
                DEPENDING ON NUM-COMMENTS.
@@ -1254,7 +1256,73 @@
         *>    COMMENT SECTION OPTION POSITIONING
              05 LINE 42 COLUMN 6 VALUE "Option: ".
              05 COM-SCRN-CHOICE-FIELD LINE 42 COL 14 PIC X USING
-               COM-SCRN-CHOICE.   
+               COM-SCRN-CHOICE. 
+
+      *     01 WRITE-COMMENT-SCREEN
+      *         BACKGROUND-COLOR IS 01.
+      *         05 BLANK SCREEN.
+        *>    WRITE MESSAGE HEADER
+      *       05 LINE 1 COL 1  VALUE "   :                              
+      *-    "                                                         "
+      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+      *       05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
+      *       FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+      *       05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
+      *       FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+      *       05 LINE 1 COL 81 VALUE "CREDITS: "
+      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+      *       05 LINE 1 COL 90 USING WS-USERCREDITS
+      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+        *>    WRITE MESSAGE FOOTER
+      *         05 LINE 43 COL 1 VALUE "                                 
+      *-    "                                                           "
+      *         FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+      *         05 LINE 44 COL 1 VALUE "     (P) Post comment     (D) Dis
+      *-    "card comment     (Q) Quit          "                                 
+      *          FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+      *         05 LINE 45 COL 1 VALUE "                                 
+      *-    "                                                           "
+      *         FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+      *         05 LINE 46 COL 1 VALUE "                                 
+      *-    "                                                           "
+      *         FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+        *>    WRITE MESSAGE BODY
+      *       05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
+
+      *       05 LINE 4 COL 41 VALUE "BULLETIN BOARD"                                     
+      *       FOREGROUND-COLOR IS 7, UNDERLINE.
+      *       05 LINE 7 COL 41 VALUE "POST A COMMENT"                                         
+      *       FOREGROUND-COLOR IS 7.
+                  
+      *       05 LINE  9 COL 8 VALUE "                                   
+      *-    "                                           "
+      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+      *       05 LINE 10 COL 8 VALUE "  "
+      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+      *       05 LINE 11 COL 8 VALUE "  "   
+      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.                                  
+      *       05 LINE 11 COL 10 VALUE "                                   
+      *-    "                                        "   
+      *       FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+      *       05 LINE 11 COL 84 VALUE "  "
+      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+      *       05 LINE 12 COL 8 VALUE "  "
+      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+      *       05 LINE 12 COL 10 VALUE "Comment: "
+      *       FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+      *       05 COM-COMMENT-FIELD LINE 12 COL 19 PIC X(60) 
+      *       USING COM-COMMENT FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+      *       05 LINE 12 COL 69 VALUE "               "
+      *       FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+      *       05 LINE 12 COL 84 VALUE "  "
+      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+      *       05 LINE 17 COL 8 VALUE "                                   
+      *-    "                                           "
+      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.            
+        *>    WRITE COMMENT OPTION POSITIONING
+      *         05 LINE 42 COLUMN 6 VALUE "Option: ".
+      *         05 COMMENT-WRITE-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
+      *            USING COMMENT-WRITE-CHOICE.  
       ******************************************************************
       *******************-----GAMES MENU SECTION----********************
       ******************************************************************
@@ -1545,7 +1613,7 @@
                   USING WS-HIGH-SCORE-CHOICE.
 
            01 TIC-TAC-TOE-SCREEN
-             BACKGROUND-COLOR IS 1.
+             BACKGROUND-COLOR IS WS-BG-COLOR.
              05 BLANK SCREEN.
        *>    TIC-TAC-TOE HEADER
              05 LINE 1 COL 1  VALUE "   :                              
@@ -1626,6 +1694,7 @@
                05 LINE 29 COLUMN 41 VALUE IS "/".
                    05 GAMES PIC 9(2) FROM WS-GAMES. 
 
+           
            01 GUESS-THE-NUMBER-GAME-SCREEN
              BACKGROUND-COLOR IS 1.
            05 BLANK SCREEN.
@@ -1650,9 +1719,8 @@
              FOREGROUND-COLOR IS 6.
              05 LINE 22 COLUMN 14 VALUE IS "Total Guesses = "
              FOREGROUND-COLOR IS 5.
-             05 GUESSES PIC 99 FROM TOTAL-GUESSES. 
-
-           
+             05 GUESSES PIC 99 FROM TOTAL-GUESSES.
+                        
       ************************END OF SCREEN SECTION********************* 
            
        PROCEDURE DIVISION.
@@ -2074,6 +2142,54 @@
            END-IF.
 
            PERFORM 0143-COMMENT-SCREEN.
+
+      *     0144-COMMENT-WRITE.
+      *     PERFORM 0200-TIME-AND-DATE.
+      *     PERFORM 0132-CREDIT-TOTAL.
+      *     INITIALIZE COM-COMMENT.
+      *     INITIALIZE COMMENT-WRITE-CHOICE.
+      *     DISPLAY WRITE-COMMENT-SCREEN.
+           
+      *     ACCEPT COM-COMMENT-FIELD.
+      *     ACCEPT COMMENT-WRITE-CHOICE-FIELD.
+
+      *     PERFORM UNTIL COMMENT-WRITE-CHOICE-FIELD = "d" OR "D" OR "s"
+      *       OR "S" OR "p" OR "P" OR "q" OR "Q"
+
+      *       ACCEPT COMMENT-WRITE-CHOICE-FIELD
+
+      *     END-PERFORM.
+
+      *     IF COMMENT-WRITE-CHOICE-FIELD = "d" OR "D" THEN
+      *         PERFORM 0144-COMMENT-WRITE
+      *     END-IF.
+
+      *     IF COMMENT-WRITE-CHOICE-FIELD = "p" OR "P" THEN 
+      *        MOVE WS-CONTENT-DISPLAY TO WS-CONTENT
+      *        MOVE WS-USERNAME TO WS-MSG-AUTHOR
+
+      *         IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
+      *            CALL "post-message" USING NEW-MESSAGE
+      *            PERFORM 0140-MESSAGE-MENU
+      *          END-IF    
+      *     END-IF.
+
+      *     IF MSG-WRITE-CHOICE-FIELD = "s" OR "S" THEN 
+      *        MOVE WS-CONTENT-DISPLAY TO WS-CONTENT
+      *        MOVE WS-USERNAME TO WS-MSG-AUTHOR
+
+      *          IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
+      *            CALL "post-message" USING NEW-MESSAGE
+      *            PERFORM 0140-MESSAGE-MENU
+      *          END-IF    
+      *     END-IF.
+
+      *     IF MSG-WRITE-CHOICE-FIELD = "q" OR "Q" THEN
+      *       STOP RUN
+      *     END-IF.
+
+
+      *     PERFORM 0110-DISPLAY-MENU.
       ******************************************************************
       ******************-----TIME/DATE SECTION----**********************
       ******************************************************************
@@ -2266,7 +2382,9 @@
            END-PERFORM.
            CLOSE F-HIGH-SCORES-FILE.
            PERFORM 0415-HIGH-SCORE-SCREEN.
-
+      ******************************************************************
+      ****************----TIC-TAC-TOE GAME SECTION----******************
+      ******************************************************************
        0420-TIC-TAC-TOE.
            PERFORM 0201-CURRENT-DATE.
            PERFORM 0132-CREDIT-TOTAL.
@@ -2274,10 +2392,13 @@
            PERFORM GAME-LOOP-PARAGRAPH
                WITH TEST AFTER UNTIL FINISHED-PLAYING
            PERFORM 0400-GAMES-MENU.
+
            GAME-LOOP-PARAGRAPH.
                INITIALIZE WS-GAME-GRID
                INITIALIZE WS-STATE
                INITIALIZE WS-MOVES
+               MOVE WS-COLOR-BLUE  TO WS-BG-COLOR 
+               
                MOVE "Make a move like 'A2'" TO WS-OANDXMESSAGE
                PERFORM GAME-FRAME-PARAGRAPH
                    WITH TEST AFTER UNTIL GAME-OVER
@@ -2285,28 +2406,36 @@
                EVALUATE WS-STATE
                WHEN "WIN"
                    ADD 1 TO WS-WINS END-ADD
-                   MOVE WS-COLOR-BLUE TO WS-FG
-                   MOVE WS-COLOR-BLUE TO WS-FG-CELL
+                   MOVE WS-COLOR-GREEN TO WS-BG-COLOR 
+                   MOVE WS-COLOR-BLUE  TO WS-FG
+                   MOVE WS-COLOR-BLUE  TO WS-FG-CELL
                    MOVE WS-COLOR-GREEN TO WS-BG
                WHEN "STALE"
-                   MOVE WS-COLOR-BLUE TO WS-FG
-                   MOVE WS-COLOR-BLUE TO WS-FG-CELL
-                   MOVE WS-COLOR-CYAN  TO WS-BG
+                   MOVE WS-COLOR-BLUE  TO WS-BG-COLOR 
+                   MOVE WS-COLOR-BLUE  TO WS-FG
+                   MOVE WS-COLOR-BLUE  TO WS-FG-CELL
+                   MOVE WS-COLOR-BLUE  TO WS-BG
+               WHEN "LOSE"
+                   MOVE WS-COLOR-RED   TO WS-BG-COLOR 
+                   MOVE WS-COLOR-BLUE  TO WS-FG
+                   MOVE WS-COLOR-BLUE  TO WS-FG-CELL
+                   MOVE WS-COLOR-RED   TO WS-BG                                      
                WHEN OTHER
-                   MOVE WS-COLOR-BLUE TO WS-FG
-                   MOVE WS-COLOR-BLUE TO WS-FG-CELL
-                   MOVE WS-COLOR-RED   TO WS-BG
+                   MOVE WS-COLOR-BLUE  TO WS-BG-COLOR
+                   MOVE WS-COLOR-BLUE  TO WS-FG
+                   MOVE WS-COLOR-BLUE  TO WS-FG-CELL
+                   MOVE WS-COLOR-BLUE   TO WS-BG
                END-EVALUATE
                MOVE "One more (y/n)? " TO WS-INSTRUCTION
                MOVE "y" TO WS-NEXT-MOVE
-               DISPLAY TIC-TAC-TOE-SCREEN    END-DISPLAY
+               DISPLAY TIC-TAC-TOE-SCREEN
                ACCEPT WS-NEXT-MOVE-FIELD.
 
            GAME-FRAME-PARAGRAPH.
                MOVE "Move to square: " TO WS-INSTRUCTION
                MOVE WS-COLOR-GREEN     TO WS-FG
                MOVE WS-COLOR-WHITE     TO WS-FG-CELL
-               MOVE WS-COLOR-BLUE     TO WS-BG
+               MOVE WS-COLOR-BLUE      TO WS-BG
                INITIALIZE WS-MOVE-OUTCOME
                IF COMPUTER-PLAYER
                    INITIALIZE WS-COMPUTER-MOVED
@@ -2323,7 +2452,7 @@
                    END-PERFORM
                ELSE
                    INITIALIZE WS-NEXT-MOVE
-                   DISPLAY TIC-TAC-TOE-SCREEN END-DISPLAY
+                   DISPLAY TIC-TAC-TOE-SCREEN
                    ACCEPT WS-NEXT-MOVE-FIELD
                    EVALUATE FUNCTION UPPER-CASE(WS-NEXT-MOVE(1:1))
                        WHEN "A" SET WS-ROW TO 1
@@ -2369,18 +2498,18 @@
                INITIALIZE WS-SWAP-PLAYERS
                EVALUATE WS-MOVE-OUTCOME
                WHEN "WIN"
-                   MOVE "WINNER! (^_^)"    TO WS-OANDXMESSAGE
+                   MOVE "WINNER!"    TO WS-OANDXMESSAGE
                    MOVE "WIN" TO WS-STATE
                    SET WS-SWAP-PLAYERS     TO 1
                WHEN "LOSE"
-                   MOVE "YOU DIED (x_x)"   TO WS-OANDXMESSAGE
+                   MOVE "LOSER!"   TO WS-OANDXMESSAGE
                    MOVE "LOSE" TO WS-STATE
                    SET WS-SWAP-PLAYERS     TO 1
                WHEN "STALE"
-                   MOVE "Stalemate! (>_<)" TO WS-OANDXMESSAGE
+                   MOVE "IT'S A DRAW!" TO WS-OANDXMESSAGE
                    MOVE "STALE" TO WS-STATE
                WHEN "FAIL"
-                   MOVE "Invalid move... (o_O)" TO WS-OANDXMESSAGE
+                   MOVE "Invalid move..." TO WS-OANDXMESSAGE
                WHEN OTHER
                    MOVE "Enter a move" TO WS-OANDXMESSAGE
                    SET WS-SWAP-PLAYERS TO 1
@@ -2415,7 +2544,9 @@
                        MOVE "LOSE" TO WS-MOVE-OUTCOME
                    END-IF
                END-IF.
-
+      ******************************************************************
+      ****************----NUMBER GUESSING GAME SECTION----**************
+      ******************************************************************
        0430-GUESS-THE-NUMBER-GAME.
            PERFORM 0200-TIME-AND-DATE.
            PERFORM 0132-CREDIT-TOTAL.
