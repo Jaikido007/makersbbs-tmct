@@ -102,7 +102,6 @@
            01 WS-FILE-IS-ENDED         PIC 9 VALUE ZERO.
            01 MSG-MENU-CHOICE          PIC XXX.
            01 GAMES-MENU-CHOICE        PIC X.
-           01 WS-COUNTER               PIC 99.
            01 NUM-FILE-LINES           PIC 999.
            01 ID-NUM                   PIC 999 VALUE 1.
            01 WS-DATETIME              PIC X(21).
@@ -2100,6 +2099,10 @@
        0110-DISPLAY-MENU.
            PERFORM 0200-TIME-AND-DATE.
            PERFORM 0132-CREDIT-TOTAL.
+
+          *>  Reset message pagination idx
+           MOVE 1 TO ID-NUM.
+
            INITIALIZE MENU-CHOICE.
            DISPLAY MENU-SCREEN.
            ACCEPT MENU-CHOICE-FIELD.
@@ -2240,7 +2243,7 @@
                WS-UPDATE-CREDITS
                CALL "account-status" USING WS-USERNAME
            ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
-               MOVE "Insufficent Credits" TO WS-ERROR-MSG
+               MOVE "Insufficient Credits" TO WS-ERROR-MSG
                PERFORM 0109-ERROR-PAGE
            END-IF. 
 
