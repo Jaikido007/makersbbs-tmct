@@ -11,7 +11,7 @@
            01 RC-FILE-ENTRY.
              05 RC-ID PIC 999.
              05 RC-AUTHOR PIC X(16).
-             05 RC-DATE-POST PIC X(21).
+             05 RC-DATE-POST PIC X(10).
              05 RC-COMMENT PIC X(50).
 
            WORKING-STORAGE SECTION.
@@ -19,18 +19,16 @@
            01 NUM-COMMENTS PIC 9999.
 
            01 COUNTER PIC 999.
-           01 MATCHED-COMMENTS PIC 999 VALUE 0.
            01 ID-FIND PIC 999.
 
            01 COM-INDEX PIC 9999 VALUE 1.
-           01 WIPE PIC X(87) VALUE SPACES.
 
            01 TEMP-TABLE.
                05 WS-ENTRY OCCURS 1 TO 9999 TIMES 
                DEPENDING ON NUM-COMMENTS.
                   *>  10 TEMP-ID PIC 999.
                    10 TEMP-AUTHOR PIC X(16).
-                   10 TEMP-DATE PIC X(21).
+                   10 TEMP-DATE PIC X(10).
                    10 TEMP-COMMENT PIC X(50).
 
            01 WS-FILE-END PIC 9 VALUE 0.
@@ -40,7 +38,7 @@
                  DEPENDING ON NUM-COMMENTS.
                   *>  10 LS-ID PIC 999.
                    10 LS-AUTHOR PIC X(16).
-                   10 LS-DATE PIC X(21).
+                   10 LS-DATE PIC X(10).
                    10 LS-COMMENT PIC X(50).
     
            01 MSG-SELECT PIC 999.
