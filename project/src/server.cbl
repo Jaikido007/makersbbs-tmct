@@ -470,12 +470,12 @@
 
              05 LINE 30 COLUMN 37 VALUE "Create your account".
              05 LINE 32 COLUMN 37 VALUE " Enter a username: ".
-             05 WS-NEW-USER-NAME-FIELD LINE 34 COLUMN 38 PIC X(16)
+             05 WS-NEW-USER-NAME-FIELD LINE 34 COLUMN 37 PIC X(16)
                 USING WS-NEW-USER-NAME.
-             05 LINE 34 COLUMN 54 VALUE "____".
+             05 LINE 34 COLUMN 52 VALUE "____".
              05 LINE 36 COLUMN 37 VALUE " Enter a password: ".
              05 LINE 37 COLUMN 36 VALUE " (max 20 characters)".
-             05 WS-NEW-PASSWORD-FIELD LINE 39 COLUMN 38 PIC X(20)
+             05 WS-NEW-PASSWORD-FIELD LINE 39 COLUMN 37 PIC X(20)
                 USING WS-NEW-PASSWORD.
 
         *>    CREATE ACCOUNT OPTION POSITIONING
@@ -1197,16 +1197,16 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    COMMENT SECTION FOOTER
             05 LINE 43 COL 1 VALUE "                                 
-      -    "                                                           "
+      -    "                                                         "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 44 COL 1 VALUE "     (N) Next page     (P) Previous
-      -    " page     (G) Go back     (Q) Quit                         "                                 
+      -    " page     (C) Comment                                      "                                 
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 45 COL 1 VALUE "                                 
-      -    "                                                           "
+             05 LINE 45 COL 1 VALUE "     (G) Go back       (Q) Quit                                 
+      -    "                                                         "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 46 COL 1 VALUE "                                 
-      -    "                                                           "
+      -    "                                                         "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 3 COL 10 VALUE "Comments for the message titled: ".
              05 LINE 3 COL 43 PIC X(50) USING LIST-TITLE(MSG-SELECT)
