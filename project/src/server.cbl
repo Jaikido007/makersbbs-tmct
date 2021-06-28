@@ -93,9 +93,11 @@
            01 WS-GUESSING-LOSING-CHOICE PIC X.
            01 WS-GUESSING-WINNING-CHOICE PIC X.
            01 WS-WORD-LENGTH PIC 99.
-
+      ******************************************************************
            01 COUNTER UNSIGNED-INT.
            01 OFFSET UNSIGNED-INT.
+
+           01 WS-GAMECREDITS PIC 9(3) VALUE ZEROES.
            
            01 WS-FILE-IS-ENDED         PIC 9 VALUE ZERO.
            01 MSG-MENU-CHOICE          PIC XXX.
@@ -230,8 +232,7 @@
                05 WS-DAY PIC X(2).
                05 WS-HOURS-MINS.
                    10 WS-HOURS PIC X(2).
-                   10 WS-MINS PIC X(2).
-             
+                   10 WS-MINS PIC X(2).             
       ******************************************************************
            LINKAGE SECTION.
            01 LS-COUNTER UNSIGNED-INT.
@@ -379,7 +380,7 @@
              FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
              05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
              FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-             05 LINE 1 COL 90 USING WS-USERCREDITS
+             05 LINE 1 COL 90 PIC X(3) USING WS-USERCREDITS
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    ERROR FOOTER
                05 LINE 43 COL 1 VALUE "                                 
@@ -559,16 +560,67 @@
       -    "                                                         "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO. 
         *>    BANK DETAILS BODY
-             05 LINE 6 COLUMN 10 VALUE "ADD A BANK CARD".
-             05 LINE 8 COLUMN 10 VALUE "Enter Card Number: ".
-             05 CARD-NO-FIELD LINE 10 COLUMN 10 PIC 9(16)
-                USING CARD-NO.
-             05 LINE 12 COLUMN 10 VALUE "Enter Expiry Date: ".
-             05 CARD-EXPIRY-FIELD LINE 14 COLUMN 10 PIC 9(4)
-                USING CARD-EXPIRY.
-             05 LINE 16 COLUMN 10 VALUE "Enter CVV Number: ".
-             05 CARD-CVV-FIELD LINE 18 COLUMN 10 PIC 9(3)
-                USING CARD-CVV.
+            05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
+             05 LINE  9 COL 8 VALUE "                               ADD                  
+      -    "A BANK CARD                                "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 10 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 10 COL 10 VALUE "                                  
+      -    "                                         "
+             FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 LINE 10 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 11 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 11 COL 10 VALUE "               Enter Card Number:
+      -    " " FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 CARD-NO-FIELD LINE 11 COLUMN 44 PIC 9(16)
+                USING CARD-NO   FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 LINE 11 COL 60 VALUE "                        "
+             FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 LINE 11 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 12 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 12 COL 10 VALUE "                                  
+      -    "                                         "
+             FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 LINE 12 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 13 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 13 COL 10 VALUE "               Enter Expiry Date:
+      -    " " FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 CARD-EXPIRY-FIELD LINE 13 COLUMN 44 PIC 9(4)
+             USING CARD-EXPIRY FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 LINE 13 COL 48 VALUE "                                  
+      -    "  " FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 LINE 13 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 14 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 14 COL 10 VALUE "               Enter CVV Number:  
+      -    " " FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 CARD-CVV-FIELD LINE 14 COLUMN 44 PIC 9(3)
+                USING CARD-CVV FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 LINE 14 COL 47 VALUE "                                  
+      -    "   " FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 LINE 14 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 15 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 15 COL 10 VALUE  "                                  
+      -    "                                         "
+             FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 LINE 15 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 16 COL 8 VALUE "                                   
+      -    "                                           "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    BANK DETAILS OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
              05 BANK-ACCOUNT-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
@@ -745,12 +797,10 @@
          *>    MSG MENU BODY
              05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
 
-             05 LINE 4 COL 38 VALUE "BULLETIN BOARD"                                     
+             05 LINE 4 COL 40 VALUE "BULLETIN BOARD"                                     
              FOREGROUND-COLOR IS 7, UNDERLINE.
-             05 LINE 7 COL 36 VALUE "SPONSORED MESSAGES"                                         
-             FOREGROUND-COLOR IS 7.
-             05 LINE  9 COL 8 VALUE "                                   
-      -    "                                           "
+             05 LINE  9 COL 8 VALUE "                               SPON                 
+      -    "SORED MESSAGES                             "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
              05 LINE 10 COL 8 VALUE "  "
@@ -793,8 +843,8 @@
              05 LINE 14 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
-             05 LINE 15 COL 8 VALUE "                                   
-      -    "                                           "
+             05 LINE 15 COL 8 VALUE "                                REC                 
+      -    "ENT MESSAGES                               "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 16 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -919,8 +969,6 @@
              05 LINE 26 COL 8 VALUE "                                   
       -    "                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 28 COL 38 VALUE "RECENT MESSAGES"                                    
-             FOREGROUND-COLOR IS 7.
         *>    MSG MENU OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 MSG-MENU-CHOICE-FIELD LINE 42 COLUMN 14 PIC XX
@@ -957,13 +1005,11 @@
         *>    MESSAGE VIEW BODY
              05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
 
-             05 LINE 4 COL 38 VALUE "BULLETIN BOARD"                                     
+             05 LINE 4 COL 40 VALUE "BULLETIN BOARD"                                     
              FOREGROUND-COLOR IS 7, UNDERLINE.
-             05 LINE 7 COL 36 VALUE "YOUR CHOSEN MESSAGE"                                         
-             FOREGROUND-COLOR IS 7.
                   
-             05 LINE  9 COL 8 VALUE "                                   
-      -    "                                           "
+             05 LINE  9 COL 8 VALUE "                              YOUR                 
+      -    "CHOSEN MESSAGE                             "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 10 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1096,13 +1142,11 @@
         *>    WRITE MESSAGE BODY
              05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
 
-             05 LINE 4 COL 41 VALUE "BULLETIN BOARD"                                     
+             05 LINE 4 COL 40 VALUE "BULLETIN BOARD"                                     
              FOREGROUND-COLOR IS 7, UNDERLINE.
-             05 LINE 7 COL 41 VALUE "POST A MESSAGE"                                         
-             FOREGROUND-COLOR IS 7.
-                  
-             05 LINE  9 COL 8 VALUE "                                   
-      -    "                                           "
+
+             05 LINE  9 COL 8 VALUE "                               POST                 
+      -    " A MESSAGE                                 "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 10 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1299,6 +1343,7 @@
         *>    WRITE MESSAGE BODY
              05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
 
+
              05 LINE 4 COL 41 VALUE "BULLETIN BOARD"                                     
              FOREGROUND-COLOR IS 7, UNDERLINE.
              05 LINE 7 COL 41 VALUE "POST A COMMENT"                                         
@@ -1351,14 +1396,14 @@
              FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
              05 LINE 1 COL 81 VALUE "CREDITS: "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 1 COL 90 USING WS-USERCREDITS
+             05 LINE 1 COL 90 PIC 9(3) USING WS-USERCREDITS
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    GAMES MENU FOOTER
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE 44 COL 1 VALUE "     (W) Word guessing game     (                    
-      -    "N) Number guessing game     (T) Tic-Tac-Toe game           "                                            "
+               05 LINE 44 COL 1 VALUE "     (1) Guess the word     (2) G                    
+      -    "uess the number     (3) Tic-Tac-Toe                        "                                            "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 45 COL 1 VALUE "     (C) Credit Store           (
       -    "G) Go back                  (Q) Quit                       "                                         
@@ -1366,6 +1411,105 @@
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+        *>    GAMES MENU BODY
+             05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
+
+             05 LINE 4 COL 40 VALUE "GAMES MENU"                                     
+             FOREGROUND-COLOR IS 7, UNDERLINE.
+             05 LINE 12 COL 8 VALUE "                                   
+      -    "                        "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 12 COL 67 VALUE "GAME CREDITS: "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 12 COL 81 PIC 9(3) USING WS-GAMECREDITS
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 12 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 13 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 13 COL 10 VALUE "                                   
+      -    "                                          "
+             FOREGROUND-COLOR IS 5, REVERSE-VIDEO.
+             05 LINE 13 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 14 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 14 COL 10 VALUE "                          1: GUESS                
+      -    " THE NUMBER                             "
+             FOREGROUND-COLOR IS 5, REVERSE-VIDEO.
+             05 LINE 14 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 15 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 15 COL 10 VALUE "                                   
+      -    "                                        "
+             FOREGROUND-COLOR IS 5, REVERSE-VIDEO.
+             05 LINE 15 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+        *>    GAME 2 POSITION
+             05 LINE 16 COL 8 VALUE "                                   
+      -    "                                           "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 17 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 17 COL 10 VALUE "                                   
+      -    "                                          "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 17 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 18 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 18 COL 10 VALUE "                          2: GUESS                
+      -    " THE WORD                               "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 18 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 19 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 19 COL 10 VALUE "                                   
+      -    "                                        "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 19 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 20 COL 8 VALUE "                                   
+      -    "                                           "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+        *>    GAME 3 POSITION
+             05 LINE 21 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 21 COL 10 VALUE "                                   
+      -    "                                          "
+             FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 LINE 21 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 22 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 22 COL 10 VALUE "                          3: TIC-T                
+      -    "AC-TOE                                  "
+             FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 LINE 22 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 23 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 23 COL 10 VALUE "                                   
+      -    "                                        "
+             FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 LINE 23 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 24 COL 8 VALUE "                                   
+      -    "                                           "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
         *>    GAMES MENU OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 GAMES-MENU-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
@@ -1398,22 +1542,84 @@
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
-               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO. 
         *>    WORD GUESSING GAME BODY
-             05 LINE 2 COLUMN 37 VALUE "Word Guessing Game" UNDERLINE.
-             05 LINE 14 COLUMN 10 VALUE "Guess this word: ".
-             05 LINE 16 COLUMN 10 PIC X(20) USING WS-WORD.
-             05 LINE 18 COLUMN 10 VALUE "Guesses left: ".
-             05 LINE 18 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT.
-             05 LINE 20 COLUMN 10 VALUE "( ) Enter a letter to guess".
-             05 LINE 21 COLUMN 10 VALUE "(!) Quit game".
+             05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
+
+             05 LINE 4 COL 40 VALUE "GUESS THE WORD"                                     
+             FOREGROUND-COLOR IS 7, UNDERLINE.
+             05 LINE 12 COL 8 VALUE "                                   
+      -    "                        "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 12 COL 67 VALUE "GAME CREDITS: "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 12 COL 81 PIC 9(3) USING WS-GAMECREDITS
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 12 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 13 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 13 COL 10 VALUE "                                   
+      -    "                                          "
+             FOREGROUND-COLOR IS 5, REVERSE-VIDEO.
+             05 LINE 13 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 14 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 14 COL 10 VALUE "Guess this word: "
+             FOREGROUND-COLOR IS 5, REVERSE-VIDEO.
+             05 LINE 14 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 15 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 15 COL 10 VALUE "                                   
+      -    "                                        "
+             FOREGROUND-COLOR IS 5, REVERSE-VIDEO.
+             05 LINE 15 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 16 COL 8 VALUE "                                   
+      -    "                                           "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 16 COLUMN 10 PIC X(20) USING WS-WORD
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 17 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 17 COL 10 VALUE "                                   
+      -    "                                          "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 17 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 18 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 18 COL 10 VALUE "Guesses left: "                          "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 18 COL 24 PIC 99 USING WS-GUESSES-LEFT                           "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 18 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 19 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 19 COL 10 VALUE "                                   
+      -    "                                        "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 19 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 20 COL 8 VALUE "                                   
+      -    "                                           "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.        
         *>    WORD GUESSING GAME OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
    
            01 IN-GAME-SCREEN
-               BACKGROUND-COLOR IS 1.
-               05 BLANK SCREEN.
-        *>    IN GAME HEADER 
+             BACKGROUND-COLOR IS 1.
+             05 BLANK SCREEN.
+        *>   WORD GUESSING IN GAME HEADER
              05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                         "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1425,7 +1631,8 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 1 COL 90 USING WS-USERCREDITS
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-         *>    IN GAME FOOTER
+        *>    WORD GUESSING IN GAME FOOTER
+           *>    IN GAME FOOTER
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1438,19 +1645,83 @@
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-        *>    IN GAME BODY
-             05 LINE 3 COLUMN 37 VALUE "Word Guessing Game"
-             UNDERLINE, FOREGROUND-COLOR IS 7.
-             05 LINE 14 COLUMN 10 VALUE "Guess this word: "
-             FOREGROUND-COLOR IS 7.
-             05 LINE 16 COLUMN 10 PIC X(20) USING WS-WORD
-               FOREGROUND-COLOR IS 6.
-             05 LINE 18 COLUMN 10 VALUE "Guesses left: "
-             FOREGROUND-COLOR IS 7.
-             05 LINE 18 COLUMN 40 PIC 99 USING WS-GUESSES-LEFT
-             FOREGROUND-COLOR IS 7.
-        *>    IN GAME OPTION POSITIONING
-             05 LINE 42 COLUMN 6 VALUE "Option: ".
+        *>    WORD GUESSING IN GAME BODY
+             05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
+
+             05 LINE 4 COL 40 VALUE "GUESS THE WORD"                                     
+             FOREGROUND-COLOR IS 7, UNDERLINE.
+             05 LINE 12 COL 8 VALUE "                                   
+      -    "                        "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 12 COL 67 VALUE "GAME CREDITS: "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 12 COL 81 PIC 9(3) USING WS-GAMECREDITS
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 12 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 13 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 13 COL 10 VALUE "                                   
+      -    "                                        "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 13 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 14 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 14 COL 10 VALUE "Guess this word: "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 14 COLUMN 27 PIC X(20) USING WS-WORD
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 14 COL 47 VALUE "                                  
+      -    "   " FOREGROUND-COLOR IS 6, REVERSE-VIDEO.  
+             05 LINE 14 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 15 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 15 COL 10 VALUE "                                   
+      -    "                                        "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 15 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 16 COL 8 VALUE "                                   
+      -    "                                           "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+           
+             05 LINE 17 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 17 COL 10 VALUE "                                   
+      -    "                                          "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 17 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 18 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 18 COL 10 VALUE "Guesses left: "                          "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 18 COL 24 PIC 99 USING WS-GUESSES-LEFT                           "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 18 COL 26 VALUE "                                 
+      -    "                        "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.  
+             05 LINE 18 COL 84 VALUE "  "           
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 19 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 19 COL 10 VALUE "                                   
+      -    "                                        "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 19 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 20 COL 8 VALUE "                                   
+      -    "                                           "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.        
+        *>    WORD GUESSING GAME OPTION POSITIONING
+               05 LINE 42 COLUMN 6 VALUE "Option: ".
              05 WS-GUESS-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
                USING WS-GUESS-CHOICE   FOREGROUND-COLOR IS 0.
 
@@ -2230,11 +2501,11 @@
                STOP RUN
            ELSE IF GAMES-MENU-CHOICE = "g" or "G" THEN
                PERFORM 0110-DISPLAY-MENU   
-           ELSE IF GAMES-MENU-CHOICE = "w" or "W" THEN
+           ELSE IF GAMES-MENU-CHOICE = "2" THEN
                PERFORM 0410-DISPLAY-GUESSING-GAME
-           ELSE IF GAMES-MENU-CHOICE = "n" or "N" THEN
+           ELSE IF GAMES-MENU-CHOICE = "1" THEN
                PERFORM 0430-GUESS-THE-NUMBER-GAME 
-           ELSE IF GAMES-MENU-CHOICE = "t" or "T" THEN
+           ELSE IF GAMES-MENU-CHOICE = "3" THEN
                PERFORM 0420-TIC-TAC-TOE 
 
            END-IF.
