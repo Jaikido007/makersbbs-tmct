@@ -1614,7 +1614,7 @@
                    FOREGROUND-COLOR IS 6.
                    05 MSG PIC X(128) FROM WS-OANDXMESSAGE.
                05 LINE 25 COLUMN 27 PIC X(16) FROM WS-INSTRUCTION.
-                   05 NEXT-MOVE PIC X(2) USING WS-NEXT-MOVE.
+                   05 WS-NEXT-MOVE-FIELD PIC X(2) USING WS-NEXT-MOVE.
                05 LINE 27 COLUMN 27 VALUE IS "Stats: "
                    FOREGROUND-COLOR IS 6.
                05 LINE 28 COLUMN 27 VALUE IS "Moves played = "
@@ -1641,16 +1641,18 @@
              05 LINE 1 COL 90 USING WS-USERCREDITS
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
-               05 LINE 14 COLUMN 14 VALUE IS "Message: "
-               FOREGROUND-COLOR IS 6.
-               05 MSG PIC X(128) FROM WS-RANDOM-NUM-MSG.
-               05 GUESS-FIELD LINE 16 COLUMN 14 PIC XX USING GUESS-INPUT
-               .
-               05 LINE 20 COLUMN 14 VALUE IS "Stats: "
-               FOREGROUND-COLOR IS 6.
-               05 LINE 22 COLUMN 14 VALUE IS "Total Guesses = "
-               FOREGROUND-COLOR IS 5.
-                   05 GUESSES PIC 99 FROM TOTAL-GUESSES. 
+             05 LINE 14 COLUMN 14 VALUE IS "Message: "
+             FOREGROUND-COLOR IS 6.
+             05 MSG PIC X(128) FROM WS-RANDOM-NUM-MSG.
+             05 GUESS-INPUT-FIELD LINE 16 COLUMN 14 PIC XX 
+             USING GUESS-INPUT.
+             05 LINE 20 COLUMN 14 VALUE IS "Stats: "
+             FOREGROUND-COLOR IS 6.
+             05 LINE 22 COLUMN 14 VALUE IS "Total Guesses = "
+             FOREGROUND-COLOR IS 5.
+             05 GUESSES PIC 99 FROM TOTAL-GUESSES. 
+
+           
       ************************END OF SCREEN SECTION********************* 
            
        PROCEDURE DIVISION.
@@ -2266,6 +2268,8 @@
            PERFORM 0415-HIGH-SCORE-SCREEN.
 
        0420-TIC-TAC-TOE.
+           PERFORM 0201-CURRENT-DATE.
+           PERFORM 0132-CREDIT-TOTAL.
            MOVE "X" TO WS-PLAYER
            PERFORM GAME-LOOP-PARAGRAPH
                WITH TEST AFTER UNTIL FINISHED-PLAYING
@@ -2296,7 +2300,7 @@
                MOVE "One more (y/n)? " TO WS-INSTRUCTION
                MOVE "y" TO WS-NEXT-MOVE
                DISPLAY TIC-TAC-TOE-SCREEN    END-DISPLAY
-               ACCEPT TIC-TAC-TOE-SCREEN     END-ACCEPT.
+               ACCEPT WS-NEXT-MOVE-FIELD.
 
            GAME-FRAME-PARAGRAPH.
                MOVE "Move to square: " TO WS-INSTRUCTION
@@ -2320,7 +2324,7 @@
                ELSE
                    INITIALIZE WS-NEXT-MOVE
                    DISPLAY TIC-TAC-TOE-SCREEN END-DISPLAY
-                   ACCEPT TIC-TAC-TOE-SCREEN END-ACCEPT
+                   ACCEPT WS-NEXT-MOVE-FIELD
                    EVALUATE FUNCTION UPPER-CASE(WS-NEXT-MOVE(1:1))
                        WHEN "A" SET WS-ROW TO 1
                        WHEN "B" SET WS-ROW TO 2
@@ -2413,6 +2417,8 @@
                END-IF.
 
        0430-GUESS-THE-NUMBER-GAME.
+           PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0132-CREDIT-TOTAL.
            PERFORM INITIALIZE-RANDOM-NUM-GAME.
 
            INITIALIZE-RANDOM-NUM-GAME.
@@ -2427,7 +2433,7 @@
            GAME-LOOP.
            INITIALIZE GUESS-INPUT.
            DISPLAY GUESS-THE-NUMBER-GAME-SCREEN END-DISPLAY
-           ACCEPT GUESS-THE-NUMBER-GAME-SCREEN END-ACCEPT
+           ACCEPT GUESS-INPUT-FIELD
            MOVE GUESS-INPUT TO GUESS.
            ADD 1 TO TOTAL-GUESSES.
            IF GUESS > ANSWER
@@ -2447,7 +2453,7 @@
            WIN-LOOP.
            INITIALIZE GUESS-INPUT.
            DISPLAY GUESS-THE-NUMBER-GAME-SCREEN END-DISPLAY
-           ACCEPT GUESS-THE-NUMBER-GAME-SCREEN END-ACCEPT
+           ACCEPT GUESS-INPUT-FIELD
                IF GUESS-INPUT = "y" OR "Y"
                    GO TO INITIALIZE-RANDOM-NUM-GAME
                ELSE IF GUESS-INPUT = "n" OR "N"
