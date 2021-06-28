@@ -201,16 +201,26 @@
       ******************-----COMMENT SYSTEM VARIABLES-----**************
       ******************************************************************
            01 NUM-COMMENTS PIC 9999.
-           01 COMMENT-WRITE-CHOICE PIC X.
            01 COMMENT-TABLE.
                05 COM-ENTRY OCCURS 1 TO 9999 TIMES 
                DEPENDING ON NUM-COMMENTS.
                   *>  10 TEMP-ID PIC 999.
                    10 COM-AUTHOR PIC X(16).
-                   10 COM-DATE PIC X(21).
+                   10 COM-DATE PIC X(10).
                    10 COM-COMMENT PIC X(50).
            01 COM-INDEX PIC 9999 VALUE 1.
            01 COM-SCRN-CHOICE PIC X.
+
+      ******************************************************************
+      ****************-----COMMENT WRITING VARIABLES-----***************
+      ******************************************************************           
+           01 POST-COMMENT-CHOICE PIC X.
+           
+           01 POST-COM-TBL.
+               05 POST-COMMENT-AUTHOR PIC X(16).
+               05 POST-COMMENT-DATE PIC X(10).
+               05 WRITE-COMMENT PIC X(50).
+   
       ******************************************************************
       ***********************-----TIME VARIABLES----********************
       ******************************************************************
@@ -1258,71 +1268,72 @@
              05 COM-SCRN-CHOICE-FIELD LINE 42 COL 14 PIC X USING
                COM-SCRN-CHOICE. 
 
-      *     01 WRITE-COMMENT-SCREEN
-      *         BACKGROUND-COLOR IS 01.
-      *         05 BLANK SCREEN.
+           01 WRITE-COMMENT-SCREEN
+               BACKGROUND-COLOR IS 01.
+               05 BLANK SCREEN.
         *>    WRITE MESSAGE HEADER
-      *       05 LINE 1 COL 1  VALUE "   :                              
-      *-    "                                                         "
-      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-      *       05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
-      *       FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-      *       05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
-      *       FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-      *       05 LINE 1 COL 81 VALUE "CREDITS: "
-      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-      *       05 LINE 1 COL 90 USING WS-USERCREDITS
-      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 1 COL 1  VALUE "Type your comment here(50):                              
+      -    "                                                         "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
+             FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
+             FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 81 VALUE "CREDITS: "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 1 COL 90 USING WS-USERCREDITS
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    WRITE MESSAGE FOOTER
-      *         05 LINE 43 COL 1 VALUE "                                 
-      *-    "                                                           "
-      *         FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-      *         05 LINE 44 COL 1 VALUE "     (P) Post comment     (D) Dis
-      *-    "card comment     (Q) Quit          "                                 
-      *          FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-      *         05 LINE 45 COL 1 VALUE "                                 
-      *-    "                                                           "
-      *         FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-      *         05 LINE 46 COL 1 VALUE "                                 
-      *-    "                                                           "
-      *         FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 43 COL 1 VALUE "                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 44 COL 1 VALUE "     (P) Post comment     (D) Dis
+      -    "card comment     (Q) Quit          "                                 
+                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 45 COL 1 VALUE "                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 46 COL 1 VALUE "                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    WRITE MESSAGE BODY
-      *       05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
+             05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
 
-      *       05 LINE 4 COL 41 VALUE "BULLETIN BOARD"                                     
-      *       FOREGROUND-COLOR IS 7, UNDERLINE.
-      *       05 LINE 7 COL 41 VALUE "POST A COMMENT"                                         
-      *       FOREGROUND-COLOR IS 7.
+             05 LINE 4 COL 41 VALUE "BULLETIN BOARD"                                     
+             FOREGROUND-COLOR IS 7, UNDERLINE.
+             05 LINE 7 COL 41 VALUE "POST A COMMENT"                                         
+             FOREGROUND-COLOR IS 7.
                   
-      *       05 LINE  9 COL 8 VALUE "                                   
-      *-    "                                           "
-      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-      *       05 LINE 10 COL 8 VALUE "  "
-      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-      *       05 LINE 11 COL 8 VALUE "  "   
-      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.                                  
-      *       05 LINE 11 COL 10 VALUE "                                   
-      *-    "                                        "   
-      *       FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-      *       05 LINE 11 COL 84 VALUE "  "
-      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-      *       05 LINE 12 COL 8 VALUE "  "
-      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-      *       05 LINE 12 COL 10 VALUE "Comment: "
-      *       FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-      *       05 COM-COMMENT-FIELD LINE 12 COL 19 PIC X(60) 
-      *       USING COM-COMMENT FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-      *       05 LINE 12 COL 69 VALUE "               "
-      *       FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-      *       05 LINE 12 COL 84 VALUE "  "
-      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-      *       05 LINE 17 COL 8 VALUE "                                   
-      *-    "                                           "
-      *       FOREGROUND-COLOR IS 7, REVERSE-VIDEO.            
+             05 LINE  9 COL 8 VALUE "                                   
+      -    "                                           "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 10 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 11 COL 8 VALUE "  "   
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.                                  
+             05 LINE 11 COL 10 VALUE "                                   
+      -    "                                        "   
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 11 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 12 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 12 COL 10 VALUE "Comment: "
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 WRITE-COMMENT-FIELD LINE 12 COL 19 PIC X(50) 
+             USING WRITE-COMMENT FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 12 COL 69 VALUE "               "
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 12 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 17 COL 8 VALUE "                                   
+      -    "                                           "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO. 
+          
         *>    WRITE COMMENT OPTION POSITIONING
-      *         05 LINE 42 COLUMN 6 VALUE "Option: ".
-      *         05 COMMENT-WRITE-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
-      *            USING COMMENT-WRITE-CHOICE.  
+               05 LINE 42 COLUMN 6 VALUE "Option: ".
+               05 POST-COMMENT-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
+                  USING POST-COMMENT-CHOICE.  
       ******************************************************************
       *******************-----GAMES MENU SECTION----********************
       ******************************************************************
@@ -2014,7 +2025,6 @@
            PERFORM 0132-CREDIT-TOTAL.
            CALL "number-of-file-lines" USING NUM-FILE-LINES.
            CALL "get-list-page-alt" USING NUM-FILE-LINES WS-LIST-TABLE.
-           *> CALL "id-sort" USING WS-LIST-TABLE. <*        
            MOVE LIST-CONTENT(MSG-SELECT) TO WS-CONTENT-DISPLAY.
            INITIALIZE MSG-VIEW-CHOICE.
            DISPLAY MESSAGE-VIEW-SCREEN.
@@ -2141,55 +2151,48 @@
              STOP RUN
            END-IF.
 
+           IF COM-SCRN-CHOICE-FIELD = 'C' OR 'c'
+             PERFORM 0144-COMMENT-WRITE
+           END-IF
+
            PERFORM 0143-COMMENT-SCREEN.
 
-      *     0144-COMMENT-WRITE.
-      *     PERFORM 0200-TIME-AND-DATE.
-      *     PERFORM 0132-CREDIT-TOTAL.
-      *     INITIALIZE COM-COMMENT.
-      *     INITIALIZE COMMENT-WRITE-CHOICE.
-      *     DISPLAY WRITE-COMMENT-SCREEN.
+       0144-COMMENT-WRITE.
+           PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0132-CREDIT-TOTAL.
+           INITIALIZE WRITE-COMMENT.
+           INITIALIZE POST-COMMENT-CHOICE.
+           DISPLAY WRITE-COMMENT-SCREEN.
            
-      *     ACCEPT COM-COMMENT-FIELD.
-      *     ACCEPT COMMENT-WRITE-CHOICE-FIELD.
+            
+           ACCEPT WRITE-COMMENT-FIELD.
+           ACCEPT POST-COMMENT-CHOICE-FIELD.
 
-      *     PERFORM UNTIL COMMENT-WRITE-CHOICE-FIELD = "d" OR "D" OR "s"
-      *       OR "S" OR "p" OR "P" OR "q" OR "Q"
+           PERFORM UNTIL POST-COMMENT-CHOICE-FIELD = "d" OR "D" OR "p"
+               OR "P" OR "q" OR "Q"
+             ACCEPT POST-COMMENT-CHOICE-FIELD
+           END-PERFORM.
 
-      *       ACCEPT COMMENT-WRITE-CHOICE-FIELD
+           IF POST-COMMENT-CHOICE-FIELD = "d" OR "D" THEN
+               PERFORM 0143-COMMENT-SCREEN
+           END-IF.
 
-      *     END-PERFORM.
+           IF POST-COMMENT-CHOICE-FIELD = "p" OR "P" THEN 
+              MOVE WS-USERNAME TO POST-COMMENT-AUTHOR
+              MOVE WS-FORMATTED-DTE-TME TO POST-COMMENT-DATE
 
-      *     IF COMMENT-WRITE-CHOICE-FIELD = "d" OR "D" THEN
-      *         PERFORM 0144-COMMENT-WRITE
-      *     END-IF.
+              IF WRITE-COMMENT NOT = SPACE
+                CALL "post-comment" USING MSG-SELECT, POST-COM-TBL
+                PERFORM 0143-COMMENT-SCREEN
+              END-IF    
+           END-IF.
 
-      *     IF COMMENT-WRITE-CHOICE-FIELD = "p" OR "P" THEN 
-      *        MOVE WS-CONTENT-DISPLAY TO WS-CONTENT
-      *        MOVE WS-USERNAME TO WS-MSG-AUTHOR
-
-      *         IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
-      *            CALL "post-message" USING NEW-MESSAGE
-      *            PERFORM 0140-MESSAGE-MENU
-      *          END-IF    
-      *     END-IF.
-
-      *     IF MSG-WRITE-CHOICE-FIELD = "s" OR "S" THEN 
-      *        MOVE WS-CONTENT-DISPLAY TO WS-CONTENT
-      *        MOVE WS-USERNAME TO WS-MSG-AUTHOR
-
-      *          IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
-      *            CALL "post-message" USING NEW-MESSAGE
-      *            PERFORM 0140-MESSAGE-MENU
-      *          END-IF    
-      *     END-IF.
-
-      *     IF MSG-WRITE-CHOICE-FIELD = "q" OR "Q" THEN
-      *       STOP RUN
-      *     END-IF.
+           IF POST-COMMENT-CHOICE-FIELD = "q" OR "Q" THEN
+             STOP RUN
+           END-IF.
 
 
-      *     PERFORM 0110-DISPLAY-MENU.
+           PERFORM 0143-COMMENT-SCREEN.
       ******************************************************************
       ******************-----TIME/DATE SECTION----**********************
       ******************************************************************
