@@ -773,7 +773,7 @@
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
                05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
                FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-             05 LINE 1 COL 90 USING WS-USERCREDITS
+             05 LINE 1 COL 90 PIC 9(3) USING WS-USERCREDITS
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    BANK DETAILS FOOTER
              05 LINE 43 COL 1 VALUE "                                 
@@ -895,16 +895,24 @@
 
              05 LINE 11 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 11 COL 10 VALUE "                                   
-      -    "                                        "
+             05 LINE 11 COL 10 VALUE "S1                                   
+      -    "                                      "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 11 COL 14 PIC X(50) USING SP-TITLE(1) 
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 11 COL 64 VALUE "                    "
              FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
              05 LINE 11 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
              05 LINE 12 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 12 COL 10 VALUE "                                   
-      -    "                                        "
+             05 LINE 12 COL 10 VALUE "S2                                   
+      -    "                                      "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 12 COL 14 PIC X(50) USING SP-TITLE(2) 
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 12 COL 64 VALUE "                    "
              FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
              05 LINE 12 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -925,8 +933,8 @@
              05 LINE 14 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
-             05 LINE 15 COL 8 VALUE "                                REC                 
-      -    "ENT MESSAGES                               "
+             05 LINE 15 COL 8 VALUE "  No. TITLE                                        
+      -    "                             No. COMMENTS  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 16 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -936,10 +944,11 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 16 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 16 COL 64 PIC Z(4)    USING SUM-COMMENTS(ID-NUM)
+             05 LINE 16 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 16 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 16 COL 80 PIC Z(4)    USING SUM-COMMENTS(ID-NUM)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+           
              05 LINE 16 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 17 COL 8 VALUE "  "
@@ -950,10 +959,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 17 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 1)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 17 COL 64 PIC Z(4)   USING SUM-COMMENTS(ID-NUM + 1)
+             05 LINE 17 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 17 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 17 COL 80 PIC Z(4)   USING SUM-COMMENTS(ID-NUM + 1)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 17 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 18 COL 8 VALUE "  "
@@ -964,10 +973,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 18 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 2)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 18 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 2)
+             05 LINE 18 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 18 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 18 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 2)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 18 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 19 COL 8 VALUE "  "
@@ -978,10 +987,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 19 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 3)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 19 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 3)
+             05 LINE 19 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 19 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 19 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 3)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.           
              05 LINE 19 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 20 COL 8 VALUE "  "
@@ -992,10 +1001,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 20 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 4)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 20 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 4)
+             05 LINE 20 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 20 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 20 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 4)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 20 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 21 COL 8 VALUE "  "
@@ -1006,10 +1015,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 21 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 5)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 21 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 5)
+             05 LINE 21 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 21 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 21 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 5)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 21 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 22 COL 8 VALUE "  "
@@ -1020,10 +1029,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 22 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 6)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 22 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 6)
+             05 LINE 22 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 22 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 22 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 6)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 22 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 23 COL 8 VALUE "  "
@@ -1034,10 +1043,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 23 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 7)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 23 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 7)
+             05 LINE 23 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 23 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 23 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 7)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 23 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 24 COL 8 VALUE "  "
@@ -1048,10 +1057,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 24 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 8)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 24 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 8)
+             05 LINE 24 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 24 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 24 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 8)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 24 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 25 COL 8 VALUE "  "
@@ -1062,22 +1071,15 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 25 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 9)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 25 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 9)
+             05 LINE 25 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 25 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 25 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 9)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 25 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 26 COL 8 VALUE "                                   
-      -    "                                           "
-           FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-        *>    CODE FOR DISPLAYING SPONSORED POSTS
-           05 LINE 30 COL 10 PIC X(50) USING SP-TITLE(1) 
-             FOREGROUND-COLOR IS 7.
-             
-           05 LINE 31 COL 10 PIC X(50) USING SP-TITLE(2)
-             FOREGROUND-COLOR IS 7.
-
+             05 LINE 26 COL 8 VALUE  "                               REC                 
+      -    "ENT MESSAGES                                "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    MSG MENU OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 MSG-MENU-CHOICE-FIELD LINE 42 COLUMN 14 PIC XX
@@ -1247,14 +1249,6 @@
         *>    MESSAGE VIEW BODY
              05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
       
-             05 LINE 8 COL 10 VALUE "-----------------------------------
-      -      "---------------------" FOREGROUND-COLOR IS 7.
-
-             05 LINE 9 COL 10 VALUE "---------------------BULLETIN BOARD
-      -      "---------------------" FOREGROUND-COLOR 
-             IS 7.
-             05 LINE 10 COL 10 VALUE "----------------------------------
-      -      "----------------------" FOREGROUND-COLOR IS 7.
 
              05 LINE 12 COL 10 VALUE "Title: ".
              05 LINE 12 COL 19 PIC X(50) USING SP-TITLE(SP-MSG-SELECT).
@@ -1268,12 +1262,6 @@
              05 LINE 20 COL 19 PIC X(16) 
                 USING SP-USERNAME(SP-MSG-SELECT).
 
-             05 LINE 22 COL 10 VALUE "----------------------------------
-      -      "---------------------" FOREGROUND-COLOR IS 7.
-             05 LINE 23 COL 10 VALUE "---------------------SPONSORED MES
-      -      "SAGE--------------------" FOREGROUND-COLOR IS 7.
-             05 LINE 24 COL 10 VALUE "----------------------------------
-      -      "---------------------" FOREGROUND-COLOR IS 7.
         *>    MESSAGE VIEW OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 SP-MSG-VIEW-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
