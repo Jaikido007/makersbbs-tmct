@@ -198,7 +198,7 @@
            01 GUESS                    PIC 99.
            01 ANSWER                   PIC 99.
            01 TOTAL-GUESSES            PIC 99.
-           01 WS-RANDOM-NUM-MSG        PIC X(128).
+           01 WS-RANDOM-NUM-MSG        PIC X(28).
            01 WS-GTN-BG-COLOR          PIC X. 
       ******************************************************************
       ******************-----COMMENT SYSTEM VARIABLES-----**************
@@ -2330,58 +2330,63 @@
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-           
+        *>    TIC-TAC-TOE BODY
+             05 LINE  4 COL 10 VALUE "FriendFace"
+             FOREGROUND-COLOR IS 7, UNDERLINE.
 
-               05 LINE 14 COLUMN 27 VALUE IS "   +---+---+---+   "
+             05 LINE 4 COL 40 VALUE "TIC-TAC-TOE"                                     
+             FOREGROUND-COLOR IS 7, UNDERLINE.          
+
+               05 LINE 14 COLUMN 35 VALUE IS "   +---+---+---+   "
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG.
-               05 LINE 15 COLUMN 27 VALUE IS " A |   |   |   |   "
+               05 LINE 15 COLUMN 35 VALUE IS " A |   |   |   |   "
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG.
-               05 LINE 16 COLUMN 27 VALUE IS "   +---+---+---+   "
+               05 LINE 16 COLUMN 35 VALUE IS "   +---+---+---+   "
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG.
-               05 LINE 17 COLUMN 27 VALUE IS " B |   |   |   |   "
+               05 LINE 17 COLUMN 35 VALUE IS " B |   |   |   |   "
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG.
-               05 LINE 18 COLUMN 27 VALUE IS "   +---+---+---+   "
+               05 LINE 18 COLUMN 35 VALUE IS "   +---+---+---+   "
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG.
-               05 LINE 19 COLUMN 27 VALUE IS " C |   |   |   |   "
+               05 LINE 19 COLUMN 35 VALUE IS " C |   |   |   |   "
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG.
-               05 LINE 20 COLUMN 27 VALUE IS "   +---+---+---+   "
+               05 LINE 20 COLUMN 35 VALUE IS "   +---+---+---+   "
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG.
-               05 LINE 21 COLUMN 27 VALUE IS "     1   2   3     "
+               05 LINE 21 COLUMN 35 VALUE IS "     1   2   3     "
 
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG.
-               05 LINE 15 COLUMN 32 PIC A(1) FROM WS-CELL(1,1)
+               05 LINE 15 COLUMN 40 PIC A(1) FROM WS-CELL(1,1)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
-               05 LINE 15 COLUMN 36 PIC A(1) FROM WS-CELL(1,2)
+               05 LINE 15 COLUMN 44 PIC A(1) FROM WS-CELL(1,2)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
-               05 LINE 15 COLUMN 40 PIC A(1) FROM WS-CELL(1,3)
+               05 LINE 15 COLUMN 48 PIC A(1) FROM WS-CELL(1,3)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
-               05 LINE 17 COLUMN 32 PIC A(1) FROM WS-CELL(2,1)
+               05 LINE 17 COLUMN 40 PIC A(1) FROM WS-CELL(2,1)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
-               05 LINE 17 COLUMN 36 PIC A(1) FROM WS-CELL(2,2)
+               05 LINE 17 COLUMN 44 PIC A(1) FROM WS-CELL(2,2)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
-               05 LINE 17 COLUMN 40 PIC A(1) FROM WS-CELL(2,3)
+               05 LINE 17 COLUMN 48 PIC A(1) FROM WS-CELL(2,3)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
-               05 LINE 19 COLUMN 32 PIC A(1) FROM WS-CELL(3,1)
+               05 LINE 19 COLUMN 40 PIC A(1) FROM WS-CELL(3,1)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
-               05 LINE 19 COLUMN 36 PIC A(1) FROM WS-CELL(3,2)
+               05 LINE 19 COLUMN 44 PIC A(1) FROM WS-CELL(3,2)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
-               05 LINE 19 COLUMN 40 PIC A(1) FROM WS-CELL(3,3)
+               05 LINE 19 COLUMN 48 PIC A(1) FROM WS-CELL(3,3)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
 
-               05 LINE 23 COLUMN 27 VALUE IS "Message: "
+               05 LINE 23 COLUMN 30 VALUE IS "Message: "
                    FOREGROUND-COLOR IS 6.
                    05 MSG PIC X(128) FROM WS-OANDXMESSAGE.
-               05 LINE 25 COLUMN 27 PIC X(16) FROM WS-INSTRUCTION.
+               05 LINE 25 COLUMN 30 PIC X(16) FROM WS-INSTRUCTION.
                    05 WS-NEXT-MOVE-FIELD PIC X(2) USING WS-NEXT-MOVE.
-               05 LINE 27 COLUMN 27 VALUE IS "Stats: "
+               05 LINE 27 COLUMN 30 VALUE IS "Stats: "
                    FOREGROUND-COLOR IS 6.
-               05 LINE 28 COLUMN 27 VALUE IS "Moves played = "
+               05 LINE 28 COLUMN 30 VALUE IS "Moves played = "
                    FOREGROUND-COLOR IS 2.
                    05 MOVES PIC 9(1) FROM WS-MOVES.
-               05 LINE 29 COLUMN 27 VALUE IS "Games won = "
+               05 LINE 29 COLUMN 30 VALUE IS "Games won = "
                    FOREGROUND-COLOR IS 5.
                    05 WINS PIC 9(2) FROM WS-WINS.
-               05 LINE 29 COLUMN 41 VALUE IS "/".
+               05 LINE 29 COLUMN 44 VALUE IS "/".
                    05 GAMES PIC 9(2) FROM WS-GAMES. 
 
            
@@ -2429,10 +2434,10 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 14 COL 10 VALUE "Message:       "
              FOREGROUND-COLOR IS WS-GTN-BG-COLOR, REVERSE-VIDEO.
-             05 MSG PIC X(55) FROM WS-RANDOM-NUM-MSG
+             05 MSG PIC X(28) FROM WS-RANDOM-NUM-MSG
              FOREGROUND-COLOR IS WS-GTN-BG-COLOR, REVERSE-VIDEO.
-             05 LINE 14 COL 47 VALUE "                                  
-      -    "   " FOREGROUND-COLOR IS WS-GTN-BG-COLOR, REVERSE-VIDEO.  
+             05 LINE 14 COL 53 VALUE "                               "
+             FOREGROUND-COLOR IS WS-GTN-BG-COLOR, REVERSE-VIDEO.  
              05 LINE 14 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
@@ -3300,8 +3305,8 @@
 
            INITIALIZE-RANDOM-NUM-GAME.
            MOVE WS-COLOR-BLUE TO WS-BG-COLOR.
-           MOVE 7 TO WS-FG-COLOR
-           MOVE 5 TO WS-GTN-BG-COLOR
+           MOVE 7 TO WS-FG-COLOR.
+           MOVE 5 TO WS-GTN-BG-COLOR.
            DISPLAY GUESS-THE-NUMBER-GAME-SCREEN.
            COMPUTE TOTAL-GUESSES = 0.
            ACCEPT SEED FROM TIME
