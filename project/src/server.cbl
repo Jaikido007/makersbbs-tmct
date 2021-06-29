@@ -3320,25 +3320,6 @@
                PERFORM 0109-ERROR-PAGE
            END-IF.    
            PERFORM 0140-MESSAGE-MENU.
-
-      ******************************************************************
-      ******************-----COMMENT ERROR SECTION----******************
-      ******************************************************************
-
-       0156-COMMENT-ERROR.
-           PERFORM 0200-TIME-AND-DATE.
-           PERFORM 0132-CREDIT-TOTAL.
-           INITIALIZE ERROR-CHOICE.
-           DISPLAY COMMENT-ERROR-SCREEN.
-           ACCEPT C-ERROR-CHOICE-FIELD.
-
-           IF ERROR-CHOICE = 'C' OR 'c' THEN
-             PERFORM 0130-CREDIT-STORE
-           ELSE IF ERROR-CHOICE = 'A' OR 'a' THEN
-             PERFORM 0111-USER-ACCOUNT-MENU
-           ELSE IF ERROR-CHOICE = 'G' OR 'g' THEN
-             PERFORM 0143-COMMENT-SCREEN
-           END-IF.
       ******************************************************************
       ******************-----COMMENT ERROR SECTION----******************
       ******************************************************************
