@@ -2659,7 +2659,7 @@
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 44 COL 1 VALUE "     Guess a number between 1 and                     
-      -    " 10                                                        "
+      -    " 10 in 3 goes or less to win 10 Creidts!                   "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 45 COL 1 VALUE "                    
       -    "                                                           "                                         
@@ -2676,22 +2676,22 @@
              
              05 LINE 13 COL 8 VALUE "                       GUESS A NUMB                 
       -    "ER BETWEEN 1 AND 10!                       "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             FOREGROUND-COLOR IS WS-GTN-FG-COLOR, REVERSE-VIDEO.
              05 LINE 13 COL 84 VALUE "  "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             FOREGROUND-COLOR IS WS-GTN-FG-COLOR, REVERSE-VIDEO.
              05 LINE 14 COL 8 VALUE "  "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             FOREGROUND-COLOR IS WS-GTN-FG-COLOR, REVERSE-VIDEO.
              05 LINE 14 COL 10 VALUE "Message:       "
              FOREGROUND-COLOR IS WS-GTN-BG-COLOR, REVERSE-VIDEO.
-             05 MSG PIC X(28) FROM WS-RANDOM-NUM-MSG
+             05 MSG PIC X(34) FROM WS-RANDOM-NUM-MSG
              FOREGROUND-COLOR IS WS-GTN-BG-COLOR, REVERSE-VIDEO.
-             05 LINE 14 COL 53 VALUE "                               "
+             05 LINE 14 COL 59 VALUE "                         "
              FOREGROUND-COLOR IS WS-GTN-BG-COLOR, REVERSE-VIDEO.  
              05 LINE 14 COL 84 VALUE "  "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             FOREGROUND-COLOR IS WS-GTN-FG-COLOR, REVERSE-VIDEO.
 
              05 LINE 15 COL 8 VALUE "  "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             FOREGROUND-COLOR IS WS-GTN-FG-COLOR, REVERSE-VIDEO.
              05 LINE 15 COL 10 VALUE "                                   
       -    "                                        "
              FOREGROUND-COLOR IS WS-GTN-BG-COLOR, REVERSE-VIDEO.
@@ -2701,12 +2701,12 @@
              USING GUESS-INPUT FOREGROUND-COLOR IS WS-GTN-BG-COLOR, 
              REVERSE-VIDEO.           
              05 LINE 15 COL 84 VALUE "  "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             FOREGROUND-COLOR IS WS-GTN-FG-COLOR, REVERSE-VIDEO.
              05 LINE 16 COL 8 VALUE "                                   
       -    "STATS                                      "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             FOREGROUND-COLOR IS WS-GTN-FG-COLOR, REVERSE-VIDEO.
              05 LINE 17 COL 8 VALUE "  "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             FOREGROUND-COLOR IS WS-GTN-FG-COLOR, REVERSE-VIDEO.
              05 LINE 17 COL 10 VALUE "Total Guesses: "
              FOREGROUND-COLOR IS WS-GTN-BG-COLOR, REVERSE-VIDEO.
              05 GUESSES PIC 99 FROM TOTAL-GUESSES 
@@ -2716,13 +2716,13 @@
              WS-GTN-BG-COLOR, 
              REVERSE-VIDEO.  
              05 LINE 17 COL 84 VALUE "  "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             FOREGROUND-COLOR IS WS-GTN-FG-COLOR, REVERSE-VIDEO.
 
              05 LINE 18 COL 8 VALUE "  "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             FOREGROUND-COLOR IS WS-GTN-FG-COLOR, REVERSE-VIDEO.
              05 LINE 18 COL 10 VALUE "                                   
       -    "                                          "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             FOREGROUND-COLOR IS WS-GTN-FG-COLOR, REVERSE-VIDEO.
                
                         
       ************************END OF SCREEN SECTION********************* 
@@ -3675,6 +3675,7 @@
            PERFORM INITIALIZE-RANDOM-NUM-GAME.
 
            INITIALIZE-RANDOM-NUM-GAME.
+           SET TOTAL-GUESSES TO ZERO
            MOVE WS-COLOR-BLUE TO WS-BG-COLOR.
            MOVE 7 TO WS-FG-COLOR.
            MOVE 5 TO WS-GTN-BG-COLOR.
@@ -3688,7 +3689,6 @@
        
            GAME-LOOP.
            INITIALIZE GUESS-INPUT.
-           SET TOTAL-GUESSES TO ZERO
            DISPLAY GUESS-THE-NUMBER-GAME-SCREEN END-DISPLAY
            ACCEPT GUESS-INPUT-FIELD
            MOVE GUESS-INPUT TO GUESS.
