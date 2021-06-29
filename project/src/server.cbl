@@ -3253,6 +3253,24 @@
            END-IF.    
            PERFORM 0140-MESSAGE-MENU.
       ******************************************************************
+      ******************-----COMMENT ERROR SECTION----******************
+      ******************************************************************
+       0156-COMMENT-ERROR.
+           PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0132-CREDIT-TOTAL.
+           INITIALIZE ERROR-CHOICE.
+           DISPLAY COMMENT-ERROR-SCREEN.
+           ACCEPT C-ERROR-CHOICE-FIELD.
+           IF ERROR-CHOICE = 'C' OR 'c' THEN
+             PERFORM 0130-CREDIT-STORE
+           ELSE IF ERROR-CHOICE = 'A' OR 'a' THEN
+             PERFORM 0111-USER-ACCOUNT-MENU
+           ELSE IF ERROR-CHOICE = 'G' OR 'g' THEN
+             PERFORM 0143-COMMENT-SCREEN
+           END-IF.
+
+           PERFORM 0156-COMMENT-ERROR.
+      ******************************************************************
       ******************-----TIME/DATE SECTION----**********************
       ******************************************************************
        0200-TIME-AND-DATE.
@@ -3674,48 +3692,25 @@
            PERFORM 0200-TIME-AND-DATE.
            PERFORM 0132-CREDIT-TOTAL.
            PERFORM INITIALIZE-RANDOM-NUM-GAME.
-
            INITIALIZE-RANDOM-NUM-GAME.
-           SET TOTAL-GUESSES TO ZERO
            MOVE WS-COLOR-BLUE TO WS-BG-COLOR.
            MOVE 7 TO WS-FG-COLOR.
            MOVE 5 TO WS-GTN-BG-COLOR.
+           MOVE 0 TO TOTAL-GUESSES.
            DISPLAY GUESS-THE-NUMBER-GAME-SCREEN.
-           COMPUTE TOTAL-GUESSES = 0.
            ACCEPT SEED FROM TIME
            COMPUTE ANSWER =
-               FUNCTION REM(FUNCTION RANDOM(SEED) * 1000, 10) + 1   
-           MOVE "Guess a number!" TO WS-RANDOM-NUM-MSG    
+               FUNCTION REM(FUNCTION RANDOM(SEED) * 1000, 10) + 1
+           MOVE "Guess a number!" TO WS-RANDOM-NUM-MSG
            PERFORM GAME-LOOP.
-       
            GAME-LOOP.
            INITIALIZE GUESS-INPUT.
            DISPLAY GUESS-THE-NUMBER-GAME-SCREEN END-DISPLAY
            ACCEPT GUESS-INPUT-FIELD
            MOVE GUESS-INPUT TO GUESS.
            ADD 1 TO TOTAL-GUESSES.
-           IF GUESS > ANSWER
-               MOVE "Too high! Guess again." 
-               TO WS-RANDOM-NUM-MSG
-               GO TO GAME-LOOP
-           END-IF.
-           
-           IF GUESS < ANSWER
-               MOVE "Too low! Guess again."
-               TO WS-RANDOM-NUM-MSG
-               GO TO GAME-LOOP
-           END-IF.
-
-           IF TOTAL-GUESSES >= 3
-               MOVE "You Lose! Try again?(Y/N)"           
-               TO WS-RANDOM-NUM-MSG
-               MOVE 7 TO WS-FG-COLOR
-               MOVE WS-COLOR-RED TO WS-BG-COLOR
-               MOVE 0 TO WS-GTN-FG-COLOR
-               MOVE 7 TO WS-GTN-BG-COLOR
-               GO TO WIN-LOOP
-           ELSE   
-               MOVE "You Won 10 Credits! Go again?(Y/N)"           
+           IF GUESS = ANSWER
+               MOVE "You Won 10 Credits! Go again?(Y/N)"
                TO WS-RANDOM-NUM-MSG
                MOVE 0  TO WS-UPDATE-CREDITS
                MOVE 10 TO WS-UPDATE-CREDITS
@@ -3725,34 +3720,49 @@
                MOVE 0 TO WS-GTN-BG-COLOR
                GO TO WIN-LOOP
            END-IF.
-           
+           IF TOTAL-GUESSES > 2
+               MOVE "You Lose! Try again?(Y/N)"
+               TO WS-RANDOM-NUM-MSG
+               MOVE 7 TO WS-FG-COLOR
+               MOVE WS-COLOR-RED TO WS-BG-COLOR
+               MOVE 0 TO WS-GTN-FG-COLOR
+               MOVE 7 TO WS-GTN-BG-COLOR
+               GO TO WIN-LOOP
+           END-IF.
+           IF GUESS > ANSWER
+               MOVE "Too high! Guess again."
+               TO WS-RANDOM-NUM-MSG
+               GO TO GAME-LOOP
+           ELSE IF GUESS < ANSWER
+               MOVE "Too low! Guess again."
+               TO WS-RANDOM-NUM-MSG
+               GO TO GAME-LOOP
+           END-IF.
            WIN-LOOP.
            INITIALIZE GUESS-INPUT.
            DISPLAY GUESS-THE-NUMBER-GAME-SCREEN END-DISPLAY
            ACCEPT GUESS-INPUT-FIELD
            IF GUESS-INPUT = "y" OR "Y"
+               MOVE 0 TO WS-UPDATE-CREDITS
+               MOVE 5 TO WS-UPDATE-CREDITS
+               PERFORM 0133-CHECK-CREDIT-BALANCE
                IF WS-BALANCE-AVAILABLE = "Y" THEN
-                    MOVE 0 TO WS-UPDATE-CREDITS
-                    MOVE 5 TO WS-UPDATE-CREDITS
-                    PERFORM 0133-CHECK-CREDIT-BALANCE 
-                    CALL "subtract-credits" USING WS-USERNAME, 
+                    CALL "subtract-credits" USING WS-USERNAME,
                     WS-UPDATE-CREDITS
-                    CALL "account-status" USING WS-USERNAME
-                    PERFORM 0430-GUESS-THE-NUMBER-GAME 
+                    PERFORM 0430-GUESS-THE-NUMBER-GAME
                 ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
                     MOVE "Insufficient Credits" TO WS-ERROR-MSG
                     PERFORM 0109-ERROR-PAGE
                 END-IF
            GO TO INITIALIZE-RANDOM-NUM-GAME
            END-IF.
-           
            IF GUESS-INPUT = "n" OR "N"
                PERFORM 0400-GAMES-MENU
-           ELSE 
+           ELSE
                MOVE "INVALID ENTRY! Enter Y or N"
                TO WS-RANDOM-NUM-MSG
                GO TO WIN-LOOP
-           END-IF.  
+           END-IF. 
 
        0335-CHECK-ACCOUNT-STATUS.
            CALL "account-status-check" USING WS-USERNAME, 
