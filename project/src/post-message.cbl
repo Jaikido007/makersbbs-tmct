@@ -22,10 +22,10 @@
              05 WS-USERNAME PIC X(16).  
            LINKAGE SECTION.
            01 LS-MESSAGE.
-            *>  05 LS-ID PIC 999.
              05 LS-TITLE PIC X(50).
              05 LS-CONTENT PIC X(300).
              05 LS-MSG-AUTHOR PIC X(16).
+             05 LS-POST-DATE PIC X(10).
           *>  PUT THIS VARIABLE IN THE WORKING STORAGE IN SERVER ^^
        PROCEDURE DIVISION USING LS-MESSAGE.
            
