@@ -34,19 +34,22 @@
       ******************************************************************
       *******-----VARIABLES RELATED TO LOGIN & MENU SCREEN-----*********
       ******************************************************************
-           01 WS-USERNAME                  PIC X(16).
-           01 WS-PASSWORD                  PIC X(20).
-           01 WS-NEW-USER-NAME             PIC X(16).
-           01 WS-NEW-PASSWORD              PIC X(20).
-           01 LOGIN-CHOICE                 PIC X.
-           01 MENU-CHOICE                  PIC X.
-           01 ERROR-CHOICE                 PIC X.
-           01 CREATE-CHOICE                PIC X.
-           01 ACCOUNT-CHOICE               PIC X.
-           01 WS-LOGIN-CORRECT             PIC 9.
-           01 WS-ERROR-MSG                 PIC X(40).
-           01 WS-UNAME-UNAVAILABLE         PIC 9.
-           01 WS-USERCREDITS               PIC 9(3).
+           01 WS-USERNAME PIC X(16).
+           01 WS-PASSWORD PIC X(20).
+           01 WS-NEW-USER-NAME PIC X(16).
+           01 WS-NEW-PASSWORD PIC X(20).
+           01 LOGIN-CHOICE PIC X.
+           01 MENU-CHOICE PIC X.
+           01 ERROR-CHOICE PIC X.
+           01 CREATE-CHOICE PIC X.
+           01 ACCOUNT-CHOICE PIC X.
+           01 WS-LOGIN-CORRECT PIC 9.
+           01 WS-ERROR-MSG PIC X(40).
+           01 WS-UNAME-UNAVAILABLE PIC 9.
+           01 WS-USERCREDITS PIC 9(3).
+           01 WS-USERACCOUNTLEVEL PIC X(3).
+           01 WS-UPDATE-PASSWORD PIC X(20).
+           01 UPDATE-PASSWORD-CHOICE PIC X.
 
       ******************************************************************
       ***********-----VARIABLES RELATED TO BANK ACCOUNTS-----***********
@@ -146,6 +149,31 @@
              05 WS-CONTENT                 PIC X(300).
              05 WS-MSG-AUTHOR              PIC X(16).
              05 WS-POST-DATE               PIC X(10).
+
+      ******************************************************************
+      ******************-----SPONSORED POSTS VARIABLES******************
+      ******************************************************************
+           01 SPONSORED-POSTS-TABLE.
+               05 SP-ENTRY OCCURS 2 TIMES
+               ASCENDING KEY IS SP-TITLE
+               INDEXED BY MSG-IDX.
+                   10 SP-TITLE       PIC X(50).
+                   10 SP-CONTENT     PIC X(300).
+                   10 SP-USERNAME    PIC X(16).
+
+           01 WS-SP-TABLE-COUNTER PIC 9.
+
+           01 WS-SP-CONTENT-DISPLAY.
+               05 SP-PART-1            PIC X(60).
+               05 SP-PART-2            PIC X(60).
+               05 SP-PART-3            PIC X(60).
+               05 SP-PART-4            PIC X(60).
+               05 SP-PART-5            PIC X(60).
+
+           01 SP-MSG-VIEW-CHOICE          PIC X. 
+           01 SP-MSG-SELECT               PIC 999.
+           01 SP-MSG-MENU-CHOICE       PIC XXX.
+           01 WS-SP-COUNTER PIC 9.
       ******************************************************************
       ******************-----TIC-TAC-TOE VARIABLES**********************
       ******************************************************************
@@ -539,12 +567,12 @@
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO. 
              05 LINE  6 COL 10 VALUE "Hi, ".
              05 LINE  6 COL 14 PIC X(16) USING WS-USERNAME.
-             05 LINE  8 COL 10 VALUE "User Status: ".
-             05 LINE  8 COL 30 VALUE "Standard or VIP (To add)".
+             05 LINE  8 COL 10 VALUE "Account Level: ".
+             05 LINE  8 COL 30 pic X(3) USING WS-USERACCOUNTLEVEL.
              05 LINE 10 COL 10 VALUE "Available Credits: ".
              05 LINE 10 COL 30 PIC 9(3) USING WS-USERCREDITS.
              05 LINE 12 COL 10 VALUE "Other elements to add: ".
-             05 LINE 13 COL 33 VALUE "change password".
+             05 LINE 13 COL 33 VALUE "Change password? U".
              05 LINE 14 COL 33 VALUE "bank card on file (y/n)".
            
         *>    USER ACCOUNT OPTION POSITIONING
@@ -734,7 +762,44 @@
         *>    CREDIT STORE OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
              05 CREDIT-STORE-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
-                USING CREDIT-STORE-CHOICE.        
+                USING CREDIT-STORE-CHOICE.
+                
+           01 UPDATE-PASSWORD-SCREEN
+             BACKGROUND-COLOR IS 1.
+             05 BLANK SCREEN.
+        *>    BANK DETAILS HEADER
+               05 LINE 1 COL 1  VALUE "   :                              
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
+               FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+               05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
+               FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 90 PIC 9(3) USING WS-USERCREDITS
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+        *>    BANK DETAILS FOOTER
+             05 LINE 43 COL 1 VALUE "                                 
+      -    "                                                           "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 44 COL 1 VALUE "     (S) Submit     (D) Discard  
+      -    "   (G) Go back     (Q) Quit                                "                                 
+                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 45 COL 1 VALUE "                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 46 COL 1 VALUE "                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO. 
+           *>    UPDATE PASSWORD BODY
+             05 LINE 6 COLUMN 10 VALUE "UPDATE PASSWORD".
+             05 LINE 8 COLUMN 10 VALUE "ENTER NEW PASSWORD: ".
+             05 WS-UPDATE-PASSWORD-FIELD LINE 10 COLUMN 10 PIC X(20)
+                USING WS-UPDATE-PASSWORD.
+          
+        *>    UPDATE PASSWORD OPTION POSITIONING
+               05 LINE 42 COLUMN 6 VALUE "Option: ".
+             05 UPDATE-PASSWORD-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
+                USING UPDATE-PASSWORD-CHOICE.              
 
            01 MENU-SCREEN
              BACKGROUND-COLOR IS 1.
@@ -832,16 +897,24 @@
 
              05 LINE 11 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 11 COL 10 VALUE "                                   
-      -    "                                        "
+             05 LINE 11 COL 10 VALUE "S1                                   
+      -    "                                      "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 11 COL 14 PIC X(50) USING SP-TITLE(1) 
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 11 COL 64 VALUE "                    "
              FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
              05 LINE 11 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
              05 LINE 12 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 12 COL 10 VALUE "                                   
-      -    "                                        "
+             05 LINE 12 COL 10 VALUE "S2                                   
+      -    "                                      "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 12 COL 14 PIC X(50) USING SP-TITLE(2) 
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 12 COL 64 VALUE "                    "
              FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
              05 LINE 12 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -862,8 +935,8 @@
              05 LINE 14 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
-             05 LINE 15 COL 8 VALUE "                                REC                 
-      -    "ENT MESSAGES                               "
+             05 LINE 15 COL 8 VALUE "  No. TITLE                                        
+      -    "                             No. COMMENTS  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 16 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -873,10 +946,11 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 16 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 16 COL 64 PIC Z(4)    USING SUM-COMMENTS(ID-NUM)
+             05 LINE 16 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 16 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 16 COL 80 PIC Z(4)    USING SUM-COMMENTS(ID-NUM)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+           
              05 LINE 16 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 17 COL 8 VALUE "  "
@@ -887,10 +961,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 17 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 1)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 17 COL 64 PIC Z(4)   USING SUM-COMMENTS(ID-NUM + 1)
+             05 LINE 17 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 17 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 17 COL 80 PIC Z(4)   USING SUM-COMMENTS(ID-NUM + 1)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 17 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 18 COL 8 VALUE "  "
@@ -901,10 +975,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 18 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 2)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 18 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 2)
+             05 LINE 18 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 18 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 18 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 2)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 18 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 19 COL 8 VALUE "  "
@@ -915,10 +989,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 19 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 3)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 19 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 3)
+             05 LINE 19 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 19 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 19 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 3)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.           
              05 LINE 19 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 20 COL 8 VALUE "  "
@@ -929,10 +1003,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 20 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 4)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 20 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 4)
+             05 LINE 20 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 20 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 20 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 4)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 20 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 21 COL 8 VALUE "  "
@@ -943,10 +1017,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 21 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 5)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 21 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 5)
+             05 LINE 21 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 21 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 21 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 5)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 21 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 22 COL 8 VALUE "  "
@@ -957,10 +1031,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 22 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 6)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 22 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 6)
+             05 LINE 22 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 22 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 22 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 6)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 22 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 23 COL 8 VALUE "  "
@@ -971,10 +1045,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 23 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 7)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 23 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 7)
+             05 LINE 23 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 23 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 23 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 7)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 23 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 24 COL 8 VALUE "  "
@@ -985,10 +1059,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 24 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 8)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 24 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 8)
+             05 LINE 24 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 24 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 24 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 8)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 24 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 25 COL 8 VALUE "  "
@@ -999,14 +1073,14 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 25 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 9)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 25 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 9)
+             05 LINE 25 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-            *>  05 LINE 25 COL 64 VALUE "                    "
-            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 25 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 9)
+             FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 25 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 26 COL 8 VALUE "                                   
-      -    "                                           "
+             05 LINE 26 COL 8 VALUE  "                               REC                 
+      -    "ENT MESSAGES                                "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    MSG MENU OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
@@ -1152,6 +1226,48 @@
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 MSG-VIEW-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
                   USING MSG-VIEW-CHOICE.
+
+           01 SP-MESSAGE-VIEW-SCREEN
+               BACKGROUND-COLOR IS 01.
+                05 BLANK SCREEN.
+        *>    MESSAGE VIEW HEADER
+               05 LINE 1 COL 1  VALUE "   :                              
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
+               FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+               05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
+               FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+        *>    MESSAGE VIEW FOOTER
+               05 LINE 43 COL 1 VALUE "                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 44 COL 1 VALUE "              (G) Go back                                       
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 46 COL 1 VALUE "                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+        *>    MESSAGE VIEW BODY
+             05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
+      
+
+             05 LINE 12 COL 10 VALUE "Title: ".
+             05 LINE 12 COL 19 PIC X(50) USING SP-TITLE(SP-MSG-SELECT).
+             05 LINE 14 COL 10 VALUE "Message: ".
+             05 LINE 14 COL 19 PIC X(60) USING SP-PART-1.
+             05 LINE 15 COL 19 PIC X(60) USING SP-PART-2.
+             05 LINE 16 COL 19 PIC X(60) USING SP-PART-3.
+             05 LINE 17 COL 19 PIC X(60) USING SP-PART-4.
+             05 LINE 18 COL 19 PIC X(60) USING SP-PART-5.
+             05 LINE 20 COL 10 VALUE "Author: ".
+             05 LINE 20 COL 19 PIC X(16) 
+                USING SP-USERNAME(SP-MSG-SELECT).
+
+        *>    MESSAGE VIEW OPTION POSITIONING
+               05 LINE 42 COLUMN 6 VALUE "Option: ".
+               05 SP-MSG-VIEW-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
+                  USING SP-MSG-VIEW-CHOICE.        
 
            01 WRITE-MSG-SCREEN
                BACKGROUND-COLOR IS 01.
@@ -2633,6 +2749,7 @@
        0111-USER-ACCOUNT-MENU.
            PERFORM 0200-TIME-AND-DATE.
            PERFORM 0132-CREDIT-TOTAL.
+           PERFORM 0335-CHECK-ACCOUNT-STATUS.
            INITIALIZE ACCOUNT-CHOICE.
            DISPLAY USER-ACCOUNT-SCREEN.
            ACCEPT ACCOUNT-CHOICE-FIELD.
@@ -2646,7 +2763,9 @@
            ELSE IF ACCOUNT-CHOICE = "c" or "C" THEN
                PERFORM 0130-CREDIT-STORE
            ELSE IF ACCOUNT-CHOICE = "v" or "V" THEN
-               PERFORM 0135-VIP-ACCOUNT    
+               PERFORM 0135-VIP-ACCOUNT
+           ELSE IF ACCOUNT-CHOICE = "u" or "U" THEN
+               PERFORM 0350-UPDATE-PASSWORD 
            END-IF.
 
            PERFORM 0111-USER-ACCOUNT-MENU.
@@ -2764,6 +2883,11 @@
            CALL "get-list-page-alt" USING WS-LIST-TABLE.
            CALL 'count-comments-posted' USING COMMENT-TOTAL-TABLE.
            *> CALL "id-sort" USING WS-LIST-TABLE. <*
+           MOVE " " TO SP-ENTRY(1).
+           MOVE " " TO SP-ENTRY(2).
+           CALL "get-sponsored-posts" USING WS-FORMATTED-DT,
+           SPONSORED-POSTS-TABLE, WS-SP-TABLE-COUNTER.
+
            INITIALIZE MSG-MENU-CHOICE.
            DISPLAY MSG-MENU-SCREEN.
            ACCEPT MSG-MENU-CHOICE-FIELD.
@@ -2798,6 +2922,10 @@
              PERFORM 0130-CREDIT-STORE  
            ELSE IF MSG-MENU-CHOICE =       "q" OR "Q" THEN
               STOP RUN  
+           END-IF.
+
+           IF MSG-MENU-CHOICE = "s1" OR "S1" OR "s2" OR "S2" THEN
+               PERFORM 0145-SP-MESSAGE-VIEW
            END-IF.
 
            PERFORM 0140-MESSAGE-MENU.
@@ -2883,13 +3011,17 @@
            END-IF.
 
            IF MSG-WRITE-CHOICE-FIELD = "s" OR "S" THEN 
-              MOVE WS-CONTENT-DISPLAY TO WS-CONTENT
-              MOVE WS-USERNAME TO WS-MSG-AUTHOR
-
+              PERFORM 0340-SP-COUNTER
+              IF WS-SP-COUNTER = 0 OR 1 THEN
+                MOVE WS-CONTENT-DISPLAY TO WS-CONTENT
+                MOVE WS-USERNAME TO WS-MSG-AUTHOR
                 IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
-                  CALL "post-message" USING NEW-MESSAGE
-                  PERFORM 0140-MESSAGE-MENU
-                END-IF    
+                    PERFORM 0152-SPONSORED-MESSAGES
+                END-IF
+              ELSE 
+                MOVE "NO SPONSORED POSTS LEFT TODAY" TO WS-ERROR-MSG
+                PERFORM 0109-ERROR-PAGE
+              END-IF  
            END-IF.
 
            IF MSG-WRITE-CHOICE-FIELD = "q" OR "Q" THEN
@@ -2976,6 +3108,48 @@
 
 
            PERFORM 0143-COMMENT-SCREEN.
+
+       0145-SP-MESSAGE-VIEW.   
+           PERFORM 0200-TIME-AND-DATE.  
+           PERFORM 0132-CREDIT-TOTAL.
+
+           IF MSG-MENU-CHOICE = "S1" or "s1"
+               MOVE 1 TO SP-MSG-SELECT
+           ELSE IF MSG-MENU-CHOICE = "S2" OR "s2"
+               MOVE 2 TO SP-MSG-SELECT
+           END-IF.
+
+           MOVE SP-CONTENT(SP-MSG-SELECT) TO WS-SP-CONTENT-DISPLAY.
+           INITIALIZE SP-MSG-VIEW-CHOICE.
+           DISPLAY SP-MESSAGE-VIEW-SCREEN.
+           ACCEPT SP-MSG-VIEW-CHOICE-FIELD.
+
+           IF SP-MSG-VIEW-CHOICE =   "g" OR "G" THEN
+               PERFORM 0140-MESSAGE-MENU  
+           END-IF.    
+
+       0152-SPONSORED-MESSAGES.
+           PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0335-CHECK-ACCOUNT-STATUS.
+           MOVE 0 TO WS-UPDATE-CREDITS.
+           MOVE 100 TO WS-UPDATE-CREDITS.
+           PERFORM 0133-CHECK-CREDIT-BALANCE.
+
+           IF WS-USERACCOUNTLEVEL = "VIP" THEN
+               IF WS-BALANCE-AVAILABLE = "Y" THEN
+                   CALL "subtract-credits" USING WS-USERNAME, 
+                   WS-UPDATE-CREDITS
+                   CALL "post-sponsored-message" USING WS-FORMATTED-DT,
+                   NEW-MESSAGE
+               ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
+                   MOVE "Insufficent Credits" TO WS-ERROR-MSG
+                   PERFORM 0109-ERROR-PAGE
+               END-IF 
+           ELSE IF WS-USERACCOUNTLEVEL = "STD" THEN
+               MOVE "UPGRADE ACCOUNT TO SPONSOR POSTS" TO WS-ERROR-MSG
+               PERFORM 0109-ERROR-PAGE
+           END-IF.    
+           PERFORM 0140-MESSAGE-MENU.
       ******************************************************************
       ******************-----TIME/DATE SECTION----**********************
       ******************************************************************
@@ -3446,7 +3620,44 @@
                    MOVE "INVALID ENTRY! Enter Y or N"
                    TO WS-RANDOM-NUM-MSG
                    GO TO WIN-LOOP
-               END-IF.     
+               END-IF.
+
+       0335-CHECK-ACCOUNT-STATUS.
+           CALL "account-status-check" USING WS-USERNAME, 
+           WS-USERACCOUNTLEVEL.        
+
+       0340-SP-COUNTER.
+           PERFORM 0200-TIME-AND-DATE.
+           MOVE 0 TO WS-SP-COUNTER.
+           CALL "sponsored-posts-counter" USING WS-FORMATTED-DT, 
+           WS-SP-COUNTER.
+
+       0350-UPDATE-PASSWORD.
+           PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0132-CREDIT-TOTAL.
+
+           INITIALIZE WS-UPDATE-PASSWORD.
+           INITIALIZE UPDATE-PASSWORD-CHOICE.
+           DISPLAY UPDATE-PASSWORD-SCREEN.
+           ACCEPT WS-UPDATE-PASSWORD-FIELD.
+           ACCEPT UPDATE-PASSWORD-CHOICE-FIELD.
+
+           IF UPDATE-PASSWORD-CHOICE = "s" OR "S"
+               IF WS-UPDATE-PASSWORD = " "
+                 MOVE "Invalid Password Try Another" TO WS-ERROR-MSG
+                 PERFORM 0109-ERROR-PAGE
+               ELSE
+                 CALL "update-password" USING WS-USERNAME, 
+                 WS-UPDATE-PASSWORD
+                 PERFORM 0111-USER-ACCOUNT-MENU
+               END-IF  
+           ELSE IF UPDATE-PASSWORD-CHOICE = "D" OR "d"
+               PERFORM 0350-UPDATE-PASSWORD
+           ELSE IF UPDATE-PASSWORD-CHOICE = "G" OR "g"
+               PERFORM 0111-USER-ACCOUNT-MENU
+           ELSE
+               PERFORM 0350-UPDATE-PASSWORD
+           END-IF.         
       
 
           
