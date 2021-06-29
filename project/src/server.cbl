@@ -126,7 +126,8 @@
                    10 LIST-ID              PIC XXX.
                    10 LIST-TITLE           PIC X(50).
                    10 LIST-CONTENT         PIC X(300).
-                   10 LIST-USERNAME        PIC X(16).  
+                   10 LIST-USERNAME        PIC X(16).
+                   10 LIST-DATE            PIC X(10).
 
            01 WS-CONTENT-DISPLAY.
                05 LS-PART-1                PIC X(60).
@@ -144,6 +145,7 @@
              05 WS-TITLE                   PIC X(50).
              05 WS-CONTENT                 PIC X(300).
              05 WS-MSG-AUTHOR              PIC X(16).
+             05 WS-POST-DATE               PIC X(10).
       ******************************************************************
       ******************-----TIC-TAC-TOE VARIABLES**********************
       ******************************************************************
@@ -2759,7 +2761,7 @@
            PERFORM 0132-CREDIT-TOTAL.
            PERFORM 0200-TIME-AND-DATE.
            CALL "number-of-file-lines" USING NUM-FILE-LINES.
-           CALL "get-list-page-alt" USING NUM-FILE-LINES WS-LIST-TABLE.
+           CALL "get-list-page-alt" USING WS-LIST-TABLE.
            CALL 'count-comments-posted' USING COMMENT-TOTAL-TABLE.
            *> CALL "id-sort" USING WS-LIST-TABLE. <*
            INITIALIZE MSG-MENU-CHOICE.
@@ -2804,7 +2806,7 @@
            PERFORM 0200-TIME-AND-DATE.  
            PERFORM 0132-CREDIT-TOTAL.
            CALL "number-of-file-lines" USING NUM-FILE-LINES.
-           CALL "get-list-page-alt" USING NUM-FILE-LINES WS-LIST-TABLE.
+           CALL "get-list-page-alt" USING WS-LIST-TABLE.
            CALL "count-comments-posted" USING COMMENT-TOTAL-TABLE.
            MOVE LIST-CONTENT(MSG-SELECT) TO WS-CONTENT-DISPLAY.
            INITIALIZE MSG-VIEW-CHOICE.

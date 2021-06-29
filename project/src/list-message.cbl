@@ -13,6 +13,7 @@
                05 RC-MESSAGE-TITLE PIC X(50).
                05 RC-MESSAGE-CONTENT PIC X(300).
                05 RC-USERNAME PIC X(16).
+               05 RC-DATE PIC X(10).
            WORKING-STORAGE SECTION.
            01 SUPPRESS-ZEROS PIC ZZZ.
            01 NEW-ID PIC XXX.
@@ -23,19 +24,13 @@
            01 LS-RETURN-TITLE PIC X(50).
            01 LS-RETURN-CONTENT PIC X(300).
            01 LS-USERNAME PIC X(16).
+           01 LS-RETURN-DATE PIC X(10).
  
            PROCEDURE DIVISION USING LS-ID LS-RETURN-ID LS-RETURN-TITLE 
-             LS-RETURN-CONTENT LS-USERNAME.
+             LS-RETURN-CONTENT LS-USERNAME LS-RETURN-DATE.
            OPEN INPUT F-MESSAGES-FILE.
-          *> *>  ACCOUNTING FOR PIC 9s:
-          *>  MOVE LS-ID TO SUPPRESS-ZEROS.
-          *>  MOVE SUPPRESS-ZEROS TO NEW-ID.
-          *>  MOVE FUNCTION TRIM(NEW-ID) TO NEW-ID.
-          *> *>  ACCOUNT FOR PIC 9s end.
-          *>  DISPLAY "First Argument is: " LS-ID.
-          *>  DISPLAY "Trimming Input...".
+       
            MOVE FUNCTION TRIM(LS-ID) TO LS-ID.
-          *>  DISPLAY "Trimming output: " LS-ID.
            
            PERFORM UNTIL WS-FILE-IS-ENDED = 1
              READ F-MESSAGES-FILE
@@ -51,6 +46,7 @@
                    MOVE RC-MESSAGE-TITLE TO LS-RETURN-TITLE
                    MOVE RC-MESSAGE-CONTENT TO LS-RETURN-CONTENT
                    MOVE RC-USERNAME TO LS-USERNAME
+                   MOVE RC-DATE TO LS-RETURN-DATE
                  MOVE FUNCTION TRIM(LS-RETURN-ID) TO LS-RETURN-ID  
                  MOVE FUNCTION TRIM(LS-RETURN-TITLE) TO LS-RETURN-TITLE
                  MOVE FUNCTION TRIM(LS-RETURN-CONTENT) TO 

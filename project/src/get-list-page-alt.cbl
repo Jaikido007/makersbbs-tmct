@@ -1,6 +1,20 @@
        IDENTIFICATION DIVISION.
        PROGRAM-ID. get-list-page-alt.
+       ENVIRONMENT DIVISION.
+           INPUT-OUTPUT SECTION.
+           FILE-CONTROL.
+           SELECT F-MESSAGES-FILE ASSIGN TO "messages.dat"
+             ORGANISATION IS LINE SEQUENTIAL.
        DATA DIVISION.
+           FILE SECTION.
+           FD F-MESSAGES-FILE.
+           01 RC-MESSAGE.
+               05 RC-ID PIC 999.
+               05 RC-MESSAGE-TITLE PIC X(50).
+               05 RC-MESSAGE-CONTENT PIC X(300).
+               05 RC-USERNAME PIC X(16).
+               05 RC-DATE PIC X(10).
+
            WORKING-STORAGE SECTION.
            01 NUM-OF-LINES PIC 999.
            01 WS-TABLE.
@@ -10,15 +24,11 @@
                    10 WS-TITLE PIC X(50).
                    10 WS-CONTENT PIC X(300).
                    10 WS-USERNAME PIC X(16).
-           01 TEMP-ID PIC XXX.
-           01 TEMP-TITLE PIC X(50).
-           01 TEMP-CONTENT PIC X(300).
-           01 TEMP-USERNAME PIC X(16).
-           01 SUPPRESS-ZEROS PIC ZZZ.
-           01 SEARCH-ID PIC XXX.
+                   10 WS-DATE PIC X(10).
+           
            01 LOOP-COUNTER PIC 999.
-           01 SWAP-COUNTER-1 PIC 999.
-           01 SWAP-COUNTER-2 PIC 999 VALUE 1.
+           01 WS-FILE-END PIC 9.
+
            LINKAGE SECTION.
            01 LS-RETURN-TABLE.
                05 LS-ENTRY OCCURS 10 TO 999 TIMES DEPENDING ON
@@ -27,42 +37,39 @@
                    10 LS-TITLE PIC X(50).
                    10 LS-CONTENT PIC X(300).
                    10 LS-USERNAME PIC X(16).
-           01 NUM-LINES PIC 999.
-       PROCEDURE DIVISION USING NUM-LINES LS-RETURN-TABLE.
+                   10 LS-DATE PIC X(10).
+
+       PROCEDURE DIVISION USING LS-RETURN-TABLE.
            
-           MOVE NUM-LINES TO NUM-OF-LINES.
+           CALL 'number-of-file-lines' USING NUM-OF-LINES.
+           MOVE 0 TO WS-FILE-END.
            
-          *>  ------------------------DEBUG-----------------------------
-          *>  DISPLAY 'LOOP COUNTER IS: ' LOOP-COUNTER.
-          *>  DISPLAY 'NUMBER OF LINES: ' NUM-OF-LINES.
-          *> -----------------------DEBUG END---------------------------
+          *>  TO DO: remove num lines link and call on number of lines
+          *> sub program.
+
+          *> Rewrite whole program to be less reliant on 'list-message'.
            
-          
-           PERFORM UNTIL LOOP-COUNTER = NUM-OF-LINES
-            
-            ADD 1 TO LOOP-COUNTER
-             MOVE LOOP-COUNTER TO SUPPRESS-ZEROS
-             MOVE SUPPRESS-ZEROS TO SEARCH-ID
-             MOVE FUNCTION TRIM(SEARCH-ID) TO SEARCH-ID 
-            CALL 'list-message' USING SEARCH-ID TEMP-ID TEMP-TITLE 
-              TEMP-CONTENT TEMP-USERNAME
-            MOVE TEMP-ID TO WS-ID(LOOP-COUNTER)
-            MOVE TEMP-TITLE TO WS-TITLE(LOOP-COUNTER)
-            MOVE TEMP-CONTENT TO WS-CONTENT(LOOP-COUNTER)
-            MOVE TEMP-USERNAME TO WS-USERNAME(LOOP-COUNTER)
+           MOVE 0 TO LOOP-COUNTER.
+
+           OPEN INPUT F-MESSAGES-FILE.
+
+           PERFORM UNTIL WS-FILE-END = 1
+             READ F-MESSAGES-FILE
+             NOT AT END
+               ADD 1 TO LOOP-COUNTER
+               MOVE RC-MESSAGE TO WS-ENTRY(LOOP-COUNTER)
                
-           END-PERFORM.
+             AT END MOVE 1 TO WS-FILE-END  
+                 
+           END-PERFORM
+           .
+
+           CLOSE F-MESSAGES-FILE.
           
           *>  vv keep this as initial commit of results
            MOVE WS-TABLE TO LS-RETURN-TABLE.
            
-           
           *>  call id-sort here then move the result to the return table
           *> again:
            CALL 'id-sort' USING LS-RETURN-TABLE.
-           MOVE 1 TO LOOP-COUNTER.
-           
-           
-          
-           
           

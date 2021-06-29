@@ -14,6 +14,7 @@
                    10 HOLD-TITLE PIC X(50).
                    10 HOLD-CONTENT PIC X(300).
                    10 HOLD-USERNAME PIC X(16).
+                   10 HOLD-DATE PIC X(10).
            LINKAGE SECTION.
            01 SORTED-TABLE.
                05 S-ENTRY OCCURS 10 TO 999 TIMES DEPENDING ON 
@@ -22,6 +23,7 @@
                    10 S-TITLE PIC X(50).
                    10 S-CONTENT PIC X(300).
                    10 S-USERNAME PIC X(16).
+                   10 S-DATE PIC X(10).
            PROCEDURE DIVISION USING SORTED-TABLE.
            CALL 'number-of-file-lines' USING NUM-OF-LINES.
            MOVE NUM-OF-LINES TO REVERSE-ID.
