@@ -21,203 +21,204 @@
            FILE SECTION.
         *>    WORD GUESSING GAME SECTION
            FD F-WORD-FILE.
-           01 WORD PIC X(20).
+           01 WORD                         PIC X(20).
            FD F-HIGH-SCORES-FILE.
            01 PLAYER-SCORES.
-              05 HIGH-SCORE PIC 99.
-              05 PLAYER-NAME PIC X(10).
+              05 HIGH-SCORE                PIC 99.
+              05 PLAYER-NAME               PIC X(10).
         *>  TIC-TAC-TOE F-Section
            FD FD-WINMASKS.
-           01 FD-WINMASK PIC X(9).
+           01 FD-WINMASK                   PIC X(9).
                       
            WORKING-STORAGE SECTION.
       ******************************************************************
       *******-----VARIABLES RELATED TO LOGIN & MENU SCREEN-----*********
       ******************************************************************
-           01 WS-USERNAME PIC X(16).
-           01 WS-PASSWORD PIC X(20).
-           01 WS-NEW-USER-NAME PIC X(16).
-           01 WS-NEW-PASSWORD PIC X(20).
-           01 LOGIN-CHOICE PIC X.
-           01 MENU-CHOICE PIC X.
-           01 ERROR-CHOICE PIC X.
-           01 CREATE-CHOICE PIC X.
-           01 ACCOUNT-CHOICE PIC X.
-           01 WS-LOGIN-CORRECT PIC 9.
-           01 WS-ERROR-MSG PIC X(40).
-           01 WS-UNAME-UNAVAILABLE PIC 9.
-           01 WS-USERCREDITS PIC 9(3).
+           01 WS-USERNAME                  PIC X(16).
+           01 WS-PASSWORD                  PIC X(20).
+           01 WS-NEW-USER-NAME             PIC X(16).
+           01 WS-NEW-PASSWORD              PIC X(20).
+           01 LOGIN-CHOICE                 PIC X.
+           01 MENU-CHOICE                  PIC X.
+           01 ERROR-CHOICE                 PIC X.
+           01 CREATE-CHOICE                PIC X.
+           01 ACCOUNT-CHOICE               PIC X.
+           01 WS-LOGIN-CORRECT             PIC 9.
+           01 WS-ERROR-MSG                 PIC X(40).
+           01 WS-UNAME-UNAVAILABLE         PIC 9.
+           01 WS-USERCREDITS               PIC 9(3).
 
       ******************************************************************
       ***********-----VARIABLES RELATED TO BANK ACCOUNTS-----***********
       ******************************************************************
-           01 BANK-ACCOUNT-CHOICE PIC X.
-           01 CARD-NO PIC 9(16).
-           01 CARD-EXPIRY PIC 9(4).
-           01 CARD-CVV PIC 9(3).
-           01 WS-CARD-NO PIC 9(16).
-           01 WS-CARD-EXPIRY PIC 9(4).
-           01 WS-CARD-CVV PIC 9(3).
+           01 BANK-ACCOUNT-CHOICE          PIC X.
+           01 CARD-NO                      PIC 9(16).
+           01 CARD-EXPIRY                  PIC 9(4).
+           01 CARD-CVV                     PIC 9(3).
+           01 WS-CARD-NO                   PIC 9(16).
+           01 WS-CARD-EXPIRY               PIC 9(4).
+           01 WS-CARD-CVV                  PIC 9(3).
       ******************************************************************
       **************----VARIABLES RELATING TO CREDIT STORE----**********
       ******************************************************************
-           01 CREDIT-STORE-CHOICE PIC X.
-           01 WS-UPDATE-CREDITS PIC 9(3). 
-           01 WS-STORE-CHARGE PIC 9(2).
-           01 WS-BALANCE-AVAILABLE PIC X.      
+           01 CREDIT-STORE-CHOICE          PIC X.
+           01 WS-UPDATE-CREDITS            PIC 9(3). 
+           01 WS-STORE-CHARGE              PIC 99.
+           01 WS-BALANCE-AVAILABLE         PIC X.      
       ******************************************************************
       ********-----VARIABLES RELATED TO WORD GUESSING GAME-----*********
       ******************************************************************
-           01 WS-ANSWERWORD PIC X(20).
-           01 RANDOMNUMBER PIC 99.
-           01 WS-WORD PIC X(20).
+           01 WS-ANSWERWORD                PIC X(10).
+           01 RANDOMNUMBER                 PIC 99.
+           01 WS-WORD                      PIC X(10).
            01 WS-GUESSING-CHOICE-WORDS.
                05 WS-GUESSING-CHOICE-WORD OCCURS 213 TIMES
                DESCENDING KEY IS WS-GUESSING-WORDS-WORD
                INDEXED BY WORD-IDX.
                    10 WS-GUESSING-WORDS-WORD PIC X(20).
-           01 WS-GUESS-CHOICE PIC X.
+           01 WS-GUESS-CHOICE              PIC X.
+           01 WS-GTW-COL                   PIC 9 VALUE 4.
       *********-----VARIABLES RELATED TO HIGH SCORE SCREEN----**********
-           01 WS-HIGH-SCORE-CHOICE PIC X.
-           01 WS-HIGH-SCORE PIC 99.
+           01 WS-HIGH-SCORE-CHOICE         PIC X.
+           01 WS-HIGH-SCORE                PIC 99.
            01 WS-HIGH-SCORES.  
               05 WS-TABLE-HIGH-SCORE OCCURS 100 TIMES     
               ASCENDING KEY IS WS-SCORE
               INDEXED BY SCORE-IDX.
-                  10 WS-SCORE PIC 99.
-                  10 WS-NAME PIC X(10).
+                  10 WS-SCORE              PIC 99.
+                  10 WS-NAME               PIC X(10).
       ********-----VARIABLES RELATED TO CHECKING GUESSES-----***********
            01 WS-LETTERS-LEFT PIC 99.
            01 WS-GUESSES-LEFT PIC 99.          
       **********-----VARIABLES RELATED TO WINNING & LOSING-----*********
-           01 WS-GUESSING-LOSING-CHOICE PIC X.
-           01 WS-GUESSING-WINNING-CHOICE PIC X.
+           01 WS-GUESSING-LOSING-CHOICE    PIC X.
+           01 WS-GUESSING-WINNING-CHOICE   PIC X.
            01 WS-WORD-LENGTH PIC 99.
       ******************************************************************
            01 COUNTER UNSIGNED-INT.
            01 OFFSET UNSIGNED-INT.
-
-           01 WS-GAMECREDITS PIC 9(3) VALUE ZEROES.
            
-           01 WS-FILE-IS-ENDED         PIC 9 VALUE ZERO.
-           01 MSG-MENU-CHOICE          PIC XXX.
-           01 GAMES-MENU-CHOICE        PIC X.
-           01 NUM-FILE-LINES           PIC 999.
-           01 ID-NUM                   PIC 999 VALUE 1.
-           01 WS-DATETIME              PIC X(21).
+           01 WS-FILE-IS-ENDED             PIC 9 VALUE ZERO.
+           01 MSG-MENU-CHOICE              PIC XXX.
+           01 GAMES-MENU-CHOICE            PIC X.
+           01 NUM-FILE-LINES               PIC 999.
+           01 ID-NUM                       PIC 999 VALUE 1.
+           01 WS-DATETIME                  PIC X(21).
            01 WS-FORMATTED-DT.
              05 WS-FORMATTED-DTE-TME.
-               15 WS-FORMATTED-YEAR    PIC  X(4). 
-               15 FILLER               PIC X VALUE "-".
-               15 WS-FORMATTED-MONTH   PIC  X(2).
-               15 FILLER               PIC X VALUE "-".
-               15 WS-FORMATTED-DY      PIC  X(2).
-               15 FILLER               PIC X VALUE "-".
-               15 WS-FORMATTED-HOUR    PIC  X(2).
-               15 FILLER               PIC X VALUE ":".
-               15 WS-FORMATTED-MINS    PIC  X(2).
-               15 FILLER               PIC X VALUE ":".
-               15 WS-FORMATTED-SEC     PIC  X(2).
-               15 FILLER               PIC X VALUE ":".
-               15 WS-FORMATTED-MS      PIC  X(2).
+               15 WS-FORMATTED-YEAR        PIC  X(4). 
+               15 FILLER                   PIC X VALUE "-".
+               15 WS-FORMATTED-MONTH       PIC  X(2).
+               15 FILLER                   PIC X VALUE "-".
+               15 WS-FORMATTED-DY          PIC  X(2).
+               15 FILLER                   PIC X VALUE "-".
+               15 WS-FORMATTED-HOUR        PIC  X(2).
+               15 FILLER                   PIC X VALUE ":".
+               15 WS-FORMATTED-MINS        PIC  X(2).
+               15 FILLER                   PIC X VALUE ":".
+               15 WS-FORMATTED-SEC         PIC  X(2).
+               15 FILLER                   PIC X VALUE ":".
+               15 WS-FORMATTED-MS          PIC  X(2).
                    
            01 WS-LIST-TABLE.
                05 WS-LIST-ENTRY OCCURS 10 TO 999 TIMES DEPENDING ON 
                  NUM-FILE-LINES.
-                   10 LIST-ID          PIC XXX.
-                   10 LIST-TITLE       PIC X(50).
-                   10 LIST-CONTENT     PIC X(300).
-                   10 LIST-USERNAME    PIC X(16).  
+                   10 LIST-ID              PIC XXX.
+                   10 LIST-TITLE           PIC X(50).
+                   10 LIST-CONTENT         PIC X(300).
+                   10 LIST-USERNAME        PIC X(16).  
 
            01 WS-CONTENT-DISPLAY.
-               05 LS-PART-1            PIC X(60).
-               05 LS-PART-2            PIC X(60).
-               05 LS-PART-3            PIC X(60).
-               05 LS-PART-4            PIC X(60).
-               05 LS-PART-5            PIC X(60).
+               05 LS-PART-1                PIC X(60).
+               05 LS-PART-2                PIC X(60).
+               05 LS-PART-3                PIC X(60).
+               05 LS-PART-4                PIC X(60).
+               05 LS-PART-5                PIC X(60).
            
 
-           01 MSG-SELECT               PIC 999.
-           01 MSG-VIEW-CHOICE          PIC X.
-           01 MSG-WRITE-CHOICE         PIC X.
+           01 MSG-SELECT                   PIC 999.
+           01 MSG-VIEW-CHOICE              PIC X.
+           01 MSG-WRITE-CHOICE             PIC X.
            
            01 NEW-MESSAGE.
-             05 WS-TITLE               PIC X(50).
-             05 WS-CONTENT             PIC X(300).
-             05 WS-MSG-AUTHOR            PIC X(16).
+             05 WS-TITLE                   PIC X(50).
+             05 WS-CONTENT                 PIC X(300).
+             05 WS-MSG-AUTHOR              PIC X(16).
       ******************************************************************
       ******************-----TIC-TAC-TOE VARIABLES**********************
       ******************************************************************
-           01 WS-PLAYER PIC A(1).
+           01 WS-PLAYER                    PIC A(1).
                88 HUMAN-PLAYER VALUE "X".
                88 COMPUTER-PLAYER VALUE "O".
-           01 WS-STATE PIC A(5).
+           01 WS-STATE                     PIC A(5).
                88 GAME-OVER VALUES "WIN", "LOSE", "STALE".
-           01 WS-MOVE-OUTCOME PIC A(5).
+           01 WS-MOVE-OUTCOME              PIC A(5).
                88 MOVE-COMPLETE VALUES "WIN", "LOSE", "FAIL".
-           01 WS-MASK-DETECTED PIC 9(1).
+           01 WS-MASK-DETECTED             PIC 9.
                88 WIN-DETECTED VALUES 3, 4, 5, 6, 7, 8, 9.
-           01 WS-COMPUTER-MOVED PIC 9(1).
+           01 WS-COMPUTER-MOVED            PIC 9.
                88 COMPUTER-MOVED VALUE 1.
-           01 WS-EOF PIC 9(1).
+           01 WS-EOF                       PIC 9.
                88 EOF VALUE 1.
-           01 WS-SWAP-PLAYERS PIC 9(1).
+           01 WS-SWAP-PLAYERS              PIC 9.
                88 SWAP-PLAYERS VALUE 1.
-           01 WS-NEXT-MOVE PIC X(2).
+           01 WS-NEXT-MOVE PIC XX.
                88 FINISHED-PLAYING VALUES "N", "n".
            01 WS-GAME-GRID.
                05 WS-GAME-GRID-ROW OCCURS 3 TIMES.
                    10 WS-GAME-GRID-COL OCCURS 3 TIMES.
-                       15 WS-CELL PIC X(1).
+                       15 WS-CELL          PIC X.
 
-               01 WS-COLOR-GREEN       PIC 9(1) VALUE 2.
-               01 WS-COLOR-BLUE        PIC 9(1) VALUE 1.
-               01 WS-COLOR-WHITE       PIC 9(1) VALUE 7.
-               01 WS-COLOR-CYAN        PIC 9(1) VALUE 3.
-               01 WS-COLOR-RED         PIC 9(1) VALUE 4.
-               01 WS-BG-COLOR          PIC 9(1) VALUE 1.
-               01 WS-FG-COLOR          PIC 9(1) VALUE 1.
-               01 WS-FG-CELL           PIC 9(1).
-               01 WS-FG                PIC 9(1).
-               01 WS-BG                PIC 9(1).
-               01 WS-COL               PIC 9(1).
-               01 WS-ROW               PIC 9(1).
-               01 WS-WINS              PIC 9(2).
-               01 WS-MOVES             PIC 9(2).
-               01 WS-GAMES             PIC 9(2).
-               01 WS-COMPUTER-MOVE     PIC 9(1).
-               01 WS-DETECT-LOOP-COUNT PIC 9(1).
-               01 WS-OANDXMESSAGE      PIC X(128).
-               01 WS-INSTRUCTION       PIC X(16).
-               01 WS-FLAT-GAME-GRID    PIC X(9).
+               01 WS-COLOR-GREEN           PIC 9 VALUE 2.
+               01 WS-COLOR-BLUE            PIC 9 VALUE 1.
+               01 WS-COLOR-WHITE           PIC 9 VALUE 7.
+               01 WS-COLOR-CYAN            PIC 9 VALUE 3.
+               01 WS-COLOR-RED             PIC 9 VALUE 4.
+               01 WS-BG-COLOR              PIC 9 VALUE 1.
+               01 WS-FG-COLOR              PIC 9 VALUE 1.
+               01 WS-FG-CELL               PIC 9.
+               01 WS-FG                    PIC 9.
+               01 WS-BG                    PIC 9.
+               01 WS-COL                   PIC 9.
+               01 WS-ROW                   PIC 9.
+               01 WS-WINS                  PIC 99.
+               01 WS-MOVES                 PIC 99.
+               01 WS-GAMES                 PIC 99.
+               01 WS-COMPUTER-MOVE         PIC 9.
+               01 WS-DETECT-LOOP-COUNT     PIC 9.
+               01 WS-OANDXMESSAGE          PIC X(28).
+               01 WS-INSTRUCTION           PIC X(16).
+               01 WS-FLAT-GAME-GRID        PIC X(9).
       ******************************************************************
       ****************----NUMBER GUESSING GAME VARIABLES*----****************
       ******************************************************************
-           01 SEED                     PIC 9(8).
-           01 GUESS-INPUT              PIC XX.
-           01 GUESS                    PIC 99.
-           01 ANSWER                   PIC 99.
-           01 TOTAL-GUESSES            PIC 99.
-           01 WS-RANDOM-NUM-MSG        PIC X(128).
-           01 WS-GTN-BG-COLOR          PIC 9. 
+
+           01 SEED                         PIC 9(8).
+           01 GUESS-INPUT                  PIC XX.
+           01 GUESS                        PIC 99.
+           01 ANSWER                       PIC 99.
+           01 TOTAL-GUESSES                PIC 99.
+           01 WS-RANDOM-NUM-MSG            PIC X(28).
+           01 WS-GTN-BG-COLOR              PIC 9. 
+
       ******************************************************************
       ******************-----COMMENT SYSTEM VARIABLES-----**************
       ******************************************************************
-           01 NUM-COMMENTS PIC 9999.
+           01 NUM-COMMENTS                 PIC 9(4).
            01 COMMENT-TABLE.
                05 COM-ENTRY OCCURS 1 TO 9999 TIMES 
                DEPENDING ON NUM-COMMENTS.
                   *>  10 TEMP-ID PIC 999.
-                   10 COM-AUTHOR PIC X(16).
-                   10 COM-DATE PIC X(10).
-                   10 COM-COMMENT PIC X(50).
-           01 COM-INDEX PIC 9999 VALUE 1.
-           01 COM-SCRN-CHOICE PIC X.
+                   10 COM-AUTHOR           PIC X(16).
+                   10 COM-DATE             PIC X(10).
+                   10 COM-COMMENT          PIC X(50).
+           01 COM-INDEX                    PIC 9(4) VALUE 1.
+           01 COM-SCRN-CHOICE              PIC X.
 
       ******************************************************************
       ****************-----COMMENT WRITING VARIABLES-----***************
       ******************************************************************           
-           01 POST-COMMENT-CHOICE PIC X.
+           01 POST-COMMENT-CHOICE          PIC X.
            
            01 POST-COM-TBL.
                05 POST-COMMENT-AUTHOR PIC X(16).
@@ -237,17 +238,17 @@
       ***********************-----TIME VARIABLES----********************
       ******************************************************************
            01 WS-TIME.
-               05 WS-YEAR PIC X(4).
-               05 WS-MONTH PIC X(2).
-               05 WS-DAY PIC X(2).
+               05 WS-YEAR                  PIC X(4).
+               05 WS-MONTH                 PIC XX.
+               05 WS-DAY                   PIC XX.
                05 WS-HOURS-MINS.
-                   10 WS-HOURS PIC X(2).
-                   10 WS-MINS PIC X(2).             
+                   10 WS-HOURS             PIC XX.
+                   10 WS-MINS              PIC XX.             
       ******************************************************************
            LINKAGE SECTION.
-           01 LS-COUNTER UNSIGNED-INT.
-           01 LS-NUM UNSIGNED-INT.
-           01 LS-MESSAGE PIC X(60). 
+           01 LS-COUNTER                   UNSIGNED-INT.
+           01 LS-NUM                       UNSIGNED-INT.
+           01 LS-MESSAGE                   PIC X(60). 
       ****************************************************************** 
            SCREEN SECTION.
            01 LOGIN-SCREEN
@@ -1571,11 +1572,7 @@
              05 LINE 4 COL 40 VALUE "GAMES MENU"                                     
              FOREGROUND-COLOR IS 7, UNDERLINE.
              05 LINE 12 COL 8 VALUE "                                   
-      -    "                        "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 12 COL 67 VALUE "GAME CREDITS: "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 12 COL 81 PIC 9(3) USING WS-GAMECREDITS
+      -    "                                         "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 12 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1705,10 +1702,6 @@
              05 LINE 12 COL 8 VALUE "                                   
       -    "                        "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 12 COL 67 VALUE "GAME CREDITS: "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 12 COL 81 PIC 9(3) USING WS-GAMECREDITS
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 12 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
@@ -1724,6 +1717,8 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 14 COL 10 VALUE "Guess this word: "
              FOREGROUND-COLOR IS 5, REVERSE-VIDEO.
+             05 LINE 14 COL 27 PIC X(10) USING WS-WORD
+             FOREGROUND-COLOR IS 5, REVERSE-VIDEO.
              05 LINE 14 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
@@ -1737,9 +1732,7 @@
              05 LINE 16 COL 8 VALUE "                                   
       -    "                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 16 COLUMN 10 PIC X(20) USING WS-WORD
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-
+           
              05 LINE 17 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 17 COL 10 VALUE "                                   
@@ -1754,6 +1747,12 @@
              FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
              05 LINE 18 COL 24 PIC 99 USING WS-GUESSES-LEFT                           "
              FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 18 COL 60 VALUE "Reveal Word: "     
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 18 COLUMN 73 PIC X(10) USING WS-ANSWERWORD
+             FOREGROUND-COLOR IS 1, REVERSE-VIDEO. 
+             05 LINE 18 COL 83 VALUE " "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.             
              05 LINE 18 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
@@ -1805,11 +1804,7 @@
              05 LINE 4 COL 40 VALUE "GUESS THE WORD"                                     
              FOREGROUND-COLOR IS 7, UNDERLINE.
              05 LINE 12 COL 8 VALUE "                                   
-      -    "                        "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 12 COL 67 VALUE "GAME CREDITS: "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 12 COL 81 PIC 9(3) USING WS-GAMECREDITS
+      -    "                                         "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 12 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1817,19 +1812,20 @@
              05 LINE 13 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 13 COL 10 VALUE "                                   
-      -    "                                        "
-             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+      -    "                                          "
+             FOREGROUND-COLOR IS 5, REVERSE-VIDEO.
              05 LINE 13 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
              05 LINE 14 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 14 COL 10 VALUE "Guess this word: "
-             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
-             05 LINE 14 COLUMN 27 PIC X(20) USING WS-WORD
-             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
-             05 LINE 14 COL 47 VALUE "                                  
-      -    "   " FOREGROUND-COLOR IS 6, REVERSE-VIDEO.  
+             FOREGROUND-COLOR IS 5, REVERSE-VIDEO.
+             05 LINE 14 COL 27 PIC X(10) USING WS-WORD
+             FOREGROUND-COLOR IS 5, REVERSE-VIDEO.
+             05 LINE 14 COL 37 VALUE "                                  
+      -    "             "
+             FOREGROUND-COLOR IS 5, REVERSE-VIDEO.
              05 LINE 14 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
@@ -1837,7 +1833,7 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 15 COL 10 VALUE "                                   
       -    "                                        "
-             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             FOREGROUND-COLOR IS 5, REVERSE-VIDEO.
              05 LINE 15 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 16 COL 8 VALUE "                                   
@@ -1859,9 +1855,14 @@
              05 LINE 18 COL 24 PIC 99 USING WS-GUESSES-LEFT                           "
              FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
              05 LINE 18 COL 26 VALUE "                                 
-      -    "                        "
-             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.  
-             05 LINE 18 COL 84 VALUE "  "           
+      -    " " FOREGROUND-COLOR IS 6, REVERSE-VIDEO.   
+             05 LINE 18 COL 60 VALUE "Reveal Word: "     
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 18 COLUMN 73 PIC X(10) USING WS-ANSWERWORD
+             FOREGROUND-COLOR IS 1, REVERSE-VIDEO. 
+             05 LINE 18 COL 83 VALUE " "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.             
+             05 LINE 18 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
              05 LINE 19 COL 8 VALUE "  "
@@ -1873,7 +1874,7 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 20 COL 8 VALUE "                                   
       -    "                                           "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.        
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.          
         *>    WORD GUESSING GAME OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
              05 WS-GUESS-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
@@ -1899,9 +1900,9 @@
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 44 COL 1 VALUE "     (P) Play again     (H) High                        
-      -    " scores     (Q) Quit game                                  "
+      -    "scores     (R) Reveal word (costs 5 credits)               "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE 45 COL 1 VALUE " 
+               05 LINE 45 COL 1 VALUE "     (Q) Quit game  
       -    "                                                           "                                         
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 46 COL 1 VALUE "                                 
@@ -1911,14 +1912,10 @@
              05 LINE  4 COL 10 VALUE "FriendFace"
              FOREGROUND-COLOR IS 0, UNDERLINE.
 
-             05 LINE 4 COL 40 VALUE "GUESS THE WORD"                                     
+             05 LINE  4 COL 40 VALUE "GUESS THE WORD"                                     
              FOREGROUND-COLOR IS 0, UNDERLINE.
              05 LINE 12 COL 8 VALUE "                                   
-      -    "                        "
-             FOREGROUND-COLOR IS 0, REVERSE-VIDEO.
-             05 LINE 12 COL 67 VALUE "GAME CREDITS: "
-             FOREGROUND-COLOR IS 0, REVERSE-VIDEO.
-             05 LINE 12 COL 81 PIC 9(3) USING WS-GAMECREDITS
+      -    "                                         "
              FOREGROUND-COLOR IS 0, REVERSE-VIDEO.
              05 LINE 12 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 0, REVERSE-VIDEO.
@@ -1933,12 +1930,12 @@
              FOREGROUND-COLOR IS 0, REVERSE-VIDEO.
              05 LINE 14 COL 10 VALUE "You failed to guess the word: "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 14 COLUMN 40 PIC X(20) USING WS-ANSWERWORD
+             05 LINE 14 COLUMN 40 PIC X(10) USING WS-WORD
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 14 COL 47 VALUE "                                  
-      -    "   " FOREGROUND-COLOR IS 7, REVERSE-VIDEO.  
+             05 LINE 14 COL 50 VALUE "                                  
+      -    "" FOREGROUND-COLOR IS 7, REVERSE-VIDEO. 
              05 LINE 14 COL 84 VALUE "  "
-             FOREGROUND-COLOR IS 0, REVERSE-VIDEO.
+             FOREGROUND-COLOR IS 0, REVERSE-VIDEO.           
 
              05 LINE 15 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 0, REVERSE-VIDEO.
@@ -1946,6 +1943,7 @@
       -    "                                        "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 15 COL 84 VALUE "  "
+
              FOREGROUND-COLOR IS 0, REVERSE-VIDEO.
              05 LINE 16 COL 8 VALUE "                                   
       -    "                                           "
@@ -1968,11 +1966,16 @@
              05 LINE 18 COL 24 PIC 99 USING WS-GUESSES-LEFT                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 18 COL 26 VALUE "                                 
-      -    "                        "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.  
-             05 LINE 18 COL 84 VALUE "  "           
-             FOREGROUND-COLOR IS 0, REVERSE-VIDEO.
-
+      -    " " FOREGROUND-COLOR IS 7, REVERSE-VIDEO. 
+             05 LINE 18 COL 60 VALUE "Reveal Word: "     
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 18 COLUMN 73 PIC X(10) USING WS-ANSWERWORD
+             FOREGROUND-COLOR IS WS-GTW-COL, REVERSE-VIDEO. 
+             05 LINE 18 COL 83 VALUE " "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.             
+             05 LINE 18 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 0, REVERSE-VIDEO. 
+           
              05 LINE 19 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 0, REVERSE-VIDEO.
              05 LINE 19 COL 10 VALUE "                                   
@@ -2009,9 +2012,9 @@
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 44 COL 1 VALUE "     (P) Play again     (H) High                        
-      -    " scores     (Q) Quit game                                  "
+      -    " scores                                                    "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE 45 COL 1 VALUE " 
+               05 LINE 45 COL 1 VALUE "     (Q) Quit game 
       -    "                                                           "                                         
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 46 COL 1 VALUE "                                 
@@ -2024,11 +2027,7 @@
              05 LINE 4 COL 40 VALUE "GUESS THE WORD"                                     
              FOREGROUND-COLOR IS 0, UNDERLINE.
              05 LINE 12 COL 8 VALUE "                                   
-      -    "                        "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 12 COL 67 VALUE "GAME CREDITS: "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 12 COL 81 PIC 9(3) USING WS-GAMECREDITS
+      -    "                                         "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 12 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -2043,7 +2042,7 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 14 COL 10 VALUE "You guessed the word: "
              FOREGROUND-COLOR IS 0, REVERSE-VIDEO.
-             05 LINE 14 COLUMN 32 PIC X(20) USING WS-ANSWERWORD
+             05 LINE 14 COLUMN 32 PIC X(10) USING WS-ANSWERWORD
              FOREGROUND-COLOR IS 0, REVERSE-VIDEO.
              05 LINE 14 COL 47 VALUE "                                  
       -    "   " FOREGROUND-COLOR IS 0, REVERSE-VIDEO.  
@@ -2060,7 +2059,7 @@
              05 LINE 16 COL 8 VALUE "                                   
       -    "                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 16 COL 42 VALUE "YOU WON!"
+             05 LINE 16 COL 42 VALUE "YOU WON 10 CREDITS!"
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO, BLINK.
            
              05 LINE 17 COL 8 VALUE "  "
@@ -2362,58 +2361,63 @@
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-           
+        *>    TIC-TAC-TOE BODY
+             05 LINE  4 COL 10 VALUE "FriendFace"
+             FOREGROUND-COLOR IS 7, UNDERLINE.
 
-               05 LINE 14 COLUMN 27 VALUE IS "   +---+---+---+   "
+             05 LINE 4 COL 40 VALUE "TIC-TAC-TOE"                                     
+             FOREGROUND-COLOR IS 7, UNDERLINE.          
+
+               05 LINE 14 COLUMN 35 VALUE IS "   +---+---+---+   "
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG.
-               05 LINE 15 COLUMN 27 VALUE IS " A |   |   |   |   "
+               05 LINE 15 COLUMN 35 VALUE IS " A |   |   |   |   "
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG.
-               05 LINE 16 COLUMN 27 VALUE IS "   +---+---+---+   "
+               05 LINE 16 COLUMN 35 VALUE IS "   +---+---+---+   "
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG.
-               05 LINE 17 COLUMN 27 VALUE IS " B |   |   |   |   "
+               05 LINE 17 COLUMN 35 VALUE IS " B |   |   |   |   "
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG.
-               05 LINE 18 COLUMN 27 VALUE IS "   +---+---+---+   "
+               05 LINE 18 COLUMN 35 VALUE IS "   +---+---+---+   "
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG.
-               05 LINE 19 COLUMN 27 VALUE IS " C |   |   |   |   "
+               05 LINE 19 COLUMN 35 VALUE IS " C |   |   |   |   "
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG.
-               05 LINE 20 COLUMN 27 VALUE IS "   +---+---+---+   "
+               05 LINE 20 COLUMN 35 VALUE IS "   +---+---+---+   "
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG.
-               05 LINE 21 COLUMN 27 VALUE IS "     1   2   3     "
+               05 LINE 21 COLUMN 35 VALUE IS "     1   2   3     "
 
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG.
-               05 LINE 15 COLUMN 32 PIC A(1) FROM WS-CELL(1,1)
+               05 LINE 15 COLUMN 40 PIC A(1) FROM WS-CELL(1,1)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
-               05 LINE 15 COLUMN 36 PIC A(1) FROM WS-CELL(1,2)
+               05 LINE 15 COLUMN 44 PIC A(1) FROM WS-CELL(1,2)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
-               05 LINE 15 COLUMN 40 PIC A(1) FROM WS-CELL(1,3)
+               05 LINE 15 COLUMN 48 PIC A(1) FROM WS-CELL(1,3)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
-               05 LINE 17 COLUMN 32 PIC A(1) FROM WS-CELL(2,1)
+               05 LINE 17 COLUMN 40 PIC A(1) FROM WS-CELL(2,1)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
-               05 LINE 17 COLUMN 36 PIC A(1) FROM WS-CELL(2,2)
+               05 LINE 17 COLUMN 44 PIC A(1) FROM WS-CELL(2,2)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
-               05 LINE 17 COLUMN 40 PIC A(1) FROM WS-CELL(2,3)
+               05 LINE 17 COLUMN 48 PIC A(1) FROM WS-CELL(2,3)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
-               05 LINE 19 COLUMN 32 PIC A(1) FROM WS-CELL(3,1)
+               05 LINE 19 COLUMN 40 PIC A(1) FROM WS-CELL(3,1)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
-               05 LINE 19 COLUMN 36 PIC A(1) FROM WS-CELL(3,2)
+               05 LINE 19 COLUMN 44 PIC A(1) FROM WS-CELL(3,2)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
-               05 LINE 19 COLUMN 40 PIC A(1) FROM WS-CELL(3,3)
+               05 LINE 19 COLUMN 48 PIC A(1) FROM WS-CELL(3,3)
                    BACKGROUND-COLOR WS-BG FOREGROUND-COLOR WS-FG-CELL.
 
-               05 LINE 23 COLUMN 27 VALUE IS "Message: "
+               05 LINE 23 COLUMN 30 VALUE IS "Message: "
                    FOREGROUND-COLOR IS 6.
                    05 MSG PIC X(128) FROM WS-OANDXMESSAGE.
-               05 LINE 25 COLUMN 27 PIC X(16) FROM WS-INSTRUCTION.
+               05 LINE 25 COLUMN 30 PIC X(16) FROM WS-INSTRUCTION.
                    05 WS-NEXT-MOVE-FIELD PIC X(2) USING WS-NEXT-MOVE.
-               05 LINE 27 COLUMN 27 VALUE IS "Stats: "
+               05 LINE 27 COLUMN 30 VALUE IS "Stats: "
                    FOREGROUND-COLOR IS 6.
-               05 LINE 28 COLUMN 27 VALUE IS "Moves played = "
+               05 LINE 28 COLUMN 30 VALUE IS "Moves played = "
                    FOREGROUND-COLOR IS 2.
-                   05 MOVES PIC 9(1) FROM WS-MOVES.
-               05 LINE 29 COLUMN 27 VALUE IS "Games won = "
+                   05 MOVES PIC 9 FROM WS-MOVES.
+               05 LINE 29 COLUMN 30 VALUE IS "Games won = "
                    FOREGROUND-COLOR IS 5.
                    05 WINS PIC 9(2) FROM WS-WINS.
-               05 LINE 29 COLUMN 41 VALUE IS "/".
+               05 LINE 29 COLUMN 44 VALUE IS "/".
                    05 GAMES PIC 9(2) FROM WS-GAMES. 
 
            
@@ -2461,10 +2465,10 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 14 COL 10 VALUE "Message:       "
              FOREGROUND-COLOR IS WS-GTN-BG-COLOR, REVERSE-VIDEO.
-             05 MSG PIC X(55) FROM WS-RANDOM-NUM-MSG
+             05 MSG PIC X(28) FROM WS-RANDOM-NUM-MSG
              FOREGROUND-COLOR IS WS-GTN-BG-COLOR, REVERSE-VIDEO.
-             05 LINE 14 COL 47 VALUE "                                  
-      -    "   " FOREGROUND-COLOR IS WS-GTN-BG-COLOR, REVERSE-VIDEO.  
+             05 LINE 14 COL 53 VALUE "                               "
+             FOREGROUND-COLOR IS WS-GTN-BG-COLOR, REVERSE-VIDEO.  
              05 LINE 14 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
@@ -2734,7 +2738,7 @@
            END-IF.
 
        0135-VIP-ACCOUNT.
-           MOVE 0 TO WS-UPDATE-CREDITS.
+           MOVE 0   TO WS-UPDATE-CREDITS.
            MOVE 500 TO WS-UPDATE-CREDITS.
 
            PERFORM 0133-CHECK-CREDIT-BALANCE.
@@ -3006,22 +3010,60 @@
            IF GAMES-MENU-CHOICE =      "q" or "Q" THEN
                STOP RUN
            ELSE IF GAMES-MENU-CHOICE = "g" or "G" THEN
-               PERFORM 0110-DISPLAY-MENU   
-           ELSE IF GAMES-MENU-CHOICE = "2" THEN
-               PERFORM 0410-DISPLAY-GUESSING-GAME
-           ELSE IF GAMES-MENU-CHOICE = "1" THEN
-               PERFORM 0430-GUESS-THE-NUMBER-GAME 
-           ELSE IF GAMES-MENU-CHOICE = "3" THEN
-               PERFORM 0420-TIC-TAC-TOE 
+               PERFORM 0110-DISPLAY-MENU 
+           END-IF.  
+           
+           IF GAMES-MENU-CHOICE = "1" THEN
+           MOVE 0 TO WS-UPDATE-CREDITS
+           MOVE 5 TO WS-UPDATE-CREDITS
+           PERFORM 0133-CHECK-CREDIT-BALANCE           
+               IF WS-BALANCE-AVAILABLE = "Y" THEN
+                   CALL "subtract-credits" USING WS-USERNAME, 
+                   WS-UPDATE-CREDITS
+                   CALL "account-status" USING WS-USERNAME
+                   PERFORM 0430-GUESS-THE-NUMBER-GAME
+               ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
+                MOVE "Insufficient Credits" TO WS-ERROR-MSG
+                   PERFORM 0109-ERROR-PAGE
+               END-IF
+           END-IF. 
 
-           END-IF.
+           IF GAMES-MENU-CHOICE = "2" THEN
+           MOVE 0 TO WS-UPDATE-CREDITS
+           MOVE 5 TO WS-UPDATE-CREDITS
+           PERFORM 0133-CHECK-CREDIT-BALANCE          
+               IF WS-BALANCE-AVAILABLE = "Y" THEN
+                   CALL "subtract-credits" USING WS-USERNAME, 
+                   WS-UPDATE-CREDITS
+                   CALL "account-status" USING WS-USERNAME
+                   PERFORM 0410-GUESS-THE-WORD-GAME
+               ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
+                MOVE "Insufficient Credits" TO WS-ERROR-MSG
+                   PERFORM 0109-ERROR-PAGE
+               END-IF
+           END-IF. 
+
+           IF GAMES-MENU-CHOICE = "3" THEN
+           MOVE 0 TO WS-UPDATE-CREDITS
+           MOVE 5 TO WS-UPDATE-CREDITS
+           PERFORM 0133-CHECK-CREDIT-BALANCE           
+               IF WS-BALANCE-AVAILABLE = "Y" THEN
+                   CALL "subtract-credits" USING WS-USERNAME, 
+                   WS-UPDATE-CREDITS
+                   CALL "account-status" USING WS-USERNAME
+                   PERFORM 0420-TIC-TAC-TOE 
+               ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
+                MOVE "Insufficient Credits" TO WS-ERROR-MSG
+                   PERFORM 0109-ERROR-PAGE
+               END-IF
+           END-IF. 
 
            PERFORM 0400-GAMES-MENU.
       
       ******************************************************************
       ****************----WORD GUESSING GAME SECTION----****************
       ******************************************************************
-       0410-DISPLAY-GUESSING-GAME.
+       0410-GUESS-THE-WORD-GAME.
            PERFORM 0200-TIME-AND-DATE.
            PERFORM 0132-CREDIT-TOTAL.
            MOVE 15 TO WS-GUESSES-LEFT.
@@ -3037,6 +3079,7 @@
                        MOVE 1 TO WS-FILE-IS-ENDED
                END-READ
            END-PERFORM.
+
            CLOSE F-WORD-FILE.
            MOVE FUNCTION CURRENT-DATE(14:3) TO RANDOMNUMBER.
            MOVE WS-GUESSING-WORDS-WORD(RANDOMNUMBER) TO WS-WORD.
@@ -3050,6 +3093,7 @@
              END-IF
              ADD 1 TO COUNTER
            END-PERFORM.
+
            PERFORM 0411-IN_GAME-SCREEN.
           
        0411-IN_GAME-SCREEN.
@@ -3066,7 +3110,7 @@
            
        0412-CHECK-GUESS.
            MOVE 1 TO COUNTER.
-           PERFORM UNTIL COUNTER = 20
+           PERFORM UNTIL COUNTER = 10
                  IF WS-GUESS-CHOICE = WS-ANSWERWORD(COUNTER:1) THEN
                    MOVE WS-GUESS-CHOICE TO WS-WORD(COUNTER:1) 
                  END-IF
@@ -3075,14 +3119,17 @@
            SUBTRACT 1 FROM WS-GUESSES-LEFT.
            MOVE 1 TO COUNTER.
            MOVE 0 TO WS-LETTERS-LEFT.
-           PERFORM UNTIL COUNTER = 20
+           PERFORM UNTIL COUNTER = 10
              IF "*" EQUALS WS-WORD(COUNTER:1) 
               THEN ADD 1 TO WS-LETTERS-LEFT
              END-IF
              ADD 1 TO COUNTER
            END-PERFORM.
              IF WS-LETTERS-LEFT = 0
-              THEN 
+              THEN
+               MOVE 0  TO WS-UPDATE-CREDITS
+               MOVE 10 TO WS-UPDATE-CREDITS
+               CALL "add-credits" USING WS-USERNAME, WS-UPDATE-CREDITS
               PERFORM 0413-WINNING-SCREEN
              ELSE IF WS-GUESSES-LEFT = 0
               THEN 
@@ -3098,15 +3145,16 @@
            COMPUTE WS-HIGH-SCORE = WS-GUESSES-LEFT * WS-GUESSES-LEFT + 5
            .
            DISPLAY WORD-GUESSING-WINNING-SCREEN.
-           OPEN EXTEND F-HIGH-SCORES-FILE
+               OPEN EXTEND F-HIGH-SCORES-FILE
                MOVE WS-HIGH-SCORE TO HIGH-SCORE
                MOVE WS-USERNAME TO PLAYER-NAME
                WRITE PLAYER-SCORES 
                END-WRITE.
            CLOSE F-HIGH-SCORES-FILE.
+
            ACCEPT WS-GUESSING-WINNING-CHOICE-FIELD.
            IF WS-GUESSING-WINNING-CHOICE = "p" OR "P"
-               THEN PERFORM 0410-DISPLAY-GUESSING-GAME
+               THEN PERFORM 0410-GUESS-THE-WORD-GAME
            ELSE IF WS-GUESSING-WINNING-CHOICE = "h" OR "H"
              THEN PERFORM 0416-HIGH-SCORE-TABLE
            ELSE IF WS-GUESSING-WINNING-CHOICE = "!" OR "q" OR "Q"
@@ -3121,8 +3169,25 @@
            INITIALIZE WS-GUESSING-LOSING-CHOICE.
            DISPLAY WORD-GUESSING-LOSE-SCREEN.
            ACCEPT WS-GUESSING-LOSING-CHOICE-FIELD.
+
+           IF WS-GUESSING-LOSING-CHOICE = "r" OR "R"
+           MOVE 7 TO WS-GTW-COL
+           MOVE 0 TO WS-UPDATE-CREDITS
+           MOVE 5 TO WS-UPDATE-CREDITS
+           PERFORM 0133-CHECK-CREDIT-BALANCE          
+               IF WS-BALANCE-AVAILABLE = "Y" THEN
+                   CALL "subtract-credits" USING WS-USERNAME, 
+                   WS-UPDATE-CREDITS
+                   CALL "account-status" USING WS-USERNAME
+                   PERFORM 0414-LOSING-SCREEN
+               ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
+                MOVE "Insufficient Credits" TO WS-ERROR-MSG
+                   PERFORM 0109-ERROR-PAGE
+               END-IF
+           END-IF.
+
            IF WS-GUESSING-LOSING-CHOICE = "p" OR "P"
-               THEN PERFORM 0410-DISPLAY-GUESSING-GAME
+               THEN PERFORM 0410-GUESS-THE-WORD-GAME
            ELSE IF WS-GUESSING-LOSING-CHOICE = "h" OR "H"
              THEN PERFORM 0416-HIGH-SCORE-TABLE
            ELSE IF WS-GUESSING-LOSING-CHOICE = "!" OR "q" OR "Q"
@@ -3334,8 +3399,8 @@
 
            INITIALIZE-RANDOM-NUM-GAME.
            MOVE WS-COLOR-BLUE TO WS-BG-COLOR.
-           MOVE 7 TO WS-FG-COLOR
-           MOVE 5 TO WS-GTN-BG-COLOR
+           MOVE 7 TO WS-FG-COLOR.
+           MOVE 5 TO WS-GTN-BG-COLOR.
            DISPLAY GUESS-THE-NUMBER-GAME-SCREEN.
            COMPUTE TOTAL-GUESSES = 0.
            ACCEPT SEED FROM TIME
