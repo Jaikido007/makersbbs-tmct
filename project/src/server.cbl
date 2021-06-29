@@ -1141,6 +1141,9 @@
              05 LINE 20 COL 8 VALUE "                                   
       -    "                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 24 COL 10 VALUE 'Number of Comments: '.
+             05 LINE 24 COL 30 PIC Z(4) USING SUM-COMMENTS(MSG-SELECT).
     
         *>    MESSAGE VIEW OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
@@ -2798,6 +2801,7 @@
            PERFORM 0132-CREDIT-TOTAL.
            CALL "number-of-file-lines" USING NUM-FILE-LINES.
            CALL "get-list-page-alt" USING NUM-FILE-LINES WS-LIST-TABLE.
+           CALL "count-comments-posted" USING COMMENT-TOTAL-TABLE.
            MOVE LIST-CONTENT(MSG-SELECT) TO WS-CONTENT-DISPLAY.
            INITIALIZE MSG-VIEW-CHOICE.
            DISPLAY MESSAGE-VIEW-SCREEN.
