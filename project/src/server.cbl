@@ -694,7 +694,7 @@
       -    "                                                         "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 44 COL 1 VALUE "     (1) 10 Credits     (2) 25 Cred  
-      -    "its     (3) 50 Credits     (4) 100 CREDITS               "                                 
+      -    "its     (3) 50 Credits     (V) VIP Upgrade               "                                 
                 FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 45 COL 1 VALUE "     (G) Go back        (Q) Quit                                 
       -    "                                                         "
@@ -744,7 +744,7 @@
              05 LINE 14 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 14 COL 10 VALUE "                            £60 :                  
-      -    " 100 CREDITS                              "
+      -    " VIP UPGRADE                              "
              FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
              05 LINE 14 COL 85 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -2862,8 +2862,6 @@
                PERFORM 0130-CREDIT-STORE  
            ELSE IF ACCOUNT-CHOICE = "c" or "C" THEN
                PERFORM 0130-CREDIT-STORE
-           ELSE IF ACCOUNT-CHOICE = "v" or "V" THEN
-               PERFORM 0135-VIP-ACCOUNT
            ELSE IF ACCOUNT-CHOICE = "u" or "U" THEN
                PERFORM 0350-UPDATE-PASSWORD 
            END-IF.
@@ -2935,6 +2933,9 @@
                MOVE 50 TO WS-UPDATE-CREDITS
                MOVE 35 TO WS-STORE-CHARGE 
                PERFORM 0131-ADD-CREDITS
+
+           ELSE IF ACCOUNT-CHOICE = "v" or "V" THEN
+               PERFORM 0135-VIP-ACCOUNT
        
            ELSE IF CREDIT-STORE-CHOICE = "g" OR "G" THEN
               PERFORM 0110-DISPLAY-MENU  
@@ -3705,7 +3706,7 @@
                GO TO GAME-LOOP
            END-IF.
 
-           IF TOTAL-GUESSES > 1
+           IF TOTAL-GUESSES >= 3
                MOVE "You Lose! Try again?(Y/N)"           
                TO WS-RANDOM-NUM-MSG
                MOVE 7 TO WS-FG-COLOR
