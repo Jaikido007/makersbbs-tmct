@@ -68,7 +68,7 @@
 
            COMPUTE ID-FIND = MESSAGE-LINES - MSG-SELECT + 1.
 
-          *>  Wipe the table so no unrequested data is shown:
+          *>  Wipe the incoming table so no unrequested data is shown:
            
            PERFORM UNTIL COM-INDEX = NUM-COMMENTS
              MOVE SPACES TO WS-ENTRY(COM-INDEX)

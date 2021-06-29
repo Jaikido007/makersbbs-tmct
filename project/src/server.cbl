@@ -199,7 +199,7 @@
            01 ANSWER                   PIC 99.
            01 TOTAL-GUESSES            PIC 99.
            01 WS-RANDOM-NUM-MSG        PIC X(128).
-           01 WS-GTN-BG-COLOR          PIC X. 
+           01 WS-GTN-BG-COLOR          PIC 9. 
       ******************************************************************
       ******************-----COMMENT SYSTEM VARIABLES-----**************
       ******************************************************************
@@ -223,6 +223,15 @@
                05 POST-COMMENT-AUTHOR PIC X(16).
                05 POST-COMMENT-DATE PIC X(10).
                05 WRITE-COMMENT PIC X(50).
+
+      ******************************************************************
+      **************-----COMMENT COUNTING VARIABLES-----****************
+      ******************************************************************
+
+           01 COMMENT-TOTAL-TABLE.
+               05 COM-TOTAL-ENTRY OCCURS 1 TO 999 TIMES 
+               DEPENDING ON NUM-FILE-LINES.
+                   10 SUM-COMMENTS PIC Z(4).
    
       ******************************************************************
       ***********************-----TIME VARIABLES----********************
@@ -861,8 +870,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 16 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 16 COL 64 VALUE "                    "
+             05 LINE 16 COL 64 PIC Z(4)    USING SUM-COMMENTS(ID-NUM)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+            *>  05 LINE 16 COL 64 VALUE "                    "
+            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 16 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 17 COL 8 VALUE "  "
@@ -873,8 +884,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 17 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 1)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 17 COL 64 VALUE "                    "
+             05 LINE 17 COL 64 PIC Z(4)   USING SUM-COMMENTS(ID-NUM + 1)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+            *>  05 LINE 17 COL 64 VALUE "                    "
+            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 17 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 18 COL 8 VALUE "  "
@@ -885,8 +898,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 18 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 2)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 18 COL 64 VALUE "                    "
+             05 LINE 18 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 2)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+            *>  05 LINE 18 COL 64 VALUE "                    "
+            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 18 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 19 COL 8 VALUE "  "
@@ -897,8 +912,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 19 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 3)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 19 COL 64 VALUE "                    "
+             05 LINE 19 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 3)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+            *>  05 LINE 19 COL 64 VALUE "                    "
+            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 19 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 20 COL 8 VALUE "  "
@@ -909,8 +926,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 20 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 4)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 20 COL 64 VALUE "                    "
+             05 LINE 20 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 4)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+            *>  05 LINE 20 COL 64 VALUE "                    "
+            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 20 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 21 COL 8 VALUE "  "
@@ -921,8 +940,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 21 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 5)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 21 COL 64 VALUE "                    "
+             05 LINE 21 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 5)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+            *>  05 LINE 21 COL 64 VALUE "                    "
+            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 21 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 22 COL 8 VALUE "  "
@@ -933,8 +954,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 22 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 6)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 22 COL 64 VALUE "                    "
+             05 LINE 22 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 6)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+            *>  05 LINE 22 COL 64 VALUE "                    "
+            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 22 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 23 COL 8 VALUE "  "
@@ -945,8 +968,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 23 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 7)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 23 COL 64 VALUE "                    "
+             05 LINE 23 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 7)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+            *>  05 LINE 23 COL 64 VALUE "                    "
+            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 23 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 24 COL 8 VALUE "  "
@@ -957,8 +982,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 24 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 8)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 24 COL 64 VALUE "                    "
+             05 LINE 24 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 8)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+            *>  05 LINE 24 COL 64 VALUE "                    "
+            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 24 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 25 COL 8 VALUE "  "
@@ -969,8 +996,10 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 25 COL 14 PIC X(50)   USING LIST-TITLE(ID-NUM + 9)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 25 COL 64 VALUE "                    "
+             05 LINE 25 COL 64 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 9)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+            *>  05 LINE 25 COL 64 VALUE "                    "
+            *>  FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 25 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 26 COL 8 VALUE "                                   
@@ -2724,6 +2753,7 @@
            PERFORM 0200-TIME-AND-DATE.
            CALL "number-of-file-lines" USING NUM-FILE-LINES.
            CALL "get-list-page-alt" USING NUM-FILE-LINES WS-LIST-TABLE.
+           CALL 'count-comments-posted' USING COMMENT-TOTAL-TABLE.
            *> CALL "id-sort" USING WS-LIST-TABLE. <*
            INITIALIZE MSG-MENU-CHOICE.
            DISPLAY MSG-MENU-SCREEN.
