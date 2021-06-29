@@ -471,6 +471,66 @@
                05 ERROR-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
                   USING ERROR-CHOICE.
 
+           01 COMMENT-ERROR-SCREEN
+             BACKGROUND-COLOR IS 1.
+             05 BLANK SCREEN.
+        *>    ERROR HEADER
+             05 LINE 1 COL 1  VALUE "   :                              
+      -    "                                                           "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
+             FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
+             FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 90 PIC X(3) USING WS-USERCREDITS
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+        *>    ERROR FOOTER
+               05 LINE 43 COL 1 VALUE "                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 44 COL 1 VALUE "     (C) Credit store     (A) Acc
+      -    "ount options     (G) Back                      "                                 
+                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 45 COL 1 VALUE "                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 46 COL 1 VALUE "                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+                05 LINE 30 COLUMN 32 PIC X(40) USING WS-ERROR-MSG.
+        *>    FRIENDFACE LOGO ASCII ART
+               05 LINE 14 COL 34 VALUE " ________________________"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 15 COL 35 VALUE "|FFFFFFFFFFFFFFFFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 16 COL 35 VALUE "|FFFFFFFFFFFFF_____FFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 17 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 18 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 19 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 20 COL 35 VALUE "|FFFFFFFFF________FFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 21 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 22 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 23 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 24 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 25 COL 35 VALUE "|FFFFFFFFFFFFFFFFFFFFFF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 26 COL 34 VALUE " ------------------------"
+                   FOREGROUND-COLOR IS 7.
+        *>    ERROR OPTION POSITIONING
+               05 LINE 42 COLUMN 6 VALUE "Option: ".
+               05 C-ERROR-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
+                  USING ERROR-CHOICE.
+
            01 CREATE-AN-ACCOUNT-SCREEN
                BACKGROUND-COLOR IS 01.
                 05 BLANK SCREEN.
@@ -3134,6 +3194,7 @@
            PERFORM 0110-DISPLAY-MENU.
 
        0143-COMMENT-SCREEN.
+           PERFORM 0335-CHECK-ACCOUNT-STATUS.
            PERFORM 0201-CURRENT-DATE.
            PERFORM 0132-CREDIT-TOTAL.
            CALL "num-comments" USING NUM-COMMENTS.
@@ -3169,7 +3230,14 @@
            END-IF.
 
            IF COM-SCRN-CHOICE-FIELD = 'C' OR 'c'
-             PERFORM 0144-COMMENT-WRITE
+             IF WS-USERACCOUNTLEVEL = 'VIP'
+               PERFORM 0144-COMMENT-WRITE
+             ELSE
+               MOVE 'Upgrade account to comment' TO 
+               WS-ERROR-MSG
+              *>  CHANGE THIS TO ANOTHER PAGE THAT DOESNT LOG YOU OUT.
+               PERFORM 0156-COMMENT-ERROR
+             END-IF
            END-IF
 
            PERFORM 0143-COMMENT-SCREEN.
@@ -3252,6 +3320,25 @@
                PERFORM 0109-ERROR-PAGE
            END-IF.    
            PERFORM 0140-MESSAGE-MENU.
+
+      ******************************************************************
+      ******************-----COMMENT ERROR SECTION----******************
+      ******************************************************************
+
+       0156-COMMENT-ERROR.
+           PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0132-CREDIT-TOTAL.
+           INITIALIZE ERROR-CHOICE.
+           DISPLAY COMMENT-ERROR-SCREEN.
+           ACCEPT C-ERROR-CHOICE-FIELD.
+
+           IF ERROR-CHOICE = 'C' OR 'c' THEN
+             PERFORM 0130-CREDIT-STORE
+           ELSE IF ERROR-CHOICE = 'A' OR 'a' THEN
+             PERFORM 0111-USER-ACCOUNT-MENU
+           ELSE IF ERROR-CHOICE = 'G' OR 'g' THEN
+             PERFORM 0143-COMMENT-SCREEN
+           END-IF.
       ******************************************************************
       ******************-----TIME/DATE SECTION----**********************
       ******************************************************************
