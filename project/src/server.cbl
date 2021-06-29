@@ -228,8 +228,9 @@
            01 GUESS                            PIC 99.
            01 ANSWER                           PIC 99.
            01 TOTAL-GUESSES                    PIC 99.
-           01 WS-RANDOM-NUM-MSG                PIC X(28).
-           01 WS-GTN-BG-COLOR                  PIC 9. 
+           01 WS-RANDOM-NUM-MSG                PIC X(34).
+           01 WS-GTN-BG-COLOR                  PIC 9.
+           01 WS-GTN-FG-COLOR                  PIC 9 VALUE 7. 
 
       ******************************************************************
       ******************-----COMMENT SYSTEM VARIABLES-----**************
@@ -3363,7 +3364,7 @@
            MOVE REPLACE-LETTER(WS-WORD) TO WS-WORD. 
            DISPLAY WORD-GUESSING-SCREEN.
            MOVE 1 TO COUNTER.
-           PERFORM UNTIL COUNTER = 20
+           PERFORM UNTIL COUNTER = 10
              IF "*" EQUALS WS-WORD(COUNTER:1) 
               THEN ADD 1 TO WS-WORD-LENGTH
              END-IF
@@ -3687,6 +3688,7 @@
        
            GAME-LOOP.
            INITIALIZE GUESS-INPUT.
+           SET TOTAL-GUESSES TO ZERO
            DISPLAY GUESS-THE-NUMBER-GAME-SCREEN END-DISPLAY
            ACCEPT GUESS-INPUT-FIELD
            MOVE GUESS-INPUT TO GUESS.
@@ -3695,13 +3697,28 @@
                MOVE "Too high! Guess again." 
                TO WS-RANDOM-NUM-MSG
                GO TO GAME-LOOP
-           ELSE IF GUESS < ANSWER
+           END-IF.
+           
+           IF GUESS < ANSWER
                MOVE "Too low! Guess again."
                TO WS-RANDOM-NUM-MSG
                GO TO GAME-LOOP
-           ELSE   
-               MOVE "You Win! Go Again?(Y/N)"           
+           END-IF.
+
+           IF TOTAL-GUESSES > 1
+               MOVE "You Lose! Try again?(Y/N)"           
                TO WS-RANDOM-NUM-MSG
+               MOVE 7 TO WS-FG-COLOR
+               MOVE WS-COLOR-RED TO WS-BG-COLOR
+               MOVE 0 TO WS-GTN-FG-COLOR
+               MOVE 7 TO WS-GTN-BG-COLOR
+               GO TO WIN-LOOP
+           ELSE   
+               MOVE "You Won 10 Credits! Go again?(Y/N)"           
+               TO WS-RANDOM-NUM-MSG
+               MOVE 0  TO WS-UPDATE-CREDITS
+               MOVE 10 TO WS-UPDATE-CREDITS
+               CALL "add-credits" USING WS-USERNAME, WS-UPDATE-CREDITS
                MOVE 0 TO WS-FG-COLOR
                MOVE WS-COLOR-GREEN TO WS-BG-COLOR
                MOVE 0 TO WS-GTN-BG-COLOR
@@ -3712,19 +3729,33 @@
            INITIALIZE GUESS-INPUT.
            DISPLAY GUESS-THE-NUMBER-GAME-SCREEN END-DISPLAY
            ACCEPT GUESS-INPUT-FIELD
-               IF GUESS-INPUT = "y" OR "Y"
-                   GO TO INITIALIZE-RANDOM-NUM-GAME
-               ELSE IF GUESS-INPUT = "n" OR "N"
-                   PERFORM 0400-GAMES-MENU
-               ELSE 
-                   MOVE "INVALID ENTRY! Enter Y or N"
-                   TO WS-RANDOM-NUM-MSG
-                   GO TO WIN-LOOP
-               END-IF.
+           IF GUESS-INPUT = "y" OR "Y"
+               IF WS-BALANCE-AVAILABLE = "Y" THEN
+                    MOVE 0 TO WS-UPDATE-CREDITS
+                    MOVE 5 TO WS-UPDATE-CREDITS
+                    PERFORM 0133-CHECK-CREDIT-BALANCE 
+                    CALL "subtract-credits" USING WS-USERNAME, 
+                    WS-UPDATE-CREDITS
+                    CALL "account-status" USING WS-USERNAME
+                    PERFORM 0430-GUESS-THE-NUMBER-GAME 
+                ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
+                    MOVE "Insufficient Credits" TO WS-ERROR-MSG
+                    PERFORM 0109-ERROR-PAGE
+                END-IF
+           GO TO INITIALIZE-RANDOM-NUM-GAME
+           END-IF.
+           
+           IF GUESS-INPUT = "n" OR "N"
+               PERFORM 0400-GAMES-MENU
+           ELSE 
+               MOVE "INVALID ENTRY! Enter Y or N"
+               TO WS-RANDOM-NUM-MSG
+               GO TO WIN-LOOP
+           END-IF.  
 
        0335-CHECK-ACCOUNT-STATUS.
            CALL "account-status-check" USING WS-USERNAME, 
-           WS-USERACCOUNTLEVEL.        
+           WS-USERACCOUNTLEVEL. 
 
        0340-SP-COUNTER.
            PERFORM 0200-TIME-AND-DATE.
@@ -3735,13 +3766,11 @@
        0350-UPDATE-PASSWORD.
            PERFORM 0200-TIME-AND-DATE.
            PERFORM 0132-CREDIT-TOTAL.
-
            INITIALIZE WS-UPDATE-PASSWORD.
            INITIALIZE UPDATE-PASSWORD-CHOICE.
            DISPLAY UPDATE-PASSWORD-SCREEN.
            ACCEPT WS-UPDATE-PASSWORD-FIELD.
            ACCEPT UPDATE-PASSWORD-CHOICE-FIELD.
-
            IF UPDATE-PASSWORD-CHOICE = "s" OR "S"
                IF WS-UPDATE-PASSWORD = " "
                  MOVE "Invalid Password Try Another" TO WS-ERROR-MSG
@@ -3757,7 +3786,7 @@
                PERFORM 0111-USER-ACCOUNT-MENU
            ELSE
                PERFORM 0350-UPDATE-PASSWORD
-           END-IF.         
+           END-IF.              
       
 
           
