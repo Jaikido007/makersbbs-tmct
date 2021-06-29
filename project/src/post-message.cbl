@@ -13,13 +13,15 @@
              05 RC-TITLE PIC X(50).
              05 RC-CONTENT PIC X(300).
              05 RC-USERNAME PIC X(16).
+             05 RC-DATE PIC X(10).
            WORKING-STORAGE SECTION.
            01 WS-NUM-OF-LINES PIC 999.
            01 WS-MESSAGE.
              05 WS-ID PIC 999.
              05 WS-TITLE PIC X(50).
              05 WS-CONTENT PIC X(300).  
-             05 WS-USERNAME PIC X(16).  
+             05 WS-USERNAME PIC X(16). 
+             05 WS-DATE PIC X(10). 
            LINKAGE SECTION.
            01 LS-MESSAGE.
              05 LS-TITLE PIC X(50).
@@ -36,6 +38,9 @@
            MOVE LS-TITLE TO WS-TITLE.
            MOVE FUNCTION TRIM(LS-CONTENT) TO WS-CONTENT.
            MOVE LS-MSG-AUTHOR TO WS-USERNAME.
+           MOVE LS-POST-DATE TO WS-DATE.
+
+
            OPEN EXTEND F-MESSAGES-FILE.
            MOVE WS-MESSAGE TO RC-MESSAGE.
            WRITE RC-MESSAGE.

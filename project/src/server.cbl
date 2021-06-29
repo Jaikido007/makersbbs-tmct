@@ -948,6 +948,7 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 16 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 16 COL 70 PIC X(10) USING LIST-DATE(ID-NUM).
              05 LINE 16 COL 80 PIC Z(4)    USING SUM-COMMENTS(ID-NUM)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
            
@@ -963,6 +964,7 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 17 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 17 COL 70 PIC X(10) USING LIST-DATE(ID-NUM + 1).
              05 LINE 17 COL 80 PIC Z(4)   USING SUM-COMMENTS(ID-NUM + 1)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 17 COL 84 VALUE "  "
@@ -977,6 +979,7 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 18 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 18 COL 70 PIC X(10) USING LIST-DATE(ID-NUM + 2).
              05 LINE 18 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 2)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 18 COL 84 VALUE "  "
@@ -991,6 +994,7 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 19 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 19 COL 70 PIC X(10) USING LIST-DATE(ID-NUM + 3).
              05 LINE 19 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 3)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.           
              05 LINE 19 COL 84 VALUE "  "
@@ -1005,6 +1009,7 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 20 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 20 COL 70 PIC X(10) USING LIST-DATE(ID-NUM + 4).
              05 LINE 20 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 4)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 20 COL 84 VALUE "  "
@@ -1019,6 +1024,7 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 21 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 21 COL 70 PIC X(10) USING LIST-DATE(ID-NUM + 5).
              05 LINE 21 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 5)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 21 COL 84 VALUE "  "
@@ -1033,6 +1039,7 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 22 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 22 COL 70 PIC X(10) USING LIST-DATE(ID-NUM + 6).
              05 LINE 22 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 6)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 22 COL 84 VALUE "  "
@@ -1047,6 +1054,7 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 23 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 23 COL 70 PIC X(10) USING LIST-DATE(ID-NUM + 7).
              05 LINE 23 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 7)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 23 COL 84 VALUE "  "
@@ -1061,6 +1069,7 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 24 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 24 COL 70 PIC X(10) USING LIST-DATE(ID-NUM + 8).
              05 LINE 24 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 8)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 24 COL 84 VALUE "  "
@@ -1075,6 +1084,7 @@
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 25 COL 64 VALUE "                "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
+             05 LINE 25 COL 70 PIC X(10) USING LIST-DATE(ID-NUM + 9).
              05 LINE 25 COL 80 PIC Z(4)  USING SUM-COMMENTS(ID-NUM + 9)
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 25 COL 84 VALUE "  "
@@ -1218,7 +1228,9 @@
              05 LINE 20 COL 8 VALUE "                                   
       -    "                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-
+             
+             05 LINE 23 COL 10 VALUE 'Date posted:'.
+             05 LINE 23 COL 23 PIC X(10) USING LIST-DATE(MSG-SELECT).
              05 LINE 24 COL 10 VALUE 'Number of Comments: '.
              05 LINE 24 COL 30 PIC Z(4) USING SUM-COMMENTS(MSG-SELECT).
     
@@ -3003,6 +3015,7 @@
            IF MSG-WRITE-CHOICE-FIELD = "p" OR "P" THEN 
               MOVE WS-CONTENT-DISPLAY TO WS-CONTENT
               MOVE WS-USERNAME TO WS-MSG-AUTHOR
+              MOVE WS-FORMATTED-DTE-TME TO WS-POST-DATE
 
                 IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
                   CALL "post-message" USING NEW-MESSAGE
