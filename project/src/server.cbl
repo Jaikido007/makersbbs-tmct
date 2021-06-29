@@ -21,334 +21,334 @@
            FILE SECTION.
         *>    WORD GUESSING GAME SECTION
            FD F-WORD-FILE.
-           01 WORD                         PIC X(20).
+           01 WORD                             PIC X(20).
            FD F-HIGH-SCORES-FILE.
            01 PLAYER-SCORES.
-              05 HIGH-SCORE                PIC 99.
-              05 PLAYER-NAME               PIC X(10).
+              05 HIGH-SCORE                    PIC 99.
+              05 PLAYER-NAME                   PIC X(10).
         *>  TIC-TAC-TOE F-Section
            FD FD-WINMASKS.
-           01 FD-WINMASK                   PIC X(9).
+           01 FD-WINMASK                       PIC X(9).
                       
            WORKING-STORAGE SECTION.
       ******************************************************************
       *******-----VARIABLES RELATED TO LOGIN & MENU SCREEN-----*********
       ******************************************************************
-           01 WS-USERNAME PIC X(16).
-           01 WS-PASSWORD PIC X(20).
-           01 WS-NEW-USER-NAME PIC X(16).
-           01 WS-NEW-PASSWORD PIC X(20).
-           01 LOGIN-CHOICE PIC X.
-           01 MENU-CHOICE PIC X.
-           01 ERROR-CHOICE PIC X.
-           01 CREATE-CHOICE PIC X.
-           01 ACCOUNT-CHOICE PIC X.
-           01 WS-LOGIN-CORRECT PIC 9.
-           01 WS-ERROR-MSG PIC X(40).
-           01 WS-UNAME-UNAVAILABLE PIC 9.
-           01 WS-USERCREDITS PIC 9(3).
-           01 WS-USERACCOUNTLEVEL PIC X(3).
-           01 WS-UPDATE-PASSWORD PIC X(20).
-           01 UPDATE-PASSWORD-CHOICE PIC X.
+           01 WS-USERNAME                      PIC X(16).
+           01 WS-PASSWORD                      PIC X(20).
+           01 WS-NEW-USER-NAME                 PIC X(16).
+           01 WS-NEW-PASSWORD                  PIC X(20).
+           01 LOGIN-CHOICE                     PIC X.
+           01 MENU-CHOICE                      PIC X.
+           01 ERROR-CHOICE                     PIC X.
+           01 CREATE-CHOICE                    PIC X.
+           01 ACCOUNT-CHOICE                   PIC X.
+           01 WS-LOGIN-CORRECT                 PIC 9.
+           01 WS-ERROR-MSG                     PIC X(40).
+           01 WS-UNAME-UNAVAILABLE             PIC 9.
+           01 WS-USERCREDITS                   PIC 9(3).
+           01 WS-USERACCOUNTLEVEL              PIC X(3).
+           01 WS-UPDATE-PASSWORD               PIC X(20).
+           01 UPDATE-PASSWORD-CHOICE           PIC X.
 
       ******************************************************************
       ***********-----VARIABLES RELATED TO BANK ACCOUNTS-----***********
       ******************************************************************
-           01 BANK-ACCOUNT-CHOICE          PIC X.
-           01 CARD-NO                      PIC 9(16).
-           01 CARD-EXPIRY                  PIC 9(4).
-           01 CARD-CVV                     PIC 9(3).
-           01 WS-CARD-NO                   PIC 9(16).
-           01 WS-CARD-EXPIRY               PIC 9(4).
-           01 WS-CARD-CVV                  PIC 9(3).
+           01 BANK-ACCOUNT-CHOICE              PIC X.
+           01 CARD-NO                          PIC 9(16).
+           01 CARD-EXPIRY                      PIC 9(4).
+           01 CARD-CVV                         PIC 9(3).
+           01 WS-CARD-NO                       PIC 9(16).
+           01 WS-CARD-EXPIRY                   PIC 9(4).
+           01 WS-CARD-CVV                      PIC 9(3).
       ******************************************************************
       **************----VARIABLES RELATING TO CREDIT STORE----**********
       ******************************************************************
-           01 CREDIT-STORE-CHOICE          PIC X.
-           01 WS-UPDATE-CREDITS            PIC 9(3). 
-           01 WS-STORE-CHARGE              PIC 99.
-           01 WS-BALANCE-AVAILABLE         PIC X.      
+           01 CREDIT-STORE-CHOICE              PIC X.
+           01 WS-UPDATE-CREDITS                PIC 9(3). 
+           01 WS-STORE-CHARGE                  PIC 99.
+           01 WS-BALANCE-AVAILABLE             PIC X.      
       ******************************************************************
       ********-----VARIABLES RELATED TO WORD GUESSING GAME-----*********
       ******************************************************************
-           01 WS-ANSWERWORD                PIC X(10).
-           01 RANDOMNUMBER                 PIC 99.
-           01 WS-WORD                      PIC X(10).
+           01 WS-ANSWERWORD                    PIC X(10).
+           01 RANDOMNUMBER                     PIC 99.
+           01 WS-WORD                          PIC X(10).
            01 WS-GUESSING-CHOICE-WORDS.
-               05 WS-GUESSING-CHOICE-WORD OCCURS 213 TIMES
-               DESCENDING KEY IS WS-GUESSING-WORDS-WORD
-               INDEXED BY WORD-IDX.
-                   10 WS-GUESSING-WORDS-WORD PIC X(20).
-           01 WS-GUESS-CHOICE              PIC X.
-           01 WS-GTW-COL                   PIC 9 VALUE 4.
+             05 WS-GUESSING-CHOICE-WORD        OCCURS 213 TIMES
+             DESCENDING KEY IS WS-GUESSING-WORDS-WORD
+             INDEXED BY WORD-IDX.
+               10 WS-GUESSING-WORDS-WORD       PIC X(20).
+           01 WS-GUESS-CHOICE                  PIC X.
+           01 WS-GTW-COL                       PIC 9 VALUE 4.
       *********-----VARIABLES RELATED TO HIGH SCORE SCREEN----**********
-           01 WS-HIGH-SCORE-CHOICE         PIC X.
-           01 WS-HIGH-SCORE                PIC 99.
+           01 WS-HIGH-SCORE-CHOICE             PIC X.
+           01 WS-HIGH-SCORE                    PIC 99.
            01 WS-HIGH-SCORES.  
-              05 WS-TABLE-HIGH-SCORE OCCURS 100 TIMES     
+              05 WS-TABLE-HIGH-SCORE           OCCURS 100 TIMES     
               ASCENDING KEY IS WS-SCORE
               INDEXED BY SCORE-IDX.
-                  10 WS-SCORE              PIC 99.
-                  10 WS-NAME               PIC X(10).
+                  10 WS-SCORE                  PIC 99.
+                  10 WS-NAME                   PIC X(10).
       ********-----VARIABLES RELATED TO CHECKING GUESSES-----***********
-           01 WS-LETTERS-LEFT PIC 99.
-           01 WS-GUESSES-LEFT PIC 99.          
+           01 WS-LETTERS-LEFT                  PIC 99.
+           01 WS-GUESSES-LEFT                  PIC 99.          
       **********-----VARIABLES RELATED TO WINNING & LOSING-----*********
-           01 WS-GUESSING-LOSING-CHOICE    PIC X.
-           01 WS-GUESSING-WINNING-CHOICE   PIC X.
-           01 WS-WORD-LENGTH PIC 99.
+           01 WS-GUESSING-LOSING-CHOICE        PIC X.
+           01 WS-GUESSING-WINNING-CHOICE       PIC X.
+           01 WS-WORD-LENGTH                   PIC 99.
       ******************************************************************
-           01 COUNTER UNSIGNED-INT.
-           01 OFFSET UNSIGNED-INT.
+           01 COUNTER                          UNSIGNED-INT.
+           01 OFFSET                           UNSIGNED-INT.
            
-           01 WS-FILE-IS-ENDED             PIC 9 VALUE ZERO.
-           01 MSG-MENU-CHOICE              PIC XXX.
-           01 GAMES-MENU-CHOICE            PIC X.
-           01 NUM-FILE-LINES               PIC 999.
-           01 ID-NUM                       PIC 999 VALUE 1.
-           01 WS-DATETIME                  PIC X(21).
+           01 WS-FILE-IS-ENDED                 PIC 9 VALUE ZERO.
+           01 MSG-MENU-CHOICE                  PIC XXX.
+           01 GAMES-MENU-CHOICE                PIC X.
+           01 NUM-FILE-LINES                   PIC 999.
+           01 ID-NUM                           PIC 999 VALUE 1.
+           01 WS-DATETIME                      PIC X(21).
            01 WS-FORMATTED-DT.
              05 WS-FORMATTED-DTE-TME.
-               15 WS-FORMATTED-YEAR        PIC  X(4). 
-               15 FILLER                   PIC X VALUE "-".
-               15 WS-FORMATTED-MONTH       PIC  X(2).
-               15 FILLER                   PIC X VALUE "-".
-               15 WS-FORMATTED-DY          PIC  X(2).
-               15 FILLER                   PIC X VALUE "-".
-               15 WS-FORMATTED-HOUR        PIC  X(2).
-               15 FILLER                   PIC X VALUE ":".
-               15 WS-FORMATTED-MINS        PIC  X(2).
-               15 FILLER                   PIC X VALUE ":".
-               15 WS-FORMATTED-SEC         PIC  X(2).
-               15 FILLER                   PIC X VALUE ":".
-               15 WS-FORMATTED-MS          PIC  X(2).
+               15 WS-FORMATTED-YEAR            PIC  X(4). 
+               15 FILLER                       PIC X VALUE "-".
+               15 WS-FORMATTED-MONTH           PIC  X(2).
+               15 FILLER                       PIC X VALUE "-".
+               15 WS-FORMATTED-DY              PIC  X(2).
+               15 FILLER                       PIC X VALUE "-".
+               15 WS-FORMATTED-HOUR            PIC  X(2).
+               15 FILLER                       PIC X VALUE ":".
+               15 WS-FORMATTED-MINS            PIC  X(2).
+               15 FILLER                       PIC X VALUE ":".
+               15 WS-FORMATTED-SEC             PIC  X(2).
+               15 FILLER                       PIC X VALUE ":".
+               15 WS-FORMATTED-MS              PIC  X(2).
                    
            01 WS-LIST-TABLE.
-               05 WS-LIST-ENTRY OCCURS 10 TO 999 TIMES DEPENDING ON 
-                 NUM-FILE-LINES.
-                   10 LIST-ID              PIC XXX.
-                   10 LIST-TITLE           PIC X(50).
-                   10 LIST-CONTENT         PIC X(300).
-                   10 LIST-USERNAME        PIC X(16).
-                   10 LIST-DATE            PIC X(10).
+             05 WS-LIST-ENTRY                  OCCURS 10 TO 999 TIMES 
+             DEPENDING ON NUM-FILE-LINES.
+               10 LIST-ID                      PIC XXX.
+               10 LIST-TITLE                   PIC X(50).
+               10 LIST-CONTENT                 PIC X(300).
+               10 LIST-USERNAME                PIC X(16).
+               10 LIST-DATE                    PIC X(10).
 
            01 WS-CONTENT-DISPLAY.
-               05 LS-PART-1                PIC X(60).
-               05 LS-PART-2                PIC X(60).
-               05 LS-PART-3                PIC X(60).
-               05 LS-PART-4                PIC X(60).
-               05 LS-PART-5                PIC X(60).
+             05 LS-PART-1                    PIC X(60).
+             05 LS-PART-2                    PIC X(60).
+             05 LS-PART-3                    PIC X(60).
+             05 LS-PART-4                    PIC X(60).
+             05 LS-PART-5                    PIC X(60).
            
 
-           01 MSG-SELECT                   PIC 999.
-           01 MSG-VIEW-CHOICE              PIC X.
-           01 MSG-WRITE-CHOICE             PIC X.
+           01 MSG-SELECT                       PIC 999.
+           01 MSG-VIEW-CHOICE                  PIC X.
+           01 MSG-WRITE-CHOICE                 PIC X.
            
            01 NEW-MESSAGE.
-             05 WS-TITLE                   PIC X(50).
-             05 WS-CONTENT                 PIC X(300).
-             05 WS-MSG-AUTHOR              PIC X(16).
-             05 WS-POST-DATE               PIC X(10).
+             05 WS-TITLE                       PIC X(50).
+             05 WS-CONTENT                     PIC X(300).
+             05 WS-MSG-AUTHOR                  PIC X(16).
+             05 WS-POST-DATE                   PIC X(10).
 
       ******************************************************************
       ******************-----SPONSORED POSTS VARIABLES******************
       ******************************************************************
            01 SPONSORED-POSTS-TABLE.
-               05 SP-ENTRY OCCURS 2 TIMES
-               ASCENDING KEY IS SP-TITLE
-               INDEXED BY MSG-IDX.
-                   10 SP-TITLE       PIC X(50).
-                   10 SP-CONTENT     PIC X(300).
-                   10 SP-USERNAME    PIC X(16).
+             05 SP-ENTRY                       OCCURS 2 TIMES
+             ASCENDING KEY IS SP-TITLE
+             INDEXED BY MSG-IDX.
+               10 SP-TITLE                     PIC X(50).
+               10 SP-CONTENT                   PIC X(300).
+               10 SP-USERNAME                  PIC X(16).
 
-           01 WS-SP-TABLE-COUNTER PIC 9.
+           01 WS-SP-TABLE-COUNTER              PIC 9.
 
            01 WS-SP-CONTENT-DISPLAY.
-               05 SP-PART-1            PIC X(60).
-               05 SP-PART-2            PIC X(60).
-               05 SP-PART-3            PIC X(60).
-               05 SP-PART-4            PIC X(60).
-               05 SP-PART-5            PIC X(60).
+               05 SP-PART-1                    PIC X(60).
+               05 SP-PART-2                    PIC X(60).
+               05 SP-PART-3                    PIC X(60).
+               05 SP-PART-4                    PIC X(60).
+               05 SP-PART-5                    PIC X(60).
 
-           01 SP-MSG-VIEW-CHOICE          PIC X. 
-           01 SP-MSG-SELECT               PIC 999.
-           01 SP-MSG-MENU-CHOICE       PIC XXX.
-           01 WS-SP-COUNTER PIC 9.
+           01 SP-MSG-VIEW-CHOICE               PIC X. 
+           01 SP-MSG-SELECT                    PIC 999.
+           01 SP-MSG-MENU-CHOICE               PIC XXX.
+           01 WS-SP-COUNTER                    PIC 9.
       ******************************************************************
       ******************-----TIC-TAC-TOE VARIABLES**********************
       ******************************************************************
-           01 WS-PLAYER                    PIC A(1).
-               88 HUMAN-PLAYER VALUE "X".
-               88 COMPUTER-PLAYER VALUE "O".
-           01 WS-STATE                     PIC A(5).
-               88 GAME-OVER VALUES "WIN", "LOSE", "STALE".
-           01 WS-MOVE-OUTCOME              PIC A(5).
-               88 MOVE-COMPLETE VALUES "WIN", "LOSE", "FAIL".
-           01 WS-MASK-DETECTED             PIC 9.
-               88 WIN-DETECTED VALUES 3, 4, 5, 6, 7, 8, 9.
-           01 WS-COMPUTER-MOVED            PIC 9.
-               88 COMPUTER-MOVED VALUE 1.
-           01 WS-EOF                       PIC 9.
-               88 EOF VALUE 1.
-           01 WS-SWAP-PLAYERS              PIC 9.
-               88 SWAP-PLAYERS VALUE 1.
-           01 WS-NEXT-MOVE PIC XX.
-               88 FINISHED-PLAYING VALUES "N", "n".
+           01 WS-PLAYER                        PIC A(1).
+               88 HUMAN-PLAYER         VALUE "X".
+               88 COMPUTER-PLAYER      VALUE "O".
+           01 WS-STATE                         PIC A(5).
+               88 GAME-OVER            VALUES "WIN", "LOSE", "STALE".
+           01 WS-MOVE-OUTCOME                  PIC A(5).
+               88 MOVE-COMPLETE        VALUES "WIN", "LOSE", "FAIL".
+           01 WS-MASK-DETECTED                 PIC 9.
+               88 WIN-DETECTED         VALUES 3, 4, 5, 6, 7, 8, 9.
+           01 WS-COMPUTER-MOVED                PIC 9.
+               88 COMPUTER-MOVED       VALUE 1.
+           01 WS-EOF                           PIC 9.
+               88 EOF                  VALUE 1.
+           01 WS-SWAP-PLAYERS                  PIC 9.
+               88 SWAP-PLAYERS         VALUE 1.
+           01 WS-NEXT-MOVE                     PIC XX.
+               88 FINISHED-PLAYING     VALUES "N", "n".
            01 WS-GAME-GRID.
-               05 WS-GAME-GRID-ROW OCCURS 3 TIMES.
-                   10 WS-GAME-GRID-COL OCCURS 3 TIMES.
-                       15 WS-CELL          PIC X.
+             05 WS-GAME-GRID-ROW               OCCURS 3 TIMES.
+               10 WS-GAME-GRID-COL             OCCURS 3 TIMES.
+                   15 WS-CELL                  PIC X.
 
-               01 WS-COLOR-GREEN           PIC 9 VALUE 2.
-               01 WS-COLOR-BLUE            PIC 9 VALUE 1.
-               01 WS-COLOR-WHITE           PIC 9 VALUE 7.
-               01 WS-COLOR-CYAN            PIC 9 VALUE 3.
-               01 WS-COLOR-RED             PIC 9 VALUE 4.
-               01 WS-BG-COLOR              PIC 9 VALUE 1.
-               01 WS-FG-COLOR              PIC 9 VALUE 1.
-               01 WS-FG-CELL               PIC 9.
-               01 WS-FG                    PIC 9.
-               01 WS-BG                    PIC 9.
-               01 WS-COL                   PIC 9.
-               01 WS-ROW                   PIC 9.
-               01 WS-WINS                  PIC 99.
-               01 WS-MOVES                 PIC 99.
-               01 WS-GAMES                 PIC 99.
-               01 WS-COMPUTER-MOVE         PIC 9.
-               01 WS-DETECT-LOOP-COUNT     PIC 9.
-               01 WS-OANDXMESSAGE          PIC X(28).
-               01 WS-INSTRUCTION           PIC X(16).
-               01 WS-FLAT-GAME-GRID        PIC X(9).
+           01 WS-COLOR-GREEN                   PIC 9 VALUE 2.
+           01 WS-COLOR-BLUE                    PIC 9 VALUE 1.
+           01 WS-COLOR-WHITE                   PIC 9 VALUE 7.
+           01 WS-COLOR-CYAN                    PIC 9 VALUE 3.
+           01 WS-COLOR-RED                     PIC 9 VALUE 4.
+           01 WS-BG-COLOR                      PIC 9 VALUE 1.
+           01 WS-FG-COLOR                      PIC 9 VALUE 1.
+           01 WS-FG-CELL                       PIC 9.
+           01 WS-FG                            PIC 9.
+           01 WS-BG                            PIC 9.
+           01 WS-COL                           PIC 9.
+           01 WS-ROW                           PIC 9.
+           01 WS-WINS                          PIC 99.
+           01 WS-MOVES                         PIC 99.
+           01 WS-GAMES                         PIC 99.
+           01 WS-COMPUTER-MOVE                 PIC 9.
+           01 WS-DETECT-LOOP-COUNT             PIC 9.
+           01 WS-OANDXMESSAGE                  PIC X(28).
+           01 WS-INSTRUCTION                   PIC X(16).
+           01 WS-FLAT-GAME-GRID                PIC X(9).
       ******************************************************************
       ****************----NUMBER GUESSING GAME VARIABLES*----****************
       ******************************************************************
 
-           01 SEED                         PIC 9(8).
-           01 GUESS-INPUT                  PIC XX.
-           01 GUESS                        PIC 99.
-           01 ANSWER                       PIC 99.
-           01 TOTAL-GUESSES                PIC 99.
-           01 WS-RANDOM-NUM-MSG            PIC X(28).
-           01 WS-GTN-BG-COLOR              PIC 9. 
+           01 SEED                             PIC 9(8).
+           01 GUESS-INPUT                      PIC XX.
+           01 GUESS                            PIC 99.
+           01 ANSWER                           PIC 99.
+           01 TOTAL-GUESSES                    PIC 99.
+           01 WS-RANDOM-NUM-MSG                PIC X(28).
+           01 WS-GTN-BG-COLOR                  PIC 9. 
 
       ******************************************************************
       ******************-----COMMENT SYSTEM VARIABLES-----**************
       ******************************************************************
-           01 NUM-COMMENTS                 PIC 9(4).
+           01 NUM-COMMENTS                     PIC 9(4).
            01 COMMENT-TABLE.
-               05 COM-ENTRY OCCURS 1 TO 9999 TIMES 
-               DEPENDING ON NUM-COMMENTS.
-                  *>  10 TEMP-ID PIC 999.
-                   10 COM-AUTHOR           PIC X(16).
-                   10 COM-DATE             PIC X(10).
-                   10 COM-COMMENT          PIC X(50).
-           01 COM-INDEX                    PIC 9(4) VALUE 1.
-           01 COM-SCRN-CHOICE              PIC X.
+             05 COM-ENTRY                      OCCURS 1 TO 9999 TIMES 
+             DEPENDING ON NUM-COMMENTS.
+        *>     10 TEMP-ID PIC 999.
+               10 COM-AUTHOR                   PIC X(16).
+               10 COM-DATE                     PIC X(10).
+               10 COM-COMMENT                  PIC X(50).
+           01 COM-INDEX                        PIC 9(4) VALUE 1.
+           01 COM-SCRN-CHOICE                  PIC X.
 
       ******************************************************************
       ****************-----COMMENT WRITING VARIABLES-----***************
       ******************************************************************           
-           01 POST-COMMENT-CHOICE          PIC X.
+           01 POST-COMMENT-CHOICE              PIC X.
            
            01 POST-COM-TBL.
-               05 POST-COMMENT-AUTHOR PIC X(16).
-               05 POST-COMMENT-DATE PIC X(10).
-               05 WRITE-COMMENT PIC X(50).
+             05 POST-COMMENT-AUTHOR            PIC X(16).
+             05 POST-COMMENT-DATE              PIC X(10).
+             05 WRITE-COMMENT                  PIC X(50).
 
       ******************************************************************
       **************-----COMMENT COUNTING VARIABLES-----****************
       ******************************************************************
 
            01 COMMENT-TOTAL-TABLE.
-               05 COM-TOTAL-ENTRY OCCURS 1 TO 999 TIMES 
-               DEPENDING ON NUM-FILE-LINES.
-                   10 SUM-COMMENTS PIC Z(4).
+             05 COM-TOTAL-ENTRY                OCCURS 1 TO 999 TIMES 
+             DEPENDING ON NUM-FILE-LINES.
+               10 SUM-COMMENTS                 PIC Z(4).
    
       ******************************************************************
       ***********************-----TIME VARIABLES----********************
       ******************************************************************
            01 WS-TIME.
-               05 WS-YEAR                  PIC X(4).
-               05 WS-MONTH                 PIC XX.
-               05 WS-DAY                   PIC XX.
-               05 WS-HOURS-MINS.
-                   10 WS-HOURS             PIC XX.
-                   10 WS-MINS              PIC XX.             
+             05 WS-YEAR                        PIC X(4).
+             05 WS-MONTH                       PIC XX.
+             05 WS-DAY                         PIC XX.
+             05 WS-HOURS-MINS.
+               10 WS-HOURS                     PIC XX.
+               10 WS-MINS                      PIC XX.             
       ******************************************************************
            LINKAGE SECTION.
-           01 LS-COUNTER                   UNSIGNED-INT.
-           01 LS-NUM                       UNSIGNED-INT.
-           01 LS-MESSAGE                   PIC X(60). 
+           01 LS-COUNTER                       UNSIGNED-INT.
+           01 LS-NUM                           UNSIGNED-INT.
+           01 LS-MESSAGE                       PIC X(60). 
       ****************************************************************** 
            SCREEN SECTION.
            01 LOGIN-SCREEN
                BACKGROUND-COLOR IS 1.
-               05 BLANK SCREEN.
-             *>    LOGIN HEADER
-               05 LINE 1 COL 1  VALUE "   :                              
+             05 BLANK SCREEN.
+        *>    LOGIN HEADER
+             05 LINE 1 COL 1  VALUE "   :                              
       -    "                                                           "
-               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
-               FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-               05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
-               FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-              *>    LOGIN FOOTER
-              05 LINE 43 COL 1 VALUE "                                 
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
+             FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
+             FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+        *>    LOGIN FOOTER
+             05 LINE 43 COL 1 VALUE "                                 
       -    "                                                          "
-               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE 44 COL 1 VALUE "     (L) Log-in     (C) Create an
-      -    "account     (Q) Quit                                       "                                 
-                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE 45 COL 1 VALUE "                                 
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 44 COL 1 VALUE "     (L) Log-in     (C) Create an a
+      -    "ccount     (Q) Quit                                       "                                 
+              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 45 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    FRIENDFACE LOGO ASCII ART
-               05 LINE 14 COL 34 VALUE " ________________________"
-                   FOREGROUND-COLOR IS 7.
-               05 LINE 15 COL 35 VALUE "|FFFFFFFFFFFFFFFFFFFFFF|"
-                   FOREGROUND-COLOR IS 7.
-               05 LINE 16 COL 35 VALUE "|FFFFFFFFFFFFF_____FFFF|"
-                   FOREGROUND-COLOR IS 7.
-               05 LINE 17 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
-                   FOREGROUND-COLOR IS 7.
-               05 LINE 18 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
-                   FOREGROUND-COLOR IS 7.
-               05 LINE 19 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
-                   FOREGROUND-COLOR IS 7.
-               05 LINE 20 COL 35 VALUE "|FFFFFFFFF________FFFFF|"
-                   FOREGROUND-COLOR IS 7.
-               05 LINE 21 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
-                   FOREGROUND-COLOR IS 7.
-               05 LINE 22 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
-                   FOREGROUND-COLOR IS 7.
-               05 LINE 23 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
-                   FOREGROUND-COLOR IS 7.
-               05 LINE 24 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
-                   FOREGROUND-COLOR IS 7.
-               05 LINE 25 COL 35 VALUE "|FFFFFFFFFFFFFFFFFFFFFF|"
-                   FOREGROUND-COLOR IS 7.
-               05 LINE 26 COL 34 VALUE " ------------------------"
-                   FOREGROUND-COLOR IS 7.
+             05 LINE 14 COL 34 VALUE " ________________________"
+             FOREGROUND-COLOR IS 7.
+             05 LINE 15 COL 35 VALUE "|FFFFFFFFFFFFFFFFFFFFFF|"
+             FOREGROUND-COLOR IS 7.
+             05 LINE 16 COL 35 VALUE "|FFFFFFFFFFFFF_____FFFF|"
+             FOREGROUND-COLOR IS 7.
+             05 LINE 17 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+             FOREGROUND-COLOR IS 7.
+             05 LINE 18 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+             FOREGROUND-COLOR IS 7.
+             05 LINE 19 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+             FOREGROUND-COLOR IS 7.
+             05 LINE 20 COL 35 VALUE "|FFFFFFFFF________FFFFF|"
+             FOREGROUND-COLOR IS 7.
+             05 LINE 21 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+             FOREGROUND-COLOR IS 7.
+             05 LINE 22 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+             FOREGROUND-COLOR IS 7.
+             05 LINE 23 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+             FOREGROUND-COLOR IS 7.
+             05 LINE 24 COL 35 VALUE "|FFFFFFFFFFFF__FFFFFFFF|"
+             FOREGROUND-COLOR IS 7.
+             05 LINE 25 COL 35 VALUE "|FFFFFFFFFFFFFFFFFFFFFF|"
+             FOREGROUND-COLOR IS 7.
+             05 LINE 26 COL 34 VALUE " ------------------------"
+             FOREGROUND-COLOR IS 7.
         *>    FRIENDFACE TEXT ASCII ART  
-               05 LINE 31 COL 25 VALUE "______    _                ______
-      -        "_" FOREGROUND-COLOR IS 7.
-               05 LINE 32 COL 25 VALUE "|  ___|  (_)              | |  __
-      -        "_| " FOREGROUND-COLOR IS 7.
-               05 LINE 33 COL 25 VALUE "| |_ _ __ _  ___ _ __   __| | |_ 
-      -        "__ _  ___ ___" FOREGROUND-COLOR IS 7.
-               05 LINE 34 COL 25 VALUE "|  _| '__| |/ _ \ '_ \ / _` |  _/
-      -        " _` |/ __/ _ \" FOREGROUND-COLOR IS 7.
-               05 LINE 35 COL 25 VALUE "| | | |  | |  __/ | | | (_| | || 
-      -        "(_| | (_|  __/" FOREGROUND-COLOR IS 7.
-               05 LINE 36 COL 25 VALUE "\_| |_|  |_|\___|_| |_|\__,_\_| \
-      -        "__,_|\___\___|" FOREGROUND-COLOR IS 7.
-              *>    LOGIN OPTION POSITIONING
-               05 LINE 42 COLUMN 6 VALUE "Option: ".
-               05 LOGIN-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
-                  USING LOGIN-CHOICE.
+             05 LINE 31 COL 25 VALUE "______    _                _______
+      -    "" FOREGROUND-COLOR IS 7.
+             05 LINE 32 COL 25 VALUE "|  ___|  (_)              | |  ___
+      -      "| " FOREGROUND-COLOR IS 7.
+             05 LINE 33 COL 25 VALUE "| |_ _ __ _  ___ _ __   __| | |_ _
+      -      "_ _  ___ ___" FOREGROUND-COLOR IS 7.
+             05 LINE 34 COL 25 VALUE "|  _| '__| |/ _ \ '_ \ / _` |  _/
+      -      "_` |/ __/ _ \" FOREGROUND-COLOR IS 7.
+             05 LINE 35 COL 25 VALUE "| | | |  | |  __/ | | | (_| | || (
+      -      "_| | (_|  __/" FOREGROUND-COLOR IS 7.
+             05 LINE 36 COL 25 VALUE "\_| |_|  |_|\___|_| |_|\__,_\_| \_
+      -      "_,_|\___\___|" FOREGROUND-COLOR IS 7.
+        *>    LOGIN OPTION POSITIONING
+             05 LINE 42 COLUMN 6 VALUE "Option: ".
+             05 LOGIN-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
+             USING LOGIN-CHOICE.
 
            01 SIGN-IN-SCREEN
              BACKGROUND-COLOR IS 1.
