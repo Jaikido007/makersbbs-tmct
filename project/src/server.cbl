@@ -3389,8 +3389,10 @@
       *******************-----MESSAGE SECTION----***********************
       ******************************************************************
        0140-MESSAGE-MENU.
+           PERFORM 0126-CHECK-ACCOUNT-STATUS.
            PERFORM 0132-CREDIT-TOTAL.
            PERFORM 0200-TIME-AND-DATE.
+
            CALL "number-of-file-lines" USING NUM-FILE-LINES.
            CALL "get-list-page-alt" USING WS-LIST-TABLE.
            CALL 'count-comments-posted' USING COMMENT-TOTAL-TABLE.
@@ -3427,16 +3429,24 @@
                ELSE
                     PERFORM 0140-MESSAGE-MENU
                END-IF
-           ELSE IF MSG-MENU-CHOICE =       "w" OR "W"
-             PERFORM 0142-MESSAGE-WRITE
+             
            ELSE IF MSG-MENU-CHOICE =       "c" OR "C"
              PERFORM 0130-CREDIT-STORE  
            ELSE IF MSG-MENU-CHOICE =       "q" OR "Q" THEN
               STOP RUN  
            END-IF.
+
            IF MSG-MENU-CHOICE = "s1" OR "S1" OR "s2" OR "S2" THEN
                PERFORM 0145-SP-MESSAGE-VIEW
            END-IF.
+
+           IF MSG-MENU-CHOICE =       "w" OR "W"
+             IF WS-USERACCOUNTLEVEL = "STD" AND WS-USERCREDITS = 0
+               MOVE "Insufficient Credits" TO WS-ERROR-MSG
+               PERFORM 0136-CREDIT-ERROR-PAGE
+             END-IF  
+               PERFORM 0142-MESSAGE-WRITE       
+           END-IF
 
            PERFORM 0140-MESSAGE-MENU.
 
@@ -3479,6 +3489,7 @@
            PERFORM 0141-MESSAGE-VIEW. 
 
        0142-MESSAGE-WRITE.
+           PERFORM 0126-CHECK-ACCOUNT-STATUS.
            PERFORM 0200-TIME-AND-DATE.
            PERFORM 0132-CREDIT-TOTAL.
            INITIALIZE WS-TITLE.
@@ -3503,7 +3514,12 @@
            END-PERFORM.
 
            IF MSG-WRITE-CHOICE-FIELD = "d" OR "D" THEN
-               PERFORM 0140-MESSAGE-MENU
+              *>  IF WS-USERACCOUNTLEVEL = "STD" THEN
+              *>    MOVE 0 TO WS-UPDATE-CREDITS
+              *>    MOVE 1 TO WS-UPDATE-CREDITS
+              *>    CALL 'add-credits' USING WS-USERNAME, WS-UPDATE-CREDITS
+              *>  END-IF
+               PERFORM 0140-MESSAGE-MENU 
            END-IF.
 
            IF MSG-WRITE-CHOICE-FIELD = "p" OR "P" THEN 
@@ -3511,9 +3527,22 @@
               MOVE WS-USERNAME TO WS-MSG-AUTHOR
               MOVE WS-FORMATTED-DTE-TME TO WS-POST-DATE
                 IF WS-TITLE-FIELD NOT = SPACE AND LOW-VALUE THEN
-                  CALL "post-message" USING NEW-MESSAGE
+                   IF WS-USERACCOUNTLEVEL = "STD"
+                     MOVE 0 TO WS-UPDATE-CREDITS
+                     MOVE 1 TO WS-UPDATE-CREDITS
+                     PERFORM 0133-CHECK-CREDIT-BALANCE
+           
+                     IF WS-BALANCE-AVAILABLE = "Y" THEN
+                       CALL "subtract-credits" USING WS-USERNAME, 
+                           WS-UPDATE-CREDITS
+                     ELSE
+                       MOVE "Insufficient Credits" TO WS-ERROR-MSG
+                       PERFORM 0136-CREDIT-ERROR-PAGE
+                     END-IF 
+                   END-IF
+                   CALL "post-message" USING NEW-MESSAGE
                   PERFORM 0140-MESSAGE-MENU
-                END-IF    
+                END-IF  
            END-IF.
 
            IF MSG-WRITE-CHOICE-FIELD = "s" OR "S" THEN 
@@ -3576,7 +3605,6 @@
              ELSE
                MOVE 'Upgrade account to comment' TO 
                WS-ERROR-MSG
-              *>  CHANGE THIS TO ANOTHER PAGE THAT DOESNT LOG YOU OUT.
                PERFORM 0156-COMMENT-ERROR
              END-IF
            END-IF
