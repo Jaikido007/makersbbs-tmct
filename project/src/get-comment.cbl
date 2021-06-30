@@ -26,7 +26,6 @@
            01 TEMP-TABLE.
                05 WS-ENTRY OCCURS 1 TO 9999 TIMES 
                DEPENDING ON NUM-COMMENTS.
-                  *>  10 TEMP-ID PIC 999.
                    10 TEMP-AUTHOR PIC X(16).
                    10 TEMP-DATE PIC X(10).
                    10 TEMP-COMMENT PIC X(50).
@@ -36,51 +35,54 @@
            01 FINAL-TABLE.
                05 LS-ENTRY OCCURS 1 TO 9999 TIMES
                  DEPENDING ON NUM-COMMENTS.
-                  *>  10 LS-ID PIC 999.
                    10 LS-AUTHOR PIC X(16).
                    10 LS-DATE PIC X(10).
                    10 LS-COMMENT PIC X(50).
     
            01 MSG-SELECT PIC 999.
 
-          *>  01 MATCHED-ENTRIES PIC 9(4).
-
        PROCEDURE DIVISION USING FINAL-TABLE, MSG-SELECT.
            
-           CALL 'number-of-file-lines' USING MESSAGE-LINES.
+           CALL 'number-of-messages' USING MESSAGE-LINES.
            CALL 'num-comments' USING NUM-COMMENTS.
-
-
-          *>  INFO:
-          *> This file takes a table and a number as arguments.
-          *> Using these values, this program looks through the
-          *> comments.dat file for matching cases. If it finds any it
-          *> then pushes the line to a temporary table. After the file
-          *> has finished it exports the table to the calling program
-          *> where the data can then be used elsewhere.
-
-          *>  --------------------------------------------------------
-
-          *>  How to find original index:
-          *> Number of messages - flipped index number + 1 to get the
-          *> original pre flipped index.
-          *> Example: 26(msglines) - 25(flipped indx) + 1 = 2.
+      ******************************************************************
+      *********************----ABOUT THIS FILE---***********************
+      *  This file takes a table and a number as an argument.          *
+      *  The incoming number argument from the calling program is      *
+      *  the index number passed through related to the messages list  *
+      *  on the server.cbl file. The original index is flipped, so     *
+      *  taking                                                        *
+      *  the NUMBER OF MESSAGES (MESSAGE-LINES) - (MSG-SELECT) + 1 to  *
+      *  get the original index. Then we use this unflipped index to   *
+      *  find all comments posted with this index, then push the data  *
+      *  to a table for this program to return and for the server.cbl  *
+      *  to use                                                        * 
+      *                                                                * 
+      *    How to find original index:                                 * 
+      *    Number of messages - flipped index number + 1 to get the    * 
+      *    original pre flipped index.                                 * 
+      *    Example: 26(msglines) - 25(flipped indx) + 1 = 2.           *                                          *
+      ****************************************************************** 
+      ***********-----FINDING ORIGINAL INDEX OF MESSAGES-----***********
+      ******************************************************************   
 
            COMPUTE ID-FIND = MESSAGE-LINES - MSG-SELECT + 1.
+      
+      ******************************************************************
+      **********-----WIPE INCOMING TABLE FOR NEW DATA-----**************
+      ******************************************************************
 
-          *>  Wipe the incoming table so no unrequested data is shown:
-           
            PERFORM UNTIL COM-INDEX = NUM-COMMENTS
              MOVE SPACES TO WS-ENTRY(COM-INDEX)
              ADD 1 TO COM-INDEX
-           END-PERFORM
-           .
-
+           END-PERFORM.
+           
            MOVE TEMP-TABLE TO FINAL-TABLE.
-
            MOVE 1 TO COM-INDEX.
 
-          *>  STARTING FILE READING AND WRITING REQUESTED DATE TO TABLE:
+      ******************************************************************
+      *********-----READING AND WRITING OF REQUESTED DATA-----**********
+      ******************************************************************
            
            OPEN INPUT F-COMMENTS-FILE.
 
@@ -88,11 +90,7 @@
              READ F-COMMENTS-FILE
              NOT AT END
 
-              *>  DISPLAY 'DEBUG - ID-FIND is: ' ID-FIND
-              *>  DISPLAY 'DEBUG - RC-ID is: ' RC-ID
-
                IF ID-FIND = RC-ID
-                *>  DISPLAY 'Inside the if block, condition is true'
                  ADD 1 TO COUNTER
                  MOVE RC-AUTHOR TO TEMP-AUTHOR(COUNTER)
                  MOVE RC-DATE-POST TO TEMP-DATE(COUNTER)
@@ -100,25 +98,21 @@
                END-IF
 
              AT END MOVE 1 TO WS-FILE-END
-           END-PERFORM
-           .
+           END-PERFORM.
 
            CLOSE F-COMMENTS-FILE.
+       
+      ******************************************************************
+      **********-----EXPORTING NEW DATA TO CALLING PROGRAM-----*********
+      ******************************************************************
 
-          *>  Exporting local table to calling program vv.
            MOVE TEMP-TABLE TO FINAL-TABLE.
-           
-          *> vv Reset file end flag for future calls vv
+    
+      ******************************************************************
+      *************-----RESET VALUES FOR FUTURE CALLS-----**************
+      ******************************************************************
+         
            SUBTRACT 1 FROM WS-FILE-END.
            MOVE 0 TO COUNTER.
 
-
-
-          *>  Notes:
-          *> Remember to set the server comment-table limit to be
-          *> dependent on the number of comments there are. Without it
-          *> the table will not show the right amount of entries.
-
-
-
-           
+      ******************************************************************         

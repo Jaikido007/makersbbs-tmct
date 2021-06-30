@@ -25,7 +25,7 @@
                    10 S-USERNAME PIC X(16).
                    10 S-DATE PIC X(10).
            PROCEDURE DIVISION USING SORTED-TABLE.
-           CALL 'number-of-file-lines' USING NUM-OF-LINES.
+           CALL 'number-of-messages' USING NUM-OF-LINES.
            MOVE NUM-OF-LINES TO REVERSE-ID.
       
            PERFORM UNTIL LOOP-COUNT = NUM-OF-LINES

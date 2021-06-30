@@ -38,7 +38,7 @@
        PROCEDURE DIVISION USING COMMENT-TOTAL-TABLE.
 
           *>  GET AMOUNT OF MESSAGES TOTAL
-           CALL 'number-of-file-lines' USING MESSAGE-LINES.
+           CALL 'number-of-messages' USING MESSAGE-LINES.
 
           *>  SET MSG-SELECT TO == MESSAGE-LINES THEN SUBTRACT 1 LATER:
            MOVE MESSAGE-LINES TO MSG-SELECT.
@@ -49,29 +49,17 @@
           *>  WIPE PRE-EXISTING TABLE DATA:
            MOVE SPACES TO TEMP-TABLE.
            MOVE TEMP-TABLE TO COMMENT-TOTAL-TABLE.
-
-          *>  RESET COM-INDEX TO BE 1 FOR THE NEXT CALL:
-          *>  MOVE 1 TO COM-INDEX.
-
-          *>  RESET FILE END FLAG:
-          *>  MOVE 0 TO WS-FILE-END.
+      
+      ******************************************************************
 
            PERFORM UNTIL ID-FIND > MESSAGE-LINES
              OPEN INPUT F-COMMENTS-FILE
-           
-             DISPLAY 'DEBUG-- ID-FIND IS: ' ID-FIND 'MESSAGE-LINES IS: ' 
-               MESSAGE-LINES
-             END-DISPLAY
-
-             DISPLAY 'DEBUG-- MSG-SELECT IS: ' MSG-SELECT
 
              *>  RESET FILE END FLAG:
              MOVE 0 TO WS-FILE-END
 
              *>  RESET COUNTER:
              MOVE 0 TO COMMENT-COUNTER
-
-            *> !!! COMPUTE ID-FIND = MESSAGE-LINES - MSG-SELECT + 1.
 
                PERFORM UNTIL WS-FILE-END = 1
                  READ F-COMMENTS-FILE
