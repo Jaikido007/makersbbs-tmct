@@ -2576,8 +2576,8 @@
              FOREGROUND-COLOR IS 0, REVERSE-VIDEO.
              05 LINE 14 COLUMN 32 PIC X(10) USING WS-ANSWERWORD
              FOREGROUND-COLOR IS 0, REVERSE-VIDEO.
-             05 LINE 14 COL 47 VALUE "                                  
-      -    "   " FOREGROUND-COLOR IS 0, REVERSE-VIDEO.  
+             05 LINE 14 COL 42 VALUE "                                  
+      -    "        " FOREGROUND-COLOR IS 0, REVERSE-VIDEO.  
              05 LINE 14 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 15 COL 8 VALUE "  "
@@ -2606,8 +2606,8 @@
              FOREGROUND-COLOR IS 0, REVERSE-VIDEO.
              05 LINE 18 COL 22 PIC 99 USING WS-HIGH-SCORE                           "
              FOREGROUND-COLOR IS 0, REVERSE-VIDEO.
-             05 LINE 18 COL 26 VALUE "                                 
-      -    "                        "
+             05 LINE 18 COL 24 VALUE "                                 
+      -    "                          "
              FOREGROUND-COLOR IS 0, REVERSE-VIDEO.  
              05 LINE 18 COL 84 VALUE "  "           
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -2661,7 +2661,7 @@
              FOREGROUND-COLOR IS 7, UNDERLINE.
              05 LINE 4 COL 40 VALUE "GUESS THE WORD"                                     
              FOREGROUND-COLOR IS 7, UNDERLINE.
-             05 LINE 6 COLUMN 41 VALUE "High Scores:"
+             05 LINE 6 COLUMN 41 VALUE "Scoreboard:"
              HIGHLIGHT, FOREGROUND-COLOR IS 7.
         *>    TOP SCORER POSITION
              05 LINE 8 COLUMN 38 VALUE "    TOP SCORER     "
@@ -2871,11 +2871,11 @@
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE 44 COL 1 VALUE "     (P) Play again     (H) High                        
-      -    " scores                                 "
+               05 LINE 44 COL 1 VALUE "     Make your move: e.g (A1) top                        
+      -    " left (C3) bottom right                                    "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE 45 COL 1 VALUE "     (Q) Quit game  
-      -    "                                                           "                                         
+               05 LINE 45 COL 1 VALUE "     When prompted: (Y) Play agai  
+      -    "n (N) Quit game                                            "                                         
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
@@ -3677,6 +3677,7 @@
       ****************----WORD GUESSING GAME SECTION----****************
       ******************************************************************
        0410-GUESS-THE-WORD-GAME.
+           SET WS-GTW-COL TO 4
            PERFORM 0200-TIME-AND-DATE.
            PERFORM 0132-CREDIT-TOTAL.
            MOVE 15 TO WS-GUESSES-LEFT.
