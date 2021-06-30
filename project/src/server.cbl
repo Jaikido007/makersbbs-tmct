@@ -284,7 +284,7 @@
       -    "                                                          "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 44 COL 1 VALUE "     (L) Log-in     (C) Create an a
-      -    "ccount                                       "                                 
+      -    "ccount                                                    "                                 
               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 45 COL 1 VALUE "     (Q) Quit                                 
       -    "                                                          "
@@ -402,20 +402,19 @@
              05 BLANK SCREEN.
         *>    ERROR HEADER
              05 LINE 1 COL 1  VALUE "   :                              
-      -    "                                                           "
+      -    "                                                         "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
              FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
              05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
              FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-             05 LINE 1 COL 90 PIC X(3) USING WS-USERCREDITS
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+           
         *>    ERROR FOOTER
                05 LINE 43 COL 1 VALUE "                                 
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 44 COL 1 VALUE "     (L) Back to Log-in     (C) C
-      -    "reate an account                             "                                 
+      -    "reate an account                                           "                                 
                 FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 45 COL 1 VALUE "     (Q) Quit                                  
       -    "                                                           "
@@ -531,7 +530,7 @@
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 44 COL 1 VALUE "     (S) Submit     (D) Discard  
-      -    "                                "                                 
+      -    "                                                           "                                 
                 FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 45 COL 1 VALUE "     (G) Go back    (Q) Quit                                 
       -    "                                                           "
@@ -3020,8 +3019,9 @@
            IF WS-LOGIN-CORRECT = 1 THEN
                PERFORM 0110-DISPLAY-MENU 
            ELSE 
-               MOVE "Incorrect Username or Password" TO WS-ERROR-MSG
-                   PERFORM 0109-ERROR-PAGE 
+               MOVE "Incorrect Username or Password!  Try again." 
+               TO WS-ERROR-MSG
+               PERFORM 0109-ERROR-PAGE 
            END-IF. 
 
        0102-SIGN-UP.
@@ -3047,10 +3047,10 @@
        0103-SIGN-UP-CHECK.
            
            IF WS-NEW-USER-NAME = " "
-               MOVE "Invalid Username Try Another" TO WS-ERROR-MSG
+               MOVE "Invalid Username! Try again." TO WS-ERROR-MSG
                PERFORM 0109-ERROR-PAGE
            ELSE IF WS-NEW-PASSWORD = " "
-               MOVE "Invalid Password Try Another" TO WS-ERROR-MSG
+               MOVE "Invalid Password! Try again." TO WS-ERROR-MSG
                PERFORM 0109-ERROR-PAGE
            END-IF.    
            
