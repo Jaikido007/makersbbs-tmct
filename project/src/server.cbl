@@ -59,6 +59,9 @@
            01 WS-CARD-NO                       PIC 9(16).
            01 WS-CARD-EXPIRY                   PIC 9(4).
            01 WS-CARD-CVV                      PIC 9(3).
+           01 WS-ON-FILE                       PIC X.
+           01 WS-BNK-DTLS-PRESENT              PIC X(3).
+           01 WS-CARD-EXP                      PIC 9(4).
       ******************************************************************
       **************----VARIABLES RELATING TO CREDIT STORE----**********
       ******************************************************************
@@ -675,7 +678,7 @@
              05 LINE 16 COL 10 VALUE "                   Bank card on fi               
       -    "le:                                      "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 16 COL 48 VALUE "Insert Yes/No depending"
+             05 LINE 16 COL 48 PIC X(3) USING WS-BNK-DTLS-PRESENT
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 16 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -693,7 +696,7 @@
              05 LINE 18 COL 10 VALUE "                Your card expires             
       -    "on:                                      "
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
-             05 LINE 18 COL 48 PIC 9(4) USING WS-CARD-EXPIRY
+             05 LINE 18 COL 48 PIC 9(4) USING WS-CARD-EXP
              FOREGROUND-COLOR IS 3, REVERSE-VIDEO.
              05 LINE 18 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -3180,6 +3183,8 @@
            PERFORM 0200-TIME-AND-DATE.
            PERFORM 0132-CREDIT-TOTAL.
            PERFORM 0126-CHECK-ACCOUNT-STATUS.
+           PERFORM 0600-CHECK-BANK-DETAILS-PRESENT.
+           PERFORM 0620-GET-EXPIRY-DATE.
            INITIALIZE ACCOUNT-CHOICE.
            DISPLAY USER-ACCOUNT-SCREEN.
            ACCEPT ACCOUNT-CHOICE-FIELD.
@@ -3233,39 +3238,48 @@
            
            PERFORM 0200-TIME-AND-DATE.
            PERFORM 0132-CREDIT-TOTAL.
+           PERFORM 0600-CHECK-BANK-DETAILS-PRESENT.
            
            INITIALIZE CREDIT-STORE-CHOICE.
            DISPLAY CREDIT-STORE-SCREEN.
            ACCEPT CREDIT-STORE-CHOICE-FIELD.
+
+           IF WS-BNK-DTLS-PRESENT = "YES" THEN
            
-           IF CREDIT-STORE-CHOICE = "1" THEN
-               MOVE 10 TO WS-UPDATE-CREDITS
-               MOVE 10 TO WS-STORE-CHARGE
-               PERFORM 0131-ADD-CREDITS
+               IF CREDIT-STORE-CHOICE = "1" THEN
+                   MOVE 10 TO WS-UPDATE-CREDITS
+                   MOVE 10 TO WS-STORE-CHARGE
+                   PERFORM 0131-ADD-CREDITS
        
-           ELSE IF CREDIT-STORE-CHOICE = "2" THEN
-               MOVE 25 TO WS-UPDATE-CREDITS
-               MOVE 20 TO WS-STORE-CHARGE
-               PERFORM 0131-ADD-CREDITS
+               ELSE IF CREDIT-STORE-CHOICE = "2" THEN
+                   MOVE 25 TO WS-UPDATE-CREDITS
+                   MOVE 20 TO WS-STORE-CHARGE
+                   PERFORM 0131-ADD-CREDITS
        
-           ELSE IF CREDIT-STORE-CHOICE = "3" THEN
-               MOVE 50 TO WS-UPDATE-CREDITS
-               MOVE 35 TO WS-STORE-CHARGE 
-               PERFORM 0131-ADD-CREDITS
+               ELSE IF CREDIT-STORE-CHOICE = "3" THEN
+                   MOVE 50 TO WS-UPDATE-CREDITS
+                   MOVE 35 TO WS-STORE-CHARGE 
+                   PERFORM 0131-ADD-CREDITS
 
-           ELSE IF CREDIT-STORE-CHOICE = "4" THEN
-               MOVE 100 TO WS-UPDATE-CREDITS
-               MOVE 60 TO WS-STORE-CHARGE 
-               PERFORM 0131-ADD-CREDITS    
+               ELSE IF CREDIT-STORE-CHOICE = "4" THEN
+                   MOVE 100 TO WS-UPDATE-CREDITS
+                   MOVE 60 TO WS-STORE-CHARGE 
+                   PERFORM 0131-ADD-CREDITS    
 
-           ELSE IF CREDIT-STORE-CHOICE = "v" or "V" THEN
-               PERFORM 0135-VIP-ACCOUNT
+               ELSE IF CREDIT-STORE-CHOICE = "v" or "V" THEN
+                   PERFORM 0135-VIP-ACCOUNT
        
-           ELSE IF CREDIT-STORE-CHOICE = "g" OR "G" THEN
-              PERFORM 0110-DISPLAY-MENU  
-           ELSE IF CREDIT-STORE-CHOICE = "q" OR "Q" THEN
-              STOP RUN  
-           END-IF.
+               ELSE IF CREDIT-STORE-CHOICE = "g" OR "G" THEN
+                  PERFORM 0110-DISPLAY-MENU  
+               ELSE IF CREDIT-STORE-CHOICE = "q" OR "Q" THEN
+                  STOP RUN  
+               END-IF
+
+           ELSE IF WS-BNK-DTLS-PRESENT = "NO" THEN
+               MOVE "NO BANK DETAILS, PLEASE ADD TO BUY" 
+               TO WS-ERROR-MSG
+               PERFORM 0109-ERROR-PAGE
+           END-IF.         
        
        0131-ADD-CREDITS.
            CALL "add-credits" USING WS-USERNAME, WS-UPDATE-CREDITS.
@@ -4099,4 +4113,26 @@
                MOVE "INVALID ENTRY! Enter Y or N"
                TO WS-RANDOM-NUM-MSG
                GO TO WIN-LOOP
-           END-IF.    
+           END-IF.
+
+
+       0600-CHECK-BANK-DETAILS-PRESENT.
+
+           CALL "check-bank-details-present" USING WS-USERNAME, 
+           WS-ON-FILE.
+
+           IF WS-ON-FILE = "Y" THEN
+               MOVE "YES" TO WS-BNK-DTLS-PRESENT
+           ELSE IF WS-ON-FILE = "N" THEN
+               MOVE "NO" TO WS-BNK-DTLS-PRESENT
+           END-IF.         
+
+       0620-GET-EXPIRY-DATE.
+           
+           PERFORM 0600-CHECK-BANK-DETAILS-PRESENT.
+
+           IF WS-BNK-DTLS-PRESENT = "YES"
+               CALL "get-expiry-date" USING WS-USERNAME, WS-CARD-EXP
+           ELSE
+               MOVE "0000" TO WS-CARD-EXP    
+           END-IF.  
