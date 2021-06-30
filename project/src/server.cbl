@@ -888,7 +888,7 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 22 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-             05 LINE 22 COL 10 VALUE "                     25 CREDITS :                  
+             05 LINE 22 COL 10 VALUE "                    100 CREDITS :                  
       -    "VIP UPGRADE                             "
              FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
              05 LINE 22 COL 84 VALUE "  "
@@ -3284,7 +3284,7 @@
 
        0135-VIP-ACCOUNT.
            MOVE 0   TO WS-UPDATE-CREDITS.
-           MOVE 25 TO WS-UPDATE-CREDITS.
+           MOVE 100 TO WS-UPDATE-CREDITS.
            PERFORM 0133-CHECK-CREDIT-BALANCE.
            
            IF WS-BALANCE-AVAILABLE = "Y" THEN
@@ -3480,7 +3480,7 @@
              STOP RUN
            END-IF.
 
-           IF COM-SCRN-CHOICE-FIELD = 'C' OR 'c'
+           IF COM-SCRN-CHOICE-FIELD = "c" OR "C"
              IF WS-USERACCOUNTLEVEL = 'VIP'
                PERFORM 0144-COMMENT-WRITE
              ELSE
