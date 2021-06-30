@@ -170,6 +170,7 @@
            01 SP-MSG-SELECT                    PIC 999.
            01 SP-MSG-MENU-CHOICE               PIC XXX.
            01 WS-SP-COUNTER                    PIC 9.
+           01 SP-ERROR-CHOICE                  PIC X.
       ******************************************************************
       ******************-----TIC-TAC-TOE VARIABLES**********************
       ******************************************************************
@@ -575,7 +576,64 @@
         *>    ERROR OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 CREDIT-ERROR-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
-                  USING CREDIT-ERROR-CHOICE.       
+                  USING CREDIT-ERROR-CHOICE. 
+
+           01 SP-ERROR-SCREEN
+             BACKGROUND-COLOR IS 1.
+             05 BLANK SCREEN.
+        *>    ERROR HEADER
+             05 LINE 1 COL 1  VALUE "   :                              
+      -    "                                                         "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
+             FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
+             FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 90 PIC X(3) USING WS-USERCREDITS
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+        *>    ERROR FOOTER
+               05 LINE 43 COL 1 VALUE "                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 44 COL 1 VALUE "     (G) Go Back
+      -    "                                                           "                                 
+                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               
+               05 LINE 46 COL 1 VALUE "                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+                05 LINE 30 COLUMN 32 PIC X(40) USING WS-ERROR-MSG.
+        *>    FRIENDFACE LOGO ASCII ART
+               05 LINE 14 COL 34 VALUE " ________________________"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 15 COL 35 VALUE "|FfFfFfFfFfFfFfFfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 16 COL 35 VALUE "|FfFfFfFfFfFfF_____FfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 17 COL 35 VALUE "|FfFfFfFfFfFf__FfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 18 COL 35 VALUE "|FfFfFfFfFfFf__FfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 19 COL 35 VALUE "|FfFfFfFfFfFf__FfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 20 COL 35 VALUE "|FfFfFfFfF________FfFfF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 21 COL 35 VALUE "|FfFfFfFfFfFf__FfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 22 COL 35 VALUE "|FfFfFfFfFfFf__FfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 23 COL 35 VALUE "|FfFfFfFfFfFf__FfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 24 COL 35 VALUE "|FfFfFfFfFfFf__FfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 25 COL 35 VALUE "|FfFfFfFfFfFfFfFfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 26 COL 34 VALUE " ------------------------"
+                   FOREGROUND-COLOR IS 7.
+        *>    ERROR OPTION POSITIONING
+               05 LINE 42 COLUMN 6 VALUE "Option: ".
+               05 SP-ERROR-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
+                  USING SP-ERROR-CHOICE. 
 
            01 CREATE-AN-ACCOUNT-SCREEN
                BACKGROUND-COLOR IS 01.
@@ -3557,7 +3615,7 @@
                 END-IF
               ELSE 
                 MOVE "NO SPONSORED POSTS LEFT TODAY" TO WS-ERROR-MSG
-                PERFORM 0109-ERROR-PAGE
+                PERFORM 0148-SP-ERROR-SCREEN
               END-IF  
            END-IF.
 
@@ -3690,6 +3748,19 @@
            MOVE 0 TO WS-SP-COUNTER.
            CALL "sponsored-posts-counter" USING WS-FORMATTED-DT, 
            WS-SP-COUNTER.
+
+       0148-SP-ERROR-SCREEN.
+           PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0132-CREDIT-TOTAL.
+           INITIALIZE SP-ERROR-CHOICE.
+           DISPLAY SP-ERROR-SCREEN.
+           ACCEPT SP-ERROR-CHOICE-FIELD.
+           
+           IF SP-ERROR-CHOICE = "g" OR "G" THEN 
+               PERFORM 0140-MESSAGE-MENU
+           ELSE 
+               PERFORM 0148-SP-ERROR-SCREEN
+           END-IF.      
       ******************************************************************
       ************************-----ERROR SECTION----********************
       ******************************************************************
