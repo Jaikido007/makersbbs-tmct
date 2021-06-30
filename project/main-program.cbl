@@ -32,7 +32,7 @@
 
           *>  ----------------------TESTING----------------------------
            
-          *>  CALL 'number-of-file-lines' USING MESSAGE-LINES.
+          *>  CALL 'number-of-messages' USING MESSAGE-LINES.
 
           *>  CALL 'count-comments-posted' USING COMMENT-TOTAL-TABLE.
            
@@ -42,7 +42,7 @@
 
           *>  DISPLAY 'TESTING FINAL OUTPUT:' SUM-COMMENTS(24).
            
-          *>  CALL 'get-list-page-alt' USING WS-TABLE.
+          *>  CALL 'list-all-messages' USING WS-TABLE.
 
           *>  DISPLAY 'Testing table entries: '.
           *>  DISPLAY 'WS-ID: ' WS-ID(1).

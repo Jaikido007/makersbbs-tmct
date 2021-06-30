@@ -40,8 +40,11 @@
                05 WRITE-COMMENT PIC X(50).
 
        PROCEDURE DIVISION USING MSG-SELECT, POST-COM-TBL.
+      ******************************************************************
+      **************-----FINDING NUMBER OF MESSAGES-----****************
+      ******************************************************************
 
-           CALL 'number-of-file-lines' USING MESSAGE-LINES.
+           CALL 'number-of-messages' USING MESSAGE-LINES.
 
       ******************************************************************
       ****************------FORMATTING DATE TIME------******************
@@ -54,21 +57,25 @@
            MOVE FORMATTED-DATE-TIME TO POST-COMMENT-DATE.
 
       ******************************************************************
-           
-           COMPUTE POST-ID = MESSAGE-LINES - MSG-SELECT + 1.
+      ********-----FINDING UNFLIPPED INDEX AND SETTING ID-----**********
+      ****************************************************************** 
 
-          *>  MOVING ALL IMPORTED DATA TO THE TABLE THAT HAS A SECTION
-          *> FOR THE ID.
+           COMPUTE POST-ID = MESSAGE-LINES - MSG-SELECT + 1.
+           
+      ******************************************************************
+      *************-----PASSING INPUT DATA TO TABLE-----****************
+      ******************************************************************
 
            MOVE POST-COMMENT-AUTHOR TO WS-POST-COMMENT-AUTHOR.
            MOVE POST-COMMENT-DATE TO WS-POST-COMMENT-DATE.
            MOVE WRITE-COMMENT TO WS-WRITE-COMMENT.
 
-          *>  Opening the comments file and writing to it:
+      ******************************************************************
+      ***************-----WRITING DATA TO THE FILE-----*****************
+      ******************************************************************
 
            OPEN EXTEND F-COMMENTS-FILE.
            MOVE WS-POST-COM-TBL TO RC-FILE-ENTRY.
            WRITE RC-FILE-ENTRY.
            CLOSE F-COMMENTS-FILE.
-
-
+      ******************************************************************

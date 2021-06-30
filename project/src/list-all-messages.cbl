@@ -1,5 +1,5 @@
        IDENTIFICATION DIVISION.
-       PROGRAM-ID. get-list-page-alt.
+       PROGRAM-ID. list-all-messages.
        ENVIRONMENT DIVISION.
            INPUT-OUTPUT SECTION.
            FILE-CONTROL.
@@ -40,14 +40,13 @@
                    10 LS-DATE PIC X(10).
 
        PROCEDURE DIVISION USING LS-RETURN-TABLE.
-           
-           CALL 'number-of-file-lines' USING NUM-OF-LINES.
-           MOVE 0 TO WS-FILE-END.
-           
-          *>  TO DO: remove num lines link and call on number of lines
-          *> sub program.
 
-          *> Rewrite whole program to be less reliant on 'list-message'.
+      ******************************************************************
+      *******-----MOVE ALL ENTRIES IN FILE TO LOCAL TABLE-----**********
+      ******************************************************************
+           
+           CALL 'number-of-messages' USING NUM-OF-LINES.
+           MOVE 0 TO WS-FILE-END.
            
            MOVE 0 TO LOOP-COUNTER.
 
@@ -61,15 +60,20 @@
                
              AT END MOVE 1 TO WS-FILE-END  
                  
-           END-PERFORM
-           .
+           END-PERFORM.
 
            CLOSE F-MESSAGES-FILE.
           
-          *>  vv keep this as initial commit of results
+      ******************************************************************
+      *********-----STORE LOCAL TABLE TO EXPORTED TABLE-----************
+      ******************************************************************
+
            MOVE WS-TABLE TO LS-RETURN-TABLE.
-           
-          *>  call id-sort here then move the result to the return table
-          *> again:
+
+      ******************************************************************
+      ********-----FLIP INDEXES OF EXPORTED TABLE ENTRIES-----**********
+      ******************************************************************
+
            CALL 'id-sort' USING LS-RETURN-TABLE.
-          
+           
+      ******************************************************************

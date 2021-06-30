@@ -106,7 +106,7 @@
            01 WS-FILE-IS-ENDED                 PIC 9 VALUE ZERO.
            01 MSG-MENU-CHOICE                  PIC XXX.
            01 GAMES-MENU-CHOICE                PIC X.
-           01 NUM-FILE-LINES                   PIC 999.
+           01 NUM-OF-MESSAGES                   PIC 999.
            01 ID-NUM                           PIC 999 VALUE 1.
            01 WS-DATETIME                      PIC X(21).
            01 WS-FORMATTED-DT.
@@ -127,7 +127,7 @@
                    
            01 WS-LIST-TABLE.
              05 WS-LIST-ENTRY                  OCCURS 10 TO 999 TIMES 
-             DEPENDING ON NUM-FILE-LINES.
+             DEPENDING ON NUM-OF-MESSAGES.
                10 LIST-ID                      PIC XXX.
                10 LIST-TITLE                   PIC X(50).
                10 LIST-CONTENT                 PIC X(300).
@@ -253,7 +253,7 @@
       ******************************************************************
            01 COMMENT-TOTAL-TABLE.
              05 COM-TOTAL-ENTRY                OCCURS 1 TO 999 TIMES 
-             DEPENDING ON NUM-FILE-LINES.
+             DEPENDING ON NUM-OF-MESSAGES.
                10 SUM-COMMENTS                 PIC Z(4).
    
       ******************************************************************
@@ -3369,7 +3369,6 @@
                PERFORM 0127-UPDATE-PASSWORD
            END-IF.  
 
-
       ******************************************************************   
       **********************----CREDITS SECTION----*********************
       ******************************************************************
@@ -3475,27 +3474,28 @@
            PERFORM 0132-CREDIT-TOTAL.
            PERFORM 0200-TIME-AND-DATE.
 
-           CALL "number-of-file-lines" USING NUM-FILE-LINES.
-           CALL "get-list-page-alt" USING WS-LIST-TABLE.
+           CALL "number-of-messages" USING NUM-OF-MESSAGES.
+           CALL "list-all-messages" USING WS-LIST-TABLE.
            CALL 'count-comments-posted' USING COMMENT-TOTAL-TABLE.
-           *> CALL "id-sort" USING WS-LIST-TABLE. <*
            MOVE " " TO SP-ENTRY(1).
            MOVE " " TO SP-ENTRY(2).
            CALL "get-sponsored-posts" USING WS-FORMATTED-DT,
            SPONSORED-POSTS-TABLE, WS-SP-TABLE-COUNTER.
+
            INITIALIZE MSG-MENU-CHOICE.
            DISPLAY MSG-MENU-SCREEN.
            ACCEPT MSG-MENU-CHOICE-FIELD.
            MOVE MSG-MENU-CHOICE TO MSG-SELECT.
          
-           IF MSG-SELECT > 0 THEN
-             PERFORM 0141-MESSAGE-VIEW
+           IF MSG-SELECT > 0 AND NOT > NUM-OF-MESSAGES THEN
+               PERFORM 0141-MESSAGE-VIEW
            END-IF. 
+
            IF MSG-MENU-CHOICE =        "g" OR "G" THEN
                PERFORM 0110-DISPLAY-MENU
            ELSE IF MSG-MENU-CHOICE =   "n" OR "N" THEN
              COMPUTE ID-NUM = ID-NUM + 10
-               IF ID-NUM IS GREATER THAN OR EQUAL TO NUM-FILE-LINES
+               IF ID-NUM IS GREATER THAN OR EQUAL TO NUM-OF-MESSAGES
                  COMPUTE ID-NUM = ID-NUM - 10
                  PERFORM 0140-MESSAGE-MENU
                ELSE
@@ -3535,8 +3535,8 @@
        0141-MESSAGE-VIEW. 
            PERFORM 0200-TIME-AND-DATE.  
            PERFORM 0132-CREDIT-TOTAL.
-           CALL "number-of-file-lines" USING NUM-FILE-LINES.
-           CALL "get-list-page-alt" USING WS-LIST-TABLE.
+           CALL "number-of-messages" USING NUM-OF-MESSAGES.
+           CALL "list-all-messages" USING WS-LIST-TABLE.
            CALL "count-comments-posted" USING COMMENT-TOTAL-TABLE.
            MOVE LIST-CONTENT(MSG-SELECT) TO WS-CONTENT-DISPLAY.
            INITIALIZE MSG-VIEW-CHOICE.
@@ -3544,7 +3544,7 @@
            ACCEPT MSG-VIEW-CHOICE-FIELD.
            IF MSG-VIEW-CHOICE =        "n" OR "N" THEN
              COMPUTE MSG-SELECT = MSG-SELECT + 1
-               IF MSG-SELECT IS GREATER THAN OR EQUAL TO NUM-FILE-LINES
+               IF MSG-SELECT IS GREATER THAN OR EQUAL TO NUM-OF-MESSAGES
                  COMPUTE MSG-SELECT = MSG-SELECT - 1
                  PERFORM 0141-MESSAGE-VIEW
                ELSE
@@ -3596,11 +3596,6 @@
            END-PERFORM.
 
            IF MSG-WRITE-CHOICE-FIELD = "d" OR "D" THEN
-              *>  IF WS-USERACCOUNTLEVEL = "STD" THEN
-              *>    MOVE 0 TO WS-UPDATE-CREDITS
-              *>    MOVE 1 TO WS-UPDATE-CREDITS
-              *>    CALL 'add-credits' USING WS-USERNAME, WS-UPDATE-CREDITS
-              *>  END-IF
                PERFORM 0140-MESSAGE-MENU 
            END-IF.
 

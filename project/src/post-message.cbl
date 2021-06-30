@@ -39,7 +39,7 @@
           *>  PUT THIS VARIABLE IN THE WORKING STORAGE IN SERVER ^^
        PROCEDURE DIVISION USING LS-MESSAGE.
            
-           CALL 'number-of-file-lines' USING WS-NUM-OF-LINES.
+           CALL 'number-of-messages' USING WS-NUM-OF-LINES.
 
       ******************************************************************
       ****************------FORMATTING DATE TIME------******************
