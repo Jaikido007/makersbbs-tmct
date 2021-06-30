@@ -530,7 +530,9 @@
              FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
              05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
              FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-             05 LINE 1 COL 90 PIC X(3) USING WS-USERCREDITS
+             05 LINE 1 COL 80 VALUE "CREDITS: "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 1 COL 89 PIC X(3) USING WS-USERCREDITS
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    ERROR FOOTER
                05 LINE 43 COL 1 VALUE "                                 
@@ -589,7 +591,7 @@
              FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
              05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
              FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
-             05 LINE 1 COL 90 PIC X(3) USING WS-USERCREDITS
+             05 LINE 1 COL 89 PIC X(3) USING WS-USERCREDITS
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    ERROR FOOTER
                05 LINE 43 COL 1 VALUE "                                 
@@ -598,6 +600,9 @@
                05 LINE 44 COL 1 VALUE "     (G) Go Back
       -    "                                                           "                                 
                 FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 45 COL 1 VALUE "                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
