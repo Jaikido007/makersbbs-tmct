@@ -16,6 +16,14 @@
              05 RC-DATE PIC X(10).
            WORKING-STORAGE SECTION.
            01 WS-NUM-OF-LINES PIC 999.
+
+           01 FORMATTED-DATE-TIME.
+               05 WS-DAY PIC XX.
+               05 FILLER PIC X VALUE '-'.
+               05 WS-MONTH PIC XX.
+               05 FILLER PIC X VALUE '-'.
+               05 WS-YEAR PIC X(4).
+
            01 WS-MESSAGE.
              05 WS-ID PIC 999.
              05 WS-TITLE PIC X(50).
@@ -32,6 +40,17 @@
        PROCEDURE DIVISION USING LS-MESSAGE.
            
            CALL 'number-of-file-lines' USING WS-NUM-OF-LINES.
+
+      ******************************************************************
+      ****************------FORMATTING DATE TIME------******************
+      ******************************************************************
+           MOVE LS-POST-DATE(1:4) TO WS-YEAR.
+           MOVE LS-POST-DATE(6:2) TO WS-MONTH.
+           MOVE LS-POST-DATE(9:2) TO WS-DAY.
+
+           MOVE FORMATTED-DATE-TIME TO LS-POST-DATE.
+
+      ******************************************************************
            
            ADD 1 TO WS-NUM-OF-LINES.
            MOVE WS-NUM-OF-LINES TO WS-ID.

@@ -18,6 +18,13 @@
            01 MESSAGE-LINES PIC 999.
            01 ID-FIND PIC 999.
 
+           01 FORMATTED-DATE-TIME.
+               05 WS-DAY PIC XX.
+               05 FILLER PIC X VALUE '-'.
+               05 WS-MONTH PIC XX.
+               05 FILLER PIC X VALUE '-'.
+               05 WS-YEAR PIC X(4).
+
            01 WS-POST-COM-TBL.
                05 POST-ID PIC 999.
                05 WS-POST-COMMENT-AUTHOR PIC X(16).
@@ -35,6 +42,18 @@
        PROCEDURE DIVISION USING MSG-SELECT, POST-COM-TBL.
 
            CALL 'number-of-file-lines' USING MESSAGE-LINES.
+
+      ******************************************************************
+      ****************------FORMATTING DATE TIME------******************
+      ******************************************************************
+           
+           MOVE POST-COMMENT-DATE(1:4) TO WS-YEAR.
+           MOVE POST-COMMENT-DATE(6:2) TO WS-MONTH.
+           MOVE POST-COMMENT-DATE(9:2) TO WS-DAY.
+
+           MOVE FORMATTED-DATE-TIME TO POST-COMMENT-DATE.
+
+      ******************************************************************
            
            COMPUTE POST-ID = MESSAGE-LINES - MSG-SELECT + 1.
 
