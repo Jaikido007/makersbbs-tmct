@@ -523,7 +523,7 @@
              05 BLANK SCREEN.
         *>    ERROR HEADER
              05 LINE 1 COL 1  VALUE "   :                              
-      -    "                                                           "
+      -    "                                                         "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
              FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
@@ -536,7 +536,7 @@
       -    "                                                           "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 44 COL 1 VALUE "     (C) Credit Store     (A) Acc
-      -    "ount Options                      "                                 
+      -    "ount details                                               "                                 
                 FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 45 COL 1 VALUE "     (Q) Quit                                 
       -    "                                                           "
