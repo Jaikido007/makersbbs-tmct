@@ -952,9 +952,9 @@
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO. 
         *>    CREDIT STORE BODY
              05 LINE  4 COL 10 VALUE "FriendFace" UNDERLINE.
-             05 LINE 6 COLUMN 10 VALUE "WELCOME TO THE CREDIT STORE".
-             05 LINE  9 COL 8 VALUE "                                   
-      -    "                                           "
+             05 LINE 6 COLUMN 35 VALUE "WELCOME TO THE CREDIT STORE".
+             05 LINE  9 COL 8 VALUE "                                 
+      -    "CREDITS                                    "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 10 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1002,8 +1002,8 @@
       -    "                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
-             05 LINE 20 COL 8 VALUE "                                   
-      -    "                                           "
+             05 LINE 20 COL 8 VALUE "                           LIFETIME     
+      -    " VIP MEMBERSHIP                            "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 21 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
@@ -1019,6 +1019,7 @@
              FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
              05 LINE 22 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
              05 LINE 23 COL 8 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 23 COL 10 VALUE "                                              
@@ -1027,7 +1028,23 @@
              05 LINE 23 COL 84 VALUE "  "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
 
-             05 LINE 24 COL 8 VALUE "                                   
+             05 LINE 24 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 24 COL 10 VALUE " VIP's get: FREE message posts, FR  
+      -    "EE comments & FREE play of Tic-Tac-Toe! "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 24 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 25 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 25 COL 10 VALUE "                                              
+      -    "                                         "
+             FOREGROUND-COLOR IS 6, REVERSE-VIDEO.
+             05 LINE 25 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 26 COL 8 VALUE "                                   
       -    "                                           "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
         *>    CREDIT STORE OPTION POSITIONING
