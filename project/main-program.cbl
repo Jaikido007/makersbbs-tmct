@@ -25,10 +25,29 @@
           *>          10 WS-USERNAME PIC X(16).
           *>          10 WS-DATE PIC X(10).
 
+          *>  01 WS-USER-INPUT PIC X.
+          *>  SCREEN SECTION.
+
+          *>  01 TEST-SCREEN
+          *>      BACKGROUND-COLOR IS 0.
+          *>    05 BLANK SCREEN.
+          *>    05 LINE 10 COL 10 VALUE 'THIS IS A TEST OF TEXT COLOUR'
+          *>          FOREGROUND-COLOR IS 8
+                  *>  .
        PROCEDURE DIVISION.
            CALL "server".
            GOBACK
            .
+      *>  0100-TEST-SCREEN-SECTION.
+      *>      DISPLAY TEST-SCREEN.
+           
+      *>      ACCEPT WS-USER-INPUT.
+      *>      IF WS-USER-INPUT = 'Q' OR 'q' THEN
+      *>        STOP RUN
+      *>      END-IF.
+
+      *>      PERFORM 0100-TEST-SCREEN-SECTION.
+           
 
           *>  ----------------------TESTING----------------------------
            
