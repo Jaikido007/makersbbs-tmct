@@ -3258,7 +3258,7 @@
                MOVE 60 TO WS-STORE-CHARGE 
                PERFORM 0131-ADD-CREDITS    
 
-           ELSE IF ACCOUNT-CHOICE = "v" or "V" THEN
+           ELSE IF CREDIT-STORE-CHOICE = "v" or "V" THEN
                PERFORM 0135-VIP-ACCOUNT
        
            ELSE IF CREDIT-STORE-CHOICE = "g" OR "G" THEN
