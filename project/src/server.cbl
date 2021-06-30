@@ -1551,7 +1551,7 @@
                 05 BLANK SCREEN.
         *>    SPONSORED MESSAGE VIEW HEADER
               05 LINE 1 COL 1  VALUE "   :                              
-      -    "                                                         "
+      -    "                                                          "
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
              FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
@@ -1677,7 +1677,45 @@
              FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
              05 LINE 20 COL 8 VALUE "                                   
       -    "                                           "
-             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.           
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.   
+
+             05 LINE 25 COL 8 VALUE "                                   
+      -    "                                           "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 26 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 26 COL 10 VALUE "                                   
+      -    "                                          "
+             FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 LINE 26 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 27 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 27 COL 10 VALUE "            Leave a sponsored post                  
+      -    " for just 10 Credits!                     "
+             FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 LINE 27 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 28 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 28 COL 10 VALUE "            Sponsored posts expire                  
+      -    " at midnight!                             "
+             FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 LINE 28 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 29 COL 8 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 29 COL 10 VALUE "                                              
+      -    "                                         "
+             FOREGROUND-COLOR IS 2, REVERSE-VIDEO.
+             05 LINE 29 COL 84 VALUE "  "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+
+             05 LINE 30 COL 8 VALUE "                                   
+      -    "                                           "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.        
         *>    SPONSORED MESSAGE VIEW OPTION POSITIONING
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 SP-MSG-VIEW-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
@@ -3019,7 +3057,7 @@
            IF WS-LOGIN-CORRECT = 1 THEN
                PERFORM 0110-DISPLAY-MENU 
            ELSE 
-               MOVE "Incorrect Username or Password!  Try again." 
+               MOVE "Incorrect Username or Password!" 
                TO WS-ERROR-MSG
                PERFORM 0109-ERROR-PAGE 
            END-IF. 
