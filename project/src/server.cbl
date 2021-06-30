@@ -68,7 +68,8 @@
            01 CREDIT-STORE-CHOICE              PIC X.
            01 WS-UPDATE-CREDITS                PIC 9(3). 
            01 WS-STORE-CHARGE                  PIC 99.
-           01 WS-BALANCE-AVAILABLE             PIC X.      
+           01 WS-BALANCE-AVAILABLE             PIC X.
+           01 CREDIT-ERROR-CHOICE              PIC X. 
       ******************************************************************
       ********-----VARIABLES RELATED TO WORD GUESSING GAME-----*********
       ******************************************************************
@@ -516,6 +517,65 @@
                05 LINE 42 COLUMN 6 VALUE "Option: ".
                05 C-ERROR-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
                   USING ERROR-CHOICE.
+
+           01 CREDIT-ERROR-SCREEN
+             BACKGROUND-COLOR IS 1.
+             05 BLANK SCREEN.
+        *>    ERROR HEADER
+             05 LINE 1 COL 1  VALUE "   :                              
+      -    "                                                           "
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+             05 LINE 1 COL 2 PIC X(2) USING WS-FORMATTED-HOUR 
+             FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 5 PIC X(2) USING WS-FORMATTED-MINS
+             FOREGROUND-COLOR IS 7 REVERSE-VIDEO.
+             05 LINE 1 COL 90 PIC X(3) USING WS-USERCREDITS
+             FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+        *>    ERROR FOOTER
+               05 LINE 43 COL 1 VALUE "                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 44 COL 1 VALUE "     (C) Credit Store     (A) Acc
+      -    "ount Options                      "                                 
+                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 45 COL 1 VALUE "     (Q) Quit                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+               05 LINE 46 COL 1 VALUE "                                 
+      -    "                                                           "
+               FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
+                05 LINE 30 COLUMN 32 PIC X(40) USING WS-ERROR-MSG.
+        *>    FRIENDFACE LOGO ASCII ART
+               05 LINE 14 COL 34 VALUE " ________________________"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 15 COL 35 VALUE "|FfFfFfFfFfFfFfFfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 16 COL 35 VALUE "|FfFfFfFfFfFfF_____FfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 17 COL 35 VALUE "|FfFfFfFfFfFf__FfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 18 COL 35 VALUE "|FfFfFfFfFfFf__FfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 19 COL 35 VALUE "|FfFfFfFfFfFf__FfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 20 COL 35 VALUE "|FfFfFfFfF________FfFfF|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 21 COL 35 VALUE "|FfFfFfFfFfFf__FfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 22 COL 35 VALUE "|FfFfFfFfFfFf__FfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 23 COL 35 VALUE "|FfFfFfFfFfFf__FfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 24 COL 35 VALUE "|FfFfFfFfFfFf__FfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 25 COL 35 VALUE "|FfFfFfFfFfFfFfFfFfFfFf|"
+                   FOREGROUND-COLOR IS 7.
+               05 LINE 26 COL 34 VALUE " ------------------------"
+                   FOREGROUND-COLOR IS 7.
+        *>    ERROR OPTION POSITIONING
+               05 LINE 42 COLUMN 6 VALUE "Option: ".
+               05 CREDIT-ERROR-CHOICE-FIELD LINE 42 COLUMN 14 PIC X
+                  USING CREDIT-ERROR-CHOICE.       
 
            01 CREATE-AN-ACCOUNT-SCREEN
                BACKGROUND-COLOR IS 01.
@@ -3278,7 +3338,7 @@
            ELSE IF WS-BNK-DTLS-PRESENT = "NO" THEN
                MOVE "NO BANK DETAILS, PLEASE ADD TO BUY" 
                TO WS-ERROR-MSG
-               PERFORM 0109-ERROR-PAGE
+               PERFORM 0136-CREDIT-ERROR-PAGE
            END-IF.         
        
        0131-ADD-CREDITS.
@@ -3307,8 +3367,24 @@
                CALL "account-status" USING WS-USERNAME
            ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
                MOVE "Insufficient Credits" TO WS-ERROR-MSG
-               PERFORM 0109-ERROR-PAGE
-           END-IF. 
+               PERFORM 0136-CREDIT-ERROR-PAGE
+           END-IF.
+
+       0136-CREDIT-ERROR-PAGE.
+           PERFORM 0200-TIME-AND-DATE.
+           PERFORM 0132-CREDIT-TOTAL.
+           INITIALIZE CREDIT-ERROR-CHOICE.
+           DISPLAY CREDIT-ERROR-SCREEN.
+           ACCEPT CREDIT-ERROR-CHOICE-FIELD.
+           IF CREDIT-ERROR-CHOICE = "c" OR "C" THEN 
+               PERFORM 0130-CREDIT-STORE
+           ELSE IF CREDIT-ERROR-CHOICE = "a" OR "A" THEN 
+               PERFORM 0125-USER-ACCOUNT-MENU
+           ELSE IF CREDIT-ERROR-CHOICE = "q" OR "Q" THEN 
+               STOP RUN
+           ELSE 
+               PERFORM 0136-CREDIT-ERROR-PAGE 
+           END-IF.    
       ******************************************************************
       *******************-----MESSAGE SECTION----***********************
       ******************************************************************
@@ -3570,11 +3646,11 @@
                    NEW-MESSAGE
                ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
                    MOVE "Insufficent Credits" TO WS-ERROR-MSG
-                   PERFORM 0109-ERROR-PAGE
+                   PERFORM 0136-CREDIT-ERROR-PAGE
                END-IF 
            ELSE IF WS-USERACCOUNTLEVEL = "STD" THEN
                MOVE "UPGRADE ACCOUNT TO SPONSOR POSTS" TO WS-ERROR-MSG
-               PERFORM 0109-ERROR-PAGE
+               PERFORM 0136-CREDIT-ERROR-PAGE
            END-IF.  
 
            PERFORM 0140-MESSAGE-MENU.
@@ -3651,7 +3727,7 @@
                    PERFORM 0430-GUESS-THE-NUMBER-GAME
                ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
                 MOVE "Insufficient Credits" TO WS-ERROR-MSG
-                   PERFORM 0109-ERROR-PAGE
+                   PERFORM 0136-CREDIT-ERROR-PAGE
                END-IF
            END-IF. 
 
@@ -3666,7 +3742,7 @@
                    PERFORM 0410-GUESS-THE-WORD-GAME
                ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
                 MOVE "Insufficient Credits" TO WS-ERROR-MSG
-                   PERFORM 0109-ERROR-PAGE
+                   PERFORM 0136-CREDIT-ERROR-PAGE
                END-IF
            END-IF. 
 
@@ -3681,7 +3757,7 @@
                    PERFORM 0420-TIC-TAC-TOE 
                ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
                 MOVE "Insufficient Credits" TO WS-ERROR-MSG
-                   PERFORM 0109-ERROR-PAGE
+                   PERFORM 0136-CREDIT-ERROR-PAGE
                END-IF
            END-IF. 
 
@@ -3809,7 +3885,7 @@
                    PERFORM 0414-LOSING-SCREEN
                ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
                 MOVE "Insufficient Credits" TO WS-ERROR-MSG
-                   PERFORM 0109-ERROR-PAGE
+                   PERFORM 0136-CREDIT-ERROR-PAGE
                END-IF
            END-IF.
 
@@ -4103,7 +4179,7 @@
                     PERFORM 0430-GUESS-THE-NUMBER-GAME
                 ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
                     MOVE "Insufficient Credits" TO WS-ERROR-MSG
-                    PERFORM 0109-ERROR-PAGE
+                    PERFORM 0136-CREDIT-ERROR-PAGE
                 END-IF
            GO TO INITIALIZE-RANDOM-NUM-GAME
            END-IF.
