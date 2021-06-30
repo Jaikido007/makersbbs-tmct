@@ -538,8 +538,8 @@
                05 LINE 44 COL 1 VALUE "     (C) Credit Store     (A) Acc
       -    "ount details                                               "                                 
                 FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
-               05 LINE 45 COL 1 VALUE "     (Q) Quit                                 
-      -    "                                                           "
+               05 LINE 45 COL 1 VALUE "     (M) Main menu        (Q) Qui                                 
+      -    "t                                                          "
                FOREGROUND-COLOR IS 7, REVERSE-VIDEO.
                05 LINE 46 COL 1 VALUE "                                 
       -    "                                                           "
@@ -3382,6 +3382,8 @@
                PERFORM 0125-USER-ACCOUNT-MENU
            ELSE IF CREDIT-ERROR-CHOICE = "q" OR "Q" THEN 
                STOP RUN
+           ELSE IF CREDIT-ERROR-CHOICE-FIELD = "m" OR "M" THEN
+               PERFORM 0110-DISPLAY-MENU
            ELSE 
                PERFORM 0136-CREDIT-ERROR-PAGE 
            END-IF.    
@@ -3735,6 +3737,7 @@
        0400-GAMES-MENU.
            PERFORM 0200-TIME-AND-DATE.
            PERFORM 0132-CREDIT-TOTAL.
+           PERFORM 0126-CHECK-ACCOUNT-STATUS.
            INITIALIZE GAMES-MENU-CHOICE.
            DISPLAY GAMES-MENU-SCREEN.
            ACCEPT GAMES-MENU-CHOICE-FIELD
@@ -3773,21 +3776,30 @@
                    PERFORM 0136-CREDIT-ERROR-PAGE
                END-IF
            END-IF. 
+           
+           
 
-           IF GAMES-MENU-CHOICE = "3" THEN
-           MOVE 0 TO WS-UPDATE-CREDITS
-           MOVE 5 TO WS-UPDATE-CREDITS
-           PERFORM 0133-CHECK-CREDIT-BALANCE           
-               IF WS-BALANCE-AVAILABLE = "Y" THEN
-                   CALL "subtract-credits" USING WS-USERNAME, 
-                   WS-UPDATE-CREDITS
-                   CALL "account-status" USING WS-USERNAME
-                   PERFORM 0420-TIC-TAC-TOE 
-               ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
-                MOVE "Insufficient Credits" TO WS-ERROR-MSG
-                   PERFORM 0136-CREDIT-ERROR-PAGE
+           IF GAMES-MENU-CHOICE = "3" THEN           
+               IF WS-USERACCOUNTLEVEL = "STD" THEN
+               MOVE 0 TO WS-UPDATE-CREDITS
+               MOVE 5 TO WS-UPDATE-CREDITS
+               PERFORM 0133-CHECK-CREDIT-BALANCE           
+                   IF WS-BALANCE-AVAILABLE = "Y" THEN
+                       CALL "subtract-credits" USING WS-USERNAME, 
+                       WS-UPDATE-CREDITS
+                       PERFORM 0420-TIC-TAC-TOE 
+                   ELSE IF WS-BALANCE-AVAILABLE = "N" THEN
+                    MOVE "Insufficient Credits" TO WS-ERROR-MSG
+                       PERFORM 0136-CREDIT-ERROR-PAGE
                END-IF
-           END-IF. 
+           END-IF.
+           
+           IF GAMES-MENU-CHOICE = "3" THEN  
+               IF WS-USERACCOUNTLEVEL = "VIP" THEN
+                   PERFORM 0420-TIC-TAC-TOE
+               END-IF
+           END-IF.
+           
 
            PERFORM 0400-GAMES-MENU.
       
