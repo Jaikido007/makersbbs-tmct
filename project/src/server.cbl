@@ -3564,6 +3564,7 @@
            END-IF.
 
            IF MSG-VIEW-CHOICE = "c" OR "C"
+             MOVE 1 TO COM-INDEX
              PERFORM 0143-COMMENT-SCREEN
            END-IF 
            .
