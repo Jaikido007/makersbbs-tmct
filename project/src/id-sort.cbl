@@ -27,6 +27,13 @@
            PROCEDURE DIVISION USING SORTED-TABLE.
            CALL 'number-of-messages' USING NUM-OF-LINES.
            MOVE NUM-OF-LINES TO REVERSE-ID.
+           MOVE 0 TO LOOP-COUNT.
+
+      ****************************************************************** 
+      ********-----SWAPPING OF THE INDEX NUMBERS TO NEW TABLE-----******
+      ********-----I.E. TABLE INDEX 001 = 001 THEN BECOMES-----*********
+      ********-----TABLE INDEX 001 = 27 (NUMBER OF MESSAGE LINES-----***
+      ******************************************************************
       
            PERFORM UNTIL LOOP-COUNT = NUM-OF-LINES
                ADD 1 TO LOOP-COUNT
@@ -36,27 +43,30 @@
                MOVE FUNCTION TRIM(FINAL-ID) TO S-ID(LOOP-COUNT)
                SUBTRACT 1 FROM REVERSE-ID
            END-PERFORM.
-          *>  REMEMBER to put these moves after the loops!!!!!!!!!!!
+      
+      ****************************************************************** 
+      ***********-----RESET VALUES FOR COUNTERS FOR NEXT LOOP-----******
+      ******************************************************************
+
            MOVE 0 TO LOOP-COUNT.
            MOVE NUM-OF-LINES TO REVERSE-ID.
+      
+      ******************************************************************
+      ********-----MOVE IMPORTED TABLE ENTRIES TO NEW TABLE-----********
+      ******************************************************************
           
-          *> SOLUTION BELOW VVVVVVV ------------------------------------
            PERFORM UNTIL LOOP-COUNT = NUM-OF-LINES
              ADD 1 TO LOOP-COUNT
              MOVE S-ENTRY(REVERSE-ID) TO HOLD-ENTRY(LOOP-COUNT)
              SUBTRACT 1 FROM REVERSE-ID
            END-PERFORM.
-          *>  ------------------DEBUG CHECKING VALUES-------------------
-              *>  DISPLAY 'first value in index 1 for S-ENTRY:'.
-              *>  DISPLAY S-ID(1) S-TITLE(1).
-              *>  DISPLAY 'last value in HOLD-ENTRY TABLE: '.
-              *>  DISPLAY HOLD-ID(NUM-OF-LINES) HOLD-TITLE(NUM-OF-LINES).
-              *>  DISPLAY '----------------------------------------------'.
-              *>  DISPLAY 'Now the first value in HOLD-ENTRY TABLE:'.
-              *>  DISPLAY HOLD-ID(1) HOLD-TITLE(1).
-               
-          *>  ------------------------END-DEBUG-------------------------
-           MOVE 0 TO LOOP-COUNT.
+
+      ******************************************************************
+      ********-----MOVE NEW TABLE TO REPLACE OLD ONE AND EXPORT-----****
+      ******************************************************************
+          
            MOVE NUM-OF-LINES TO REVERSE-ID.
            MOVE HOLDER-TABLE TO SORTED-TABLE.
+      
+      ******************************************************************
            

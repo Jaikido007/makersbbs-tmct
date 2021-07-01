@@ -13,12 +13,8 @@
 
            WORKING-STORAGE SECTION.
            01 MESSAGE-LINES PIC 999.
-           01 NUM-COMMENTS PIC 9999.
-
            01 COMMENT-COUNTER PIC 999.
            01 ID-FIND PIC 999.
-
-          *>  01 COM-INDEX PIC 9999 VALUE 1.
 
            01 TEMP-TABLE.
                05 WS-ENTRY OCCURS 1 TO 999 TIMES 
@@ -37,20 +33,44 @@
     
        PROCEDURE DIVISION USING COMMENT-TOTAL-TABLE.
 
-          *>  GET AMOUNT OF MESSAGES TOTAL
+      ******************************************************************
+      *********************----ABOUT THIS FILE---***********************
+      *    This program looks through the comments.dat file and looks  *
+      *    for  all posts starting with the same index, counts how     *
+      *    many of them there are, then puts them to a table to be     *
+      *    exported using the same original indexes as the message     *
+      *    posts would belong to.                                      *
+      ****************************************************************** 
+
+      ****************************************************************** 
+      *************-----GET NUMBER OF CURRENT MESSAGES-----*************
+      ****************************************************************** 
+
            CALL 'number-of-messages' USING MESSAGE-LINES.
 
-          *>  SET MSG-SELECT TO == MESSAGE-LINES THEN SUBTRACT 1 LATER:
+      ****************************************************************** 
+      ********-----SET MESSAGE-SELECT TO TOTAL OF MESSAGES-----*********
+      ****************************************************************** 
+
            MOVE MESSAGE-LINES TO MSG-SELECT.
 
-          *>  GET ORIGINAL ID OF POST:
+      ****************************************************************** 
+      *************-----FIND ORIGINAL INDEX OF MESSAGES-----************
+      ****************************************************************** 
+
            COMPUTE ID-FIND = MESSAGE-LINES - MSG-SELECT + 1.
            
-          *>  WIPE PRE-EXISTING TABLE DATA:
+      ****************************************************************** 
+      **************-----CLEAR EXISTING TABLE DATA-----*****************
+      ******************************************************************
+
            MOVE SPACES TO TEMP-TABLE.
            MOVE TEMP-TABLE TO COMMENT-TOTAL-TABLE.
       
-      ******************************************************************
+      ****************************************************************** 
+      *******-----NESTED LOOP TO FIND EACH COMMENT WITH SAME-----******
+      *******-----INDEXES AND PUT THE COUNT OF THEM TO A TABLE-----*****
+      ****************************************************************** 
 
            PERFORM UNTIL ID-FIND > MESSAGE-LINES
              OPEN INPUT F-COMMENTS-FILE
@@ -65,7 +85,6 @@
                  READ F-COMMENTS-FILE
                  NOT AT END
                    IF ID-FIND = RC-ID
-                     DISPLAY 'DEBUG-- Inside the IF. Condition is true.'
                      ADD 1 TO COMMENT-COUNTER
                    END-IF
                  AT END MOVE 1 TO WS-FILE-END             
@@ -76,11 +95,19 @@
              CLOSE F-COMMENTS-FILE
 
              SUBTRACT 1 FROM MSG-SELECT
+      
+      ****************************************************************** 
+      ****************-----GET NEW ID TO SEARCH FOR-----****************
+      ****************************************************************** 
 
-             *>  GET ORIGINAL ID OF POST:
              COMPUTE ID-FIND = MESSAGE-LINES - MSG-SELECT + 1
 
-           END-PERFORM
-           .
+           END-PERFORM.
+
+      ****************************************************************** 
+      *************-----EXPORT TABLE TO CALLING PROGRAM-----************
+      ****************************************************************** 
 
            MOVE TEMP-TABLE TO COMMENT-TOTAL-TABLE.
+      
+      ******************************************************************
